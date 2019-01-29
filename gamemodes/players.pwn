@@ -1,5 +1,8 @@
+
+new DefaultPlayerArray[] = {0, 0, 0, 0, 0, 5000, 10000};
+
 enum ePlayerData {
-	bool:logged_in,
+	bool:loggedin,
 	db_id,
 	adminlevel,
 	regdate,
@@ -10,5 +13,17 @@ enum ePlayerData {
 new pInfo[MAX_PLAYERS][ePlayerData];
 
 
+enum SpawnReason {
+	SPAWN_LOGIN,
+	SPAWN_REGISTER,
+	SPAWN_DEATH,
+	SPAWN_RESPAWN
+}
+
+
+
+
 
 //Other vars for players
+new SpawnReason:pSpawnReason[MAX_PLAYERS];
+new pLoginTries[MAX_PLAYERS];
