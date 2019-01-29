@@ -40,7 +40,9 @@ Ich habe damals 2012 als kompletter PC-Noob angefangen auf GTA-City zu spielen, 
    - SA-MP Server.cfg
    - plugins (include / binaries)  - + MYSQL dependencies!
    - Database Backup
-##
+
+
+
 
 
 
