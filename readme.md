@@ -3,7 +3,7 @@
 
 :construction: **Script Status:** Initial prep. :construction:
 
-##Entwicklung :door:
+## Entwicklung :door:
 1. Clone / Download meiner Repo.
 2. Extrahiere die Dateien in einen aktuellen [SA-MP Windows Server].
 3. [Zeex Compiler] für's Compilen verwenden - wichtig!
