@@ -1,6 +1,7 @@
-:star: SA:MP 0.3.7 Script zur Erinnerung an [GTA City] :star:
+##:star: SA:MP 0.3.7 Script zur Erinnerung an [GTA City] :star:
 :mega: **Hier nutzt man den Projektnamen "GTA City" - um alles übersichtlich zu halten.**
-##
+
+
 
 :construction: **Script Status:**     Initial prep. :construction:
 
