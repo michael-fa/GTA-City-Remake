@@ -68,7 +68,6 @@ Hierbei ist dennoch der Fokus aller Events (callbacks) in der Hauptdatei, nur wi
    - Sscanf (Quelle noch unbekannt)
    - ocmd von [Kleiner Opa].
    - [Pawn Language Plugin] von Southclaws
-   - MD5 [Y Sever Includes] von Y-Less
 
 
 
