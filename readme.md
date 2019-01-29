@@ -20,7 +20,7 @@ zu ehren, nachdem er seine Zeit nun hinter sich hat. Ich möchte keinen bösen G
 ausführen, und habe keinerlei Absicht bösen Dinge zu veranstalten!
 Ich habe damals 2012 als kompletter PC-Nood angefangen auf GTA-City zu spielen, und danke nun für dieses Erlebnis was mein Leben verändert hat.
 
-:clap: Ich möchte nochmal einen großen Dank an Siedler und alle (ehem.) Admins von RPG-City für dieses tolle Projekt schriftlich festlegen :clap:
+:clap: Ich möchte einen großen Dank an Siedler und **alle** Admins von RPG-City für dieses tolle Projekt schriftlich festlegen :clap:
 
 
 ## Über meinen Setup
