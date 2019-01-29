@@ -68,6 +68,7 @@ Hierbei ist dennoch der Fokus aller Events (callbacks) in der Hauptdatei, nur wi
    - Sscanf (Quelle noch unbekannt)
    - ocmd von [Kleiner Opa].
    - [Pawn Language Plugin] von Southclaws
+   - MD5 [Y Sever Includes] von Y-Less
 
 
 
@@ -88,3 +89,4 @@ Hierbei ist dennoch der Fokus aller Events (callbacks) in der Hauptdatei, nur wi
 [Kleiner Opa]: <http://forum.sa-mp.de/index.php?page=User&userID=24998>
 [Sublime Text und Pawn]: <https://github.com/Southclaws/pawn-sublime-language>
 [Pawn Language Plugin]: <https://github.com/Southclaws/pawn-sublime-language#pawn-language-plugin>
+[Y Sever Includes]: <https://github.com/Y-Less>

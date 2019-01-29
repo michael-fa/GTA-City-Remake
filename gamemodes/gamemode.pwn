@@ -4,6 +4,7 @@
 #include <a_zones>
 #include <streamer>
 #include <ocmd>
+#include <MD5>
 #include <Dini>
 
 #include "lazypawn/main.cpp"
@@ -25,7 +26,6 @@ main()
 
 public OnGameModeInit()
 {
-	// Don't use these lines if it's a filterscript
 	SetGameModeText("Blank Script");
 	AddPlayerClass(0, 1958.3783, 1343.1572, 15.3746, 269.1425, 0, 0, 0, 0, 0, 0);
 	return 1;
