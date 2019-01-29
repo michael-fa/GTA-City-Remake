@@ -3,8 +3,8 @@
 
 
 new ZiviSkins[2][2] = {
-	{0,0},
-	{6,3}
+	{0,0}, //Männlich
+	{6,3}  //Weiblich
 };
 
 enum {
