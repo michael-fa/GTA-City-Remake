@@ -35,7 +35,7 @@ Ich habe damals 2012 als kompletter PC-Noob angefangen auf GTA-City zu spielen, 
 ## Included
    - Alle Scriptfiles (`/gamemode/`) die zusammen das Gamemode bilden.
    - Script Includes (von Dritten & eigene) 
-     :heavy_plus_sign: [Lazypawn] von mir.
+     + [Lazypawn] von mir.
    - Sublime Text 3 Workspace / project Datei.
    - SA-MP Server.cfg
    - plugins (include / binaries)  - + MYSQL dependencies!
