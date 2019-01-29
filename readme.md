@@ -13,14 +13,35 @@
 7. Compiler "-Z" Mode verwenden!
 
 
+
+
 ## :bulb: Wichtiges
+
+
+:collision: **Es wird keine "fertigen" RELEASES geben!**
+
 Ich möchte dieses Gamemode nicht als ein besonders tolles oder wichtiges darstellen. 
-Es ist ein Versuch von mir, das Gamemode nach zu entwickeln, um den Server öffentlich
-zu ehren, nachdem er seine Zeit nun hinter sich hat. Ich möchte keinen bösen Gedanken hierbei
-ausführen, und habe keinerlei Absicht bösen Dinge zu veranstalten!
-Ich habe damals 2012 als kompletter PC-Nood angefangen auf GTA-City zu spielen, und danke nun für dieses Erlebnis was mein Leben verändert hat.
+Es ist ein Versuch von mir das Script nach zu entwickeln, um den Server öffentlich
+zu ehren, nachdem er seine Zeit nun hinter sich hat. Ich möchte hierbei keinen bösen Gedanken
+ausführen, und vollen Respekt vor der Arbeit von jedem aus der Community.
+Ich habe damals 2012 als kompletter PC-Noob angefangen auf GTA-City zu spielen, was mir eine neue "Welt" zeigte.
+
 
 :clap: Ich möchte einen großen Dank an Siedler und **alle** Admins von RPG-City für dieses tolle Projekt schriftlich festlegen :clap:
+
+
+
+
+## Included
+   - Alle Scriptfiles (/gamemode/) die zusammen das Gamemode bilden.
+   - Script Includes (von Dritten & eigene) 
+     :heavy_plus_sign: [Lazypawn] von mir.
+   - Sublime Text 3 Workspace / project Datei.
+   - SA-MP Server.cfg
+   - plugins (include / binaries)  - + MYSQL dependencies!
+   - Database Backup
+
+
 
 
 ## Über meinen Setup
@@ -36,4 +57,6 @@ Hierbei ist dennoch der Fokus aller Events (callbacks) in der Hauptdatei, nur wi
 [GTA City]: <https://www.google.com/search?q=rpg+city+de&source=lnms&tbm=isch&sa=X&ved=0ahUKEwiQ2fbLz5PgAhXSwAIHHUp-BicQ_AUIDygC&biw=1920&bih=889>
 [SA-MP Windows Server]: <http://www.sa-mp.com/download.php>
 [Zeex Compiler]: <https://github.com/pawn-lang/compiler/releases>
+[Zeex Pawn Compiler]: <https://github.com/pawn-lang/compiler/releases>
 [Sublime Text]: <https://www.sublimetext.com/>
+[Lazypawn]: <https://github.com/michael-fa/lazypawn>
