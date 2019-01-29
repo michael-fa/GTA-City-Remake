@@ -1,0 +1,381 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"playe",
+				"PlayersOnline"
+			],
+			[
+				"socket_sendto",
+				"socket_sendto_remote_client"
+			],
+			[
+				"SendClien",
+				"SendClientMessage"
+			],
+			[
+				"CancelSele",
+				"CancelSelectTextDraw"
+			],
+			[
+				"GameModeTo",
+				"GameModeToMinPlayers"
+			],
+			[
+				"PLAYER_RECORD",
+				"PLAYER_RECORDING_TYPE_DRIVER"
+			],
+			[
+				"SendClie",
+				"SendClientMessage"
+			],
+			[
+				"SetActor",
+				"SetActorPos"
+			],
+			[
+				"player_state",
+				"PLAYER_STATE_SPECTATING"
+			],
+			[
+				"Inter",
+				"InterpolateCameraLookAt"
+			],
+			[
+				"SetPlayerCam",
+				"SetPlayerCameraLookAt"
+			],
+			[
+				"SendClient",
+				"SendClientMessageToAll"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "gamemodes/gamemode.pwn",
+			"settings":
+			{
+				"buffer_size": 3057,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/User/Pawn.sublime-build",
+					""
+				],
+				[
+					"Packages/User/Pawn.sublime-build",
+					"Preprocessed output"
+				],
+				[
+					"Packages/User/Pawn.sublime-build",
+					"P-code output"
+				]
+			],
+			[
+				"Packages/User/Pawn.sublime-build",
+				"Preprocessed output"
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 137.0,
+		"last_filter": "Package Control: inst",
+		"selected_items":
+		[
+			[
+				"Package Control: inst",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: install",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: ins",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: sear",
+				"Package Control: Discover Packages"
+			],
+			[
+				"Package Control: remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"Package Control: instal",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: insta",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 428.0
+	},
+	"console":
+	{
+		"height": 125.0,
+		"history":
+		[
+			"github",
+			"github:",
+			"set remote for integration",
+			"github: set remote for integration",
+			"github: set remote"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/Users/Michael/Desktop/rpg-city-remake/GTA-City-Remake",
+		"/C/Users/Michael/Desktop/rpg-city-remake/GTA-City-Remake/gamemodes",
+		"/C/Users/Michael/Desktop/rpg-city-remake/GTA-City-Remake/pawn"
+	],
+	"file_history":
+	[
+		"/C/Users/Michael/Desktop/rpg-city-remake/GTA-City-Remake/pawn/new.pwn",
+		"/C/Users/Michael/Desktop/ragemp-mysql-master/packages/mysql/auth.js",
+		"/C/Users/Michael/Desktop/ragemp-mysql-master/packages/mysql/index.js",
+		"/C/Users/Michael/Desktop/ragemp-mysql-master/client_packages/houses/index.js",
+		"/C/Users/Michael/AppData/Roaming/Sublime Text 3/Packages/User/Pawn.sublime-build",
+		"/C/Users/Michael/Desktop/ragemp-mysql-master/conf.json",
+		"/C/Users/Michael/Desktop/ragemp-mysql-master/client_packages/login/index.html",
+		"/C/Users/Michael/Desktop/ragemp-mysql-master/packages/mysql/commands/admin.js",
+		"/C/Users/Michael/Desktop/ragemp-mysql-master/packages/mysql/events/PlayerCommand.js",
+		"/C/Users/Michael/Desktop/ragemp-mysql-master/test.pwn",
+		"/C/Users/Michael/Desktop/ragemp-mysql-master/client_packages/login.js",
+		"/C/Users/Michael/Desktop/ragemp-mysql-master/packages/mysql/commands.js",
+		"/C/Users/Michael/Desktop/server-files/packages/test/events/commands/admin.js",
+		"/C/Users/Michael/Desktop/server-files/packages/test/events/PlayerCommand.js",
+		"/C/Users/Michael/Desktop/server-files/packages/test/events/PlayerCommand",
+		"/C/Users/Michael/Desktop/server-files/packages/test/events/onPlayerCommand",
+		"/C/Users/Michael/Desktop/server-files/packages/index.js",
+		"/C/Users/Michael/Desktop/San Andreas Online/pawn/include/sampvoice.inc",
+		"/C/Users/Michael/Desktop/San Andreas Online/pawn/include/socket.inc",
+		"/C/Users/Michael/Desktop/San Andreas Online/gamemodes/sao.pwn",
+		"/C/Users/Michael/Desktop/San Andreas Online/server.cfg",
+		"/C/Users/Michael/Downloads/socket.dll",
+		"/C/Users/Michael/Desktop/San Andreas Online/sao.sublime-project",
+		"/C/Users/Michael/Desktop/SAMP Green Biz Testserver/greenbiz.sublime-project",
+		"/C/Users/Michael/Desktop/SAMP Green Biz Testserver/gamemodes/weedcity.pwn",
+		"/C/Users/Michael/Desktop/SAMP Green Biz Testserver/pawn/include/voice.inc",
+		"/C/Users/Michael/Desktop/SAMP Green Biz Testserver/server.cfg",
+		"/C/Users/Michael/Desktop/SAMP Green Biz Testserver/pawn/include/streamer.inc",
+		"/C/Users/Michael/Desktop/SAMP Green Biz Testserver/filterscripts/greenbiz.pwn",
+		"/C/Users/Michael/Desktop/new.pwn",
+		"/C/Users/Michael/Desktop/SA-MP PUBG/pawn/include/gamemode/td_lobby.pwn",
+		"/C/Users/Michael/Desktop/SA-MP PUBG/pawn/include/gamemode/various.pwn",
+		"/C/Users/Michael/Desktop/SA-MP PUBG/pawn/include/gamemode/m_lobby.pwn",
+		"/C/Users/Michael/Desktop/SA-MP PUBG/pawn/include/gamemode/players.pwn",
+		"/C/Users/Michael/Desktop/SA-MP PUBG/pawn/include/gamemode/globals_fix.pwn",
+		"/C/Users/Michael/Desktop/SA-MP PUBG/pawn/include/gamemode/lobbysystem.pwn",
+		"/C/Users/Michael/Desktop/SA-MP PUBG/npcmodes/LV-SF.pwn",
+		"/C/Users/Michael/Desktop/SA-MP PUBG/npcmodes/LS-LV.pwn",
+		"/C/Users/Michael/Desktop/SA-MP PUBG/pawn/include/gamemode/game.pwn",
+		"/C/Users/Michael/Desktop/SA-MP PUBG/gamemodes/pubg.pwn",
+		"/C/Users/Michael/Desktop/Game Server/Current SA-MP Projects 2017 DUMP/Day of Infection/Server Files/gamemodes/gamemode.pwn",
+		"/C/Users/Michael/Desktop/SA-MP PUBG/pawn/include/gamemode/mysql.pwn",
+		"/C/Users/Michael/Desktop/SA-MP PUBG/pawn/include/gamemode/build.pwn",
+		"/C/Users/Michael/Desktop/SA-MP PUBG/pawn/include/a_actor.inc",
+		"/C/Users/Michael/Desktop/SA-MP PUBG/pawn/include/gamemode/various.amx",
+		"/C/Users/Michael/Desktop/SA-MP PUBG/server.cfg",
+		"/C/Users/Michael/Desktop/SA-MP PUBG/pawn/include/a_players.inc",
+		"/C/Users/Michael/Desktop/SA-MP PUBG/pawn/include/gamemode/lobby.map",
+		"/C/Users/Michael/Desktop/SA-MP PUBG/pawn/include/gamemode/debugstuff.inc",
+		"/C/Users/Michael/Desktop/Game Server/Selfmade by Danno/gamemodes/Selfmade.pwn",
+		"/C/Users/Michael/Desktop/Day of Infection New/pawn/include/gamemode/mysql.pwn",
+		"/C/Users/Michael/Desktop/Day of Infection New/pawno/include/gamemode/mysql.pwn",
+		"/C/Users/Michael/Desktop/Day of Infection New/gamemodes/ggamemode.pwn",
+		"/C/Users/Michael/Desktop/Current SA-MP Projects 2017 DUMP/Day of Infection/Server Files/gamemodes/gamemode.pwn",
+		"/C/Users/Michael/AppData/Roaming/Sublime Text 3/Packages/User/SourcePawn.sublime-build",
+		"/C/Users/Michael/Desktop/Current SA-MP Projects 2017 DUMP/Day of Infection/Server Files/server_log.txt",
+		"/C/Users/Michael/Desktop/Current SA-MP Projects 2017 DUMP/Day of Infection/Server Files/pepepenis.txt",
+		"/C/Users/Michael/Desktop/Current SA-MP Projects 2017 DUMP/Day of Infection/Server Files/server.cfg",
+		"/C/Users/Michael/Desktop/Current SA-MP Projects 2017 DUMP/Day of Infection/Server Files/samp-server.exe",
+		"/C/Users/Michael/Desktop/Current SA-MP Projects 2017 DUMP/Day of Infection/Server Files/samp-npc.exe",
+		"/C/Users/Michael/Desktop/Current SA-MP Projects 2017 DUMP/Day of Infection/Server Files/log-core.dll",
+		"/C/Users/Michael/Desktop/Current SA-MP Projects 2017 DUMP/Day of Infection/Server Files/libmysql.dll",
+		"/C/Users/Michael/Desktop/Current SA-MP Projects 2017 DUMP/Day of Infection/Server Files/libmariadb.dll",
+		"/C/Users/Michael/Desktop/Current SA-MP Projects 2017 DUMP/Day of Infection/Server Files/announce.exe",
+		"/C/Users/Michael/Desktop/Day of Infection 0.2/Server Files/gamemodes/gamemode.pwn"
+	],
+	"find":
+	{
+		"height": 23.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			">\n"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "gamemodes/gamemode.pwn",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3057,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								538,
+								538
+							]
+						],
+						"settings":
+						{
+							"git_savvy.repo_path": "C:\\Users\\Michael\\Desktop\\rpg-city-remake\\GTA-City-Remake",
+							"syntax": "Packages/Pawn syntax/Pawn.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 22.0
+	},
+	"input":
+	{
+		"height": 36.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 102.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "Packages/User/Pawn.sublime-build",
+	"project": "this.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 246.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
