@@ -1,6 +1,7 @@
 #include <a_samp>
 #include <crashdetect>
 #include <a_mysql>
+#include <a_zones>
 #include <streamer>
 #include <ocmd>
 #include <Dini>

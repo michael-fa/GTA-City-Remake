@@ -54,12 +54,37 @@ Außerdem nutze ich einen sauberen mix aus verschiedenen Styles, alle (für mich
 Kram der im Script eher global deklariert wird, ist meistens in seperate ".pwn"-Includes im Haupt-Gamemode zusammengefügt. 
 Hierbei ist dennoch der Fokus aller Events (callbacks) in der Hauptdatei, nur wird so der Code besser aufgeteilt.
 
+** Informationen zu [Sublime Text und Pawn] als Workspace! **
+
+
+
+
+## Danke @
+   - [MySQL Plugin] von BlueG / Maddinat0r
+   - [Streamer Plugin] Plugin von Icognito
+   - [Crashdetect] & [seinen Kompiler]
+   - [Dini] von BlueG
+   - [a_zones] von Cueball
+   - Sscanf (Quelle noch unbekannt)
+   - ocmd von [Kleiner Opa].
+   - [Pawn Language Plugin] von Southclaws
 
 
 
 [GTA City]: <https://www.google.com/search?q=rpg+city+de&source=lnms&tbm=isch&sa=X&ved=0ahUKEwiQ2fbLz5PgAhXSwAIHHUp-BicQ_AUIDygC&biw=1920&bih=889>
 [SA-MP Windows Server]: <http://www.sa-mp.com/download.php>
 [Zeex Compiler]: <https://github.com/pawn-lang/compiler/releases>
+
 [Zeex Pawn Compiler]: <https://github.com/pawn-lang/compiler/releases>
+[seinen Kompiler]: <https://github.com/pawn-lang/compiler/releases>
+
 [Sublime Text]: <https://www.sublimetext.com/>
 [Lazypawn]: <https://github.com/michael-fa/lazypawn>
+[MySQL Plugin]: <https://github.com/pBlueG/SA-MP-MySQL>
+[Streamer Plugin]: <https://github.com/samp-incognito>
+[Crashdetect]: <https://github.com/Zeex>
+[Dini]: <https://dracoblue.net/downloads/dini/>
+[a_zones]: <https://forum.sa-mp.com/showthread.php?t=27598>
+[Kleiner Opa]: <http://forum.sa-mp.de/index.php?page=User&userID=24998>
+[Sublime Text und Pawn]: <https://github.com/Southclaws/pawn-sublime-language>
+[Pawn Language Plugin]: <https://github.com/Southclaws/pawn-sublime-language#pawn-language-plugin>
