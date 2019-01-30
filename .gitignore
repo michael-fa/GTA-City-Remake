@@ -2,3 +2,5 @@
 logs/errors.log
 logs/warnings.log
 server_log.txt
+*.log
+*.log
