@@ -13,6 +13,8 @@
 #include "/../../gamemodes/mysql.pwn"
 #include "/../../gamemodes/players.pwn"
 
+#include "/../../maps/rpg-city.pwn"
+
 
 
 
@@ -35,6 +37,9 @@ public OnGameModeInit()
 	ManualVehicleEngineAndLights();
 	DisableInteriorEnterExits();
 	EnableStuntBonusForAll(false);
+
+	//Maps
+	LoadRPGCityMap();
 	
 	SetGameModeText("German Reallife");
 

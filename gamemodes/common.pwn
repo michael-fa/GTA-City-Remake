@@ -2,6 +2,9 @@
 #define MAX_PASSWORD_LEN     128
 
 
+
+
+
 //IMPORTANT for it to work we need to actually include common after buildinfo!
 #if defined GM_DEBUG
 	#define DebugPrint(%0); printf(%0);
