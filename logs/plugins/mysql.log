@@ -19,3 +19,35 @@
 [19:00:23] [WARNING] mysql_connect: no password specified
 [19:00:56] [WARNING] mysql_connect: no password specified
 [19:04:07] [WARNING] mysql_connect: no password specified
+[19:27:21] [WARNING] mysql_connect: no password specified (C:\Users\Michael\Desktop\rpg-city-remake\GTA-City-Remake\pawn\include\/../../gamemodes/mysql.pwn:15 -> gtacity.pwn:32)
+[19:28:24] [WARNING] mysql_connect: no password specified
+[19:28:28] [ERROR] cache_insert_id: no active cache
+[19:29:15] [WARNING] mysql_connect: no password specified
+[19:29:19] [ERROR] cache_insert_id: no active cache
+[22:54:31] [WARNING] mysql_connect: no password specified (C:\Users\Michael\Desktop\rpg-city-remake\GTA-City-Remake\pawn\include\/../../gamemodes/mysql.pwn:15 -> gtacity.pwn:32)
+[22:54:57] [ERROR] cache_insert_id: no active cache (gtacity.pwn:317)
+[23:01:20] [WARNING] mysql_connect: no password specified
+[23:01:29] [ERROR] cache_insert_id: no active cache
+[23:02:14] [WARNING] mysql_connect: no password specified
+[23:02:17] [ERROR] cache_insert_id: no active cache
+[23:08:22] [WARNING] mysql_connect: no password specified
+[23:08:31] [ERROR] cache_insert_id: no active cache
+[23:11:07] [WARNING] mysql_connect: no password specified
+[23:11:10] [ERROR] cache_insert_id: no active cache
+[23:12:37] [WARNING] mysql_connect: no password specified
+[23:12:55] [ERROR] cache_insert_id: no active cache
+[23:20:11] [WARNING] mysql_connect: no password specified
+[23:20:16] [ERROR] cache_insert_id: no active cache
+[23:25:57] [WARNING] mysql_connect: no password specified
+[23:26:02] [ERROR] cache_insert_id: no active cache
+[23:32:56] [WARNING] mysql_connect: no password specified
+[23:33:03] [ERROR] cache_insert_id: no active cache
+[23:34:13] [WARNING] mysql_connect: no password specified
+[23:34:17] [ERROR] cache_insert_id: no active cache
+[23:35:13] [WARNING] mysql_connect: no password specified
+[23:36:53] [WARNING] mysql_connect: no password specified
+[23:36:56] [ERROR] cache_insert_id: no active cache
+[23:38:41] [WARNING] mysql_connect: no password specified
+[23:38:43] [ERROR] cache_insert_id: no active cache
+[23:40:34] [WARNING] mysql_connect: no password specified
+[23:40:39] [ERROR] cache_insert_id: no active cache

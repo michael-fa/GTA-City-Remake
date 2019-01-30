@@ -65,7 +65,7 @@ public OnPlayerRequestClass(playerid, classid)
 	}
 	else
 	{
-		//Soweit nichts dazu kommt, direkt spawnen weg hier!
+		//Soweit nichts dazu kommt, direkt spawnen, weg hier!
 	}
 	
 	return 1;
@@ -79,16 +79,8 @@ public OnPlayerConnect(playerid)
 	memcpy(pInfo[playerid], DefaultPlayerArray, 0, sizeof(DefaultPlayerArray)*4, sizeof(pInfo[]));
 
 	//Weapon Skill like RPG-City
-	SetPlayerSkillLevel(playerid, 0, 1000);
-	SetPlayerSkillLevel(playerid, 1, 1000);
-	SetPlayerSkillLevel(playerid, 2, 1000);
-	SetPlayerSkillLevel(playerid, 3, 1000);
-	SetPlayerSkillLevel(playerid, 4, 1000);
-	SetPlayerSkillLevel(playerid, 5, 1000);
-	SetPlayerSkillLevel(playerid, 6, 1000);
+	for(new i=0; i<10; i++)SetPlayerSkillLevel(playerid, i, 1000);
 	SetPlayerSkillLevel(playerid, 7, 998);
-	SetPlayerSkillLevel(playerid, 8, 1000);
-	SetPlayerSkillLevel(playerid, 9, 1000);
 	return 1;
 }
 
@@ -99,6 +91,28 @@ public OnPlayerDisconnect(playerid, reason)
 
 public OnPlayerSpawn(playerid)
 {
+	switch(pSpawnReason[playerid])
+	{
+		case SPAWN_LOGIN:
+		{
+			//Nach dem Login
+		}
+		case SPAWN_REGISTER:
+		{
+			//Ratet mal
+		}
+		case SPAWN_SKINCHANGE_ZIVI:
+		{
+			ShowPlayerDialog(playerid, DIALOG_SEX, DIALOG_STYLE_MSGBOX, "Geschlecht wählen", "Auf GTA-City kannst du in eine Weibliche oder in eine Männliche Rolle schlüpfen.\nBitte gib an, welches du für deinen Charakter möchtest.", "Männlich" ,"Weiblich");
+			//Er kann sich nen neuen ZiviSkin aussuchen!
+			SetPlayerCameraPos(playerid, 442.8635,-1753.2231,10.0265);
+			SetPlayerCameraLookAt(playerid,437.9092,-1749.2146,9.0265);
+			SendClientMessage(playerid,-1,"{FFFFFF}Du kannst den Skin mit der {FF3C00}Shift{FFFFFF} Taste wechseln.");
+			SendClientMessage(playerid,-1,"{FFFFFF}Mit der {FF3C00}Enter{FFFFFF} Taste wählst du den Skin aus.");
+			TogglePlayerControllable(playerid, false);
+		}
+		default: KickEx(playerid, "Du spawnst mit falscher Intention!");
+	}
 	return 1;
 }
 
@@ -224,6 +238,29 @@ public OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid)
 
 public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
+	switch(pInSkinChange[playerid])
+	{
+		case 1:
+		{
+			//After registration
+			if(RELEASED(KEY_JUMP))
+			{
+				pSkinSelIndex[playerid]++;
+				if(pSkinSelIndex[playerid]==strlen(ZiviSkins[pInfo[playerid][sex]]))
+					pSkinSelIndex[playerid]=0;
+				SetPlayerSkin(playerid, ZiviSkins[pInfo[playerid][sex]][pSkinSelIndex[playerid]]);
+			}
+
+			if(RELEASED(KEY_SPRINT))
+			{
+				//Finished
+				pSkinSelIndex[playerid]--;
+				if(pSkinSelIndex[playerid]==0)
+					pSkinSelIndex[playerid]=strlen(ZiviSkins[pInfo[playerid][sex]])-1;
+				SetPlayerSkin(playerid, ZiviSkins[pInfo[playerid][sex]][pSkinSelIndex[playerid]]);
+			}
+		}
+	}
 	return 1;
 }
 
@@ -272,19 +309,20 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			new hashed_pass[65], salt[MAX_PASSWORD_LEN], query[400], tmp_ip[22];
 			GenerateSalt(salt, strlen(inputtext));
 			SHA256_PassHash(inputtext, salt, hashed_pass, 65);
-			DebugPrint("REGISTER: input: %s, salt gen: %s, hashed_pass_result: %s", inputtext, salt, hashed_pass);
 			NetStats_GetIpPort(playerid, tmp_ip, sizeof tmp_ip);
 			mysql_format(dbhandle, query, sizeof(query), "INSERT INTO accounts (name, password, salt, last_seen, last_ip) VALUES ('%e', '%e', '%e', '%d', '%e')",
 			PlayerName(playerid), hashed_pass, salt, gettime(), tmp_ip);
-			mysql_query(dbhandle, query);
+			//mysql_query(dbhandle, query);
 			
+			//Zum beginn vielleicht noch extra ein paar sachen setzen
 			pInfo[playerid][db_id]=cache_insert_id();
 			pInfo[playerid][regdate]=gettime();
 			pInfo[playerid][loggedin]=true;
-			pSpawnReason[playerid] = SpawnReason:SPAWN_REGISTER;
 			
 			//Set spawn info - Positionen dort, wo er bei der Skinauswahl stehen soll!!
 			SetSpawnInfo(playerid, 0, ZiviSkins[0][0], 437.9092,-1749.2146,9.0265,226.3349, 0,0, 0,0, 0,0);
+			pSpawnReason[playerid] = SpawnReason:SPAWN_SKINCHANGE_ZIVI;
+			pInSkinChange[playerid] = 1; //After register
 			TogglePlayerSpectating(playerid, false); 
 		}
 		
@@ -295,7 +333,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			//Inputfeld wurde leer gelassen, oder die eingabe ist zu kurz/lang.
 			if(!response || !strlen(inputtext) || strlen(inputtext)<6 || strlen(inputtext)>MAX_PASSWORD_LEN)return ShowPlayerDialog(playerid, DIALOG_LOGIN, DIALOG_STYLE_PASSWORD, "GTA-City", "{FFFFFF}Willkommen auf GTA-City Reallife!\nDein Account wurde in der Datenbank gefunden.\nGib dein Passwort niemals weiter. Auch nicht an Admins oder Supporter!\nDu kannst dich nun einloggen. Bitte gib ein Passwort ein:", "Ok", "Abbrechen");
 			
-			//Daten aus Tabelle laden (Wird aber nur fÃ¼r den Salt und das PW genutzt!)
+			//Daten aus Tabelle laden (Wird aber nur für den Salt und das PW genutzt!)
 			new query[400];
 			mysql_format(dbhandle, query, sizeof(query), "SELECT * FROM accounts WHERE name = '%e'", PlayerName(playerid));
 			mysql_query(dbhandle, query);
@@ -312,32 +350,39 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			cache_get_value_name(0, "salt", salt);
 			cache_get_value_name(0, "password", get_hash);
 			SHA256_PassHash(inputtext, salt, hashed_pass, 65);
-			DebugPrint("LOGIN: input: %s, salt stored: %s, hashed_pass_result: %s", inputtext, salt, hashed_pass);
 			
+			//Input == Accountpsw?
 			if(strcmp(hashed_pass, get_hash))
+				ShowPlayerDialog(playerid, DIALOG_LOGIN, DIALOG_STYLE_PASSWORD, "GTA-City", "{FFFFFF}Willkommen auf GTA-City Reallife!\nDein Account wurde in der Datenbank gefunden.\nGib dein Passwort niemals weiter. Auch nicht an Admins oder Supporter!\nDu kannst dich nun einloggen. Bitte gib ein Passwort ein:", "Ok", "Abbrechen");
+
+			if(pLoginTries[playerid]>=4) 
 			{
-				pLoginTries[playerid]++;
-				if(pLoginTries[playerid]>=4) 
-				{
-					ShowPlayerDialog(playerid, -1, 0, "", "", "", "");
-					SendClientMessage(playerid, WHITE, ""#HTML_DARKRED"Du wurdest gekickt! Grund: 4/4 Loginversuche!");
-					return KickEx(playerid);
-				}
-				return ShowPlayerDialog(playerid, DIALOG_LOGIN, DIALOG_STYLE_PASSWORD, "GTA-City", "{FFFFFF}Willkommen auf GTA-City Reallife!\nDein Account wurde in der Datenbank gefunden.\nGib dein Passwort niemals weiter. Auch nicht an Admins oder Supporter!\nDu kannst dich nun einloggen. Bitte gib ein Passwort ein:", "Ok", "Abbrechen");
+				ShowPlayerDialog(playerid, -1, 0, "", "", "", "");
+				SendClientMessage(playerid, WHITE, ""#HTML_DARKRED"Du wurdest gekickt! Grund: 4/4 Loginversuche!");
+				return KickEx(playerid);
 			}
-			
-			//Einloggen!
-			cache_get_value_name_int(0, "id", pInfo[playerid][db_id]);
-			cache_get_value_name_int(0, "regdate", pInfo[playerid][regdate]);
-			cache_get_value_name_int(0, "adminlevel", pInfo[playerid][adminlevel]);
-			cache_get_value_name_int(0, "money", pInfo[playerid][money]);
-			cache_get_value_name_int(0, "bank", pInfo[playerid][bank]);
-			
-			pInfo[playerid][loggedin]=true;
-			
-			SetSpawnInfo(playerid, 0, 0, 1675.5071,1447.8960,10.7872,268.8466, 0,0, 0,0, 0,0);
-			TogglePlayerSpectating(playerid,false);
-			
+			else {
+				//Einloggen!
+				cache_get_value_name_int(0, "id", pInfo[playerid][db_id]);
+				cache_get_value_name_int(0, "regdate", pInfo[playerid][regdate]);
+				cache_get_value_name_int(0, "adminlevel", pInfo[playerid][adminlevel]);
+				cache_get_value_name_int(0, "money", pInfo[playerid][money]);
+				cache_get_value_name_int(0, "bank", pInfo[playerid][bank]);
+				pInfo[playerid][loggedin]=true;
+
+
+				//Normal spawnen (haus, frak usw)
+				pSpawnReason[playerid] = SpawnReason:SPAWN_LOGIN;
+
+				SetSpawnInfo(playerid, 0, 0, 1675.5071,1447.8960,10.7872,268.8466, 0,0, 0,0, 0,0);
+				TogglePlayerSpectating(playerid,false);
+			}
+		}
+
+		case DIALOG_SEX:
+		{
+			pInfo[playerid][sex] = response;
+			SetPlayerSkin(playerid, ZiviSkins[pInfo[playerid][sex]][0]);
 		}
 	}
 	return 1;
