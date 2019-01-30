@@ -8,7 +8,7 @@
 
 #include "lazypawn/main.cpp"
 
-#include "/../../gamemodes/buildinfo.pwn"
+#include "/../../gamemodes/buildinfo.pwn" //always on top - DEBUG is set here!
 #include "/../../gamemodes/common.pwn"
 #include "/../../gamemodes/mysql.pwn"
 #include "/../../gamemodes/players.pwn"
@@ -23,6 +23,7 @@ main()
 {
 	print("\n[>] RPG City Gamemode ("#GM_VER" | "#GM_SAMPVER") by "#GM_DEVELOPER"");
 	printf("   > BUILD ON %s,  %s", __date, __time);
+	DebugPrint("   > !! DEBUG BUILD !!");
 }
 
 
@@ -265,14 +266,13 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 	{
 		case DIALOG_REGISTER:
 		{
-			//Inputfeld wurde leer gelassen, oder die eingabe ist zu kurz/lang. (6 - 128 zeichen)
+			//Inputfeld wurde leer gelassen, oder die eingabe ist zu kurz/lang. (6 - MAX_PASSWORD_LEN zeichen)
 			if(!response || !strlen(inputtext) || strlen(inputtext)<6 || strlen(inputtext)>MAX_PASSWORD_LEN)return ShowPlayerDialog(playerid, DIALOG_REGISTER, DIALOG_STYLE_PASSWORD, "GTA-City Reallife", "{FFFFFF}Willkommen auf GTA-City Reallife!\nEin Account mit diesem Namen wurde nicht gefunden.\nGib ein Passwort ein, um dich mit diesem Namen zu registrieren.\n{E10000}ACHTUNG: Gib dein Passwort nie an andere Spieler weiter! Auch nicht an Admins!", "Ok", "Abbrechen");
 			
-			//Einen Salt generieren, und sein Passwort (inputtext aka eingabe im dialog) zusammen "packen" (SALT+PASSWORD!!)
-			new hashed_pass[65], salt[10];
-			GenerateSalt(salt, 10);
+			new hashed_pass[65], salt[MAX_PASSWORD_LEN], query[400], tmp_ip[22];
+			GenerateSalt(salt, strlen(inputtext));
 			SHA256_PassHash(inputtext, salt, hashed_pass, 65);
-			new query[400], tmp_ip[22];
+			DebugPrint("REGISTER: input: %s, salt gen: %s, hashed_pass_result: %s", inputtext, salt, hashed_pass);
 			NetStats_GetIpPort(playerid, tmp_ip, sizeof tmp_ip);
 			mysql_format(dbhandle, query, sizeof(query), "INSERT INTO accounts (name, password, salt, last_seen, last_ip) VALUES ('%e', '%e', '%e', '%d', '%e')",
 			PlayerName(playerid), hashed_pass, salt, gettime(), tmp_ip);
@@ -284,7 +284,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			pSpawnReason[playerid] = SpawnReason:SPAWN_REGISTER;
 			
 			//Set spawn info - Positionen dort, wo er bei der Skinauswahl stehen soll!!
-			SetSpawnInfo(playerid, 0, ZiviSkins[0][0], 2.8745,28.8697,1199.5926,39.1455, 0,0, 0,0, 0,0);
+			SetSpawnInfo(playerid, 0, ZiviSkins[0][0], 437.9092,-1749.2146,9.0265,226.3349, 0,0, 0,0, 0,0);
 			TogglePlayerSpectating(playerid, false); 
 		}
 		
@@ -292,12 +292,12 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		case DIALOG_LOGIN:
 		{
 			
-			//Inputfeld wurde leer gelassen, oder die eingabe ist zu kurz/lang. (6 - 128 zeichen)
+			//Inputfeld wurde leer gelassen, oder die eingabe ist zu kurz/lang.
 			if(!response || !strlen(inputtext) || strlen(inputtext)<6 || strlen(inputtext)>MAX_PASSWORD_LEN)return ShowPlayerDialog(playerid, DIALOG_LOGIN, DIALOG_STYLE_PASSWORD, "GTA-City", "{FFFFFF}Willkommen auf GTA-City Reallife!\nDein Account wurde in der Datenbank gefunden.\nGib dein Passwort niemals weiter. Auch nicht an Admins oder Supporter!\nDu kannst dich nun einloggen. Bitte gib ein Passwort ein:", "Ok", "Abbrechen");
 			
 			//Daten aus Tabelle laden (Wird aber nur für den Salt und das PW genutzt!)
 			new query[400];
-			mysql_format(dbhandle, query, sizeof(query), "SELECT * FROM accounts WHERE name = '%e'",PlayerName(playerid));
+			mysql_format(dbhandle, query, sizeof(query), "SELECT * FROM accounts WHERE name = '%e'", PlayerName(playerid));
 			mysql_query(dbhandle, query);
 			
 			//Check
@@ -308,10 +308,11 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 
 
 			//Gesaltetes Passwort "generieren"
-			new salt[10], get_hash[65], hashed_pass[65];
+			new salt[MAX_PASSWORD_LEN], get_hash[65], hashed_pass[65];
 			cache_get_value_name(0, "salt", salt);
 			cache_get_value_name(0, "password", get_hash);
 			SHA256_PassHash(inputtext, salt, hashed_pass, 65);
+			DebugPrint("LOGIN: input: %s, salt stored: %s, hashed_pass_result: %s", inputtext, salt, hashed_pass);
 			
 			if(strcmp(hashed_pass, get_hash))
 			{
