@@ -51,3 +51,8 @@
 [23:38:43] [ERROR] cache_insert_id: no active cache
 [23:40:34] [WARNING] mysql_connect: no password specified
 [23:40:39] [ERROR] cache_insert_id: no active cache
+[00:22:59] [WARNING] mysql_connect: no password specified
+[00:23:01] [ERROR] cache_insert_id: no active cache
+[00:26:28] [WARNING] mysql_connect: no password specified
+[00:26:29] [ERROR] cache_insert_id: no active cache
+[00:31:57] [WARNING] mysql_connect: no password specified

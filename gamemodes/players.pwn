@@ -8,7 +8,8 @@ enum ePlayerData {
 	regdate,
 	sex,
 	money, //also for anti-cheat purposes
-	bank 
+	bank,
+	ziviskin
 }
 new pInfo[MAX_PLAYERS][ePlayerData];
 

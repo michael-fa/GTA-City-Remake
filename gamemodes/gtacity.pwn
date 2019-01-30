@@ -100,10 +100,12 @@ public OnPlayerSpawn(playerid)
 		case SPAWN_REGISTER:
 		{
 			//Ratet mal
+			SetPlayerPos(playerid, 1760.9659,-1895.8420,13.5616);
+			SetPlayerFacingAngle(playerid, 270.3469);
 		}
 		case SPAWN_SKINCHANGE_ZIVI:
 		{
-			ShowPlayerDialog(playerid, DIALOG_SEX, DIALOG_STYLE_MSGBOX, "Geschlecht wählen", "Auf GTA-City kannst du in eine Weibliche oder in eine Männliche Rolle schlüpfen.\nBitte gib an, welches du für deinen Charakter möchtest.", "Männlich" ,"Weiblich");
+			ShowPlayerDialog(playerid, DIALOG_SEX, DIALOG_STYLE_MSGBOX, "Geschlecht wählen", "Auf GTA-City kannst du in eine Weibliche oder in eine Männliche Rolle schlüpfen.\nBitte gib an, welches du für deinen Charakter möchtest.", "Weiblich" ,"Männlich");
 			//Er kann sich nen neuen ZiviSkin aussuchen!
 			SetPlayerCameraPos(playerid, 442.8635,-1753.2231,10.0265);
 			SetPlayerCameraLookAt(playerid,437.9092,-1749.2146,9.0265);
@@ -240,24 +242,58 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
 	switch(pInSkinChange[playerid])
 	{
+		//After registration
 		case 1:
 		{
-			//After registration
 			if(RELEASED(KEY_JUMP))
 			{
-				pSkinSelIndex[playerid]++;
-				if(pSkinSelIndex[playerid]==strlen(ZiviSkins[pInfo[playerid][sex]]))
-					pSkinSelIndex[playerid]=0;
-				SetPlayerSkin(playerid, ZiviSkins[pInfo[playerid][sex]][pSkinSelIndex[playerid]]);
+				//Forward
+				if(pInfo[playerid][sex]==0)
+				{
+					pSkinSelIndex[playerid]++;
+					if(pSkinSelIndex[playerid]==strlen(ZiviSkins_M)-1)
+						pSkinSelIndex[playerid]=0;
+					SetPlayerSkin(playerid, ZiviSkins_M[pSkinSelIndex[playerid]]);
+				}
+				else
+				{
+					pSkinSelIndex[playerid]++;
+					if(pSkinSelIndex[playerid]==strlen(ZiviSkins_W)-1)
+						pSkinSelIndex[playerid]=0;
+					SetPlayerSkin(playerid, ZiviSkins_W[pSkinSelIndex[playerid]]);
+				}
 			}
 
 			if(RELEASED(KEY_SPRINT))
 			{
+				//Backwards
+				if(pInfo[playerid][sex]==0)
+				{
+					pSkinSelIndex[playerid]--;
+					if(pSkinSelIndex[playerid]==0)
+						pSkinSelIndex[playerid]=strlen(ZiviSkins_M)-1;
+					SetPlayerSkin(playerid, ZiviSkins_M[pSkinSelIndex[playerid]]);
+				}
+				else
+				{
+					pSkinSelIndex[playerid]--;
+					if(pSkinSelIndex[playerid]==0)
+						pSkinSelIndex[playerid]=strlen(ZiviSkins_W)-1;
+					SetPlayerSkin(playerid, ZiviSkins_W[pSkinSelIndex[playerid]]);
+				}
+			}
+
+			if(RELEASED(KEY_SECONDARY_ATTACK))
+			{
 				//Finished
-				pSkinSelIndex[playerid]--;
-				if(pSkinSelIndex[playerid]==0)
-					pSkinSelIndex[playerid]=strlen(ZiviSkins[pInfo[playerid][sex]])-1;
-				SetPlayerSkin(playerid, ZiviSkins[pInfo[playerid][sex]][pSkinSelIndex[playerid]]);
+				pSkinSelIndex[playerid] = 0;
+				pInSkinChange[playerid] = 0;
+				pInfo[playerid][ziviskin] = GetPlayerSkin(playerid);
+				TogglePlayerSpectating(playerid, false);
+				//Now set him as first spawned after register - so right stuff is happenin to him
+				pSpawnReason[playerid] = SpawnReason:SPAWN_REGISTER;
+				SetCameraBehindPlayer(playerid);
+				SpawnPlayer(playerid);
 			}
 		}
 	}
@@ -320,7 +356,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			pInfo[playerid][loggedin]=true;
 			
 			//Set spawn info - Positionen dort, wo er bei der Skinauswahl stehen soll!!
-			SetSpawnInfo(playerid, 0, ZiviSkins[0][0], 437.9092,-1749.2146,9.0265,226.3349, 0,0, 0,0, 0,0);
+			SetSpawnInfo(playerid, 0, ZiviSkins_M[0], 437.9092,-1749.2146,9.0265,226.3349, 0,0, 0,0, 0,0);
 			pSpawnReason[playerid] = SpawnReason:SPAWN_SKINCHANGE_ZIVI;
 			pInSkinChange[playerid] = 1; //After register
 			TogglePlayerSpectating(playerid, false); 
@@ -368,6 +404,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 				cache_get_value_name_int(0, "adminlevel", pInfo[playerid][adminlevel]);
 				cache_get_value_name_int(0, "money", pInfo[playerid][money]);
 				cache_get_value_name_int(0, "bank", pInfo[playerid][bank]);
+				cache_get_value_name_int(0, "ziviskin", pInfo[playerid][ziviskin]);
 				pInfo[playerid][loggedin]=true;
 
 
@@ -381,8 +418,13 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 
 		case DIALOG_SEX:
 		{
+			switch(response)
+			{
+				case 0:SetPlayerSkin(playerid, ZiviSkins_M[0]);
+				case 1:SetPlayerSkin(playerid, ZiviSkins_W[0]);
+			}
 			pInfo[playerid][sex] = response;
-			SetPlayerSkin(playerid, ZiviSkins[pInfo[playerid][sex]][0]);
+			
 		}
 	}
 	return 1;
