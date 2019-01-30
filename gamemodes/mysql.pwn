@@ -5,7 +5,7 @@
 
 
 new MySQL:dbhandle;
-new gmysql_tries = 0;
+new mysql_tries = 0;
 
 
 
@@ -15,10 +15,10 @@ stock ConnectWithMySQL()
 	dbhandle = mysql_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DATA);
 	while(mysql_errno(dbhandle)!=0)
 	{
-		printf("[MYSQL] Verbindung fehlgeschlagen, %d Versuche übrig.", (gmysql_tries-3));
+		printf("[MYSQL] Verbindung fehlgeschlagen, %d Versuche übrig.", (mysql_tries-3));
 		ConnectWithMySQL();
-		if(gmysql_tries>3)return SendRconCommand("exit");
-		gmysql_tries++;
+		if(mysql_tries>3)return SendRconCommand("exit");
+		mysql_tries++;
 	}
 	printf("[MYSQL] Verbindung zur Datenbank hergestellt! Handle: %d", _:dbhandle);
 	return true;
