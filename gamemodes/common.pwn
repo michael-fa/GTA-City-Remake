@@ -22,5 +22,32 @@ enum {
 	DIALOG_LOGIN,
 	DIALOG_REGISTER,
 	DIALOG_SEX,
-	DIALOG_UWU //User werben User
+	DIALOG_UWU, //User werben User
+	DIALOG_JOBS,
+	DIALOG_ALTER
+}
+
+enum {
+	VW_ZERO,
+	VW_STADTHALLE
+}
+
+//menus
+new Menu:shmenu;
+
+dpublic:InMenuFix(menu, playerid)
+{
+	SetPVarInt(playerid, "MenuCloseFix", 0);
+	TogglePlayerControllable(playerid, true);
+	HideMenuForPlayer(Menu:menu, playerid);
+	return true;
+}
+
+//Hide menu stuff - idk just gonna leave it here
+stock HideMenuEx(menu, playerid) { SetTimerEx_("InMenuFix", 1000, 0, 1, "ii", menu, playerid); }
+stock MenuFixActive(playerid)
+{
+	if(GetPVarInt(playerid, "MenuCloseFix") == 1)
+		return true;
+	else return false;
 }
