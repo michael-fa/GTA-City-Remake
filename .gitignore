@@ -10,3 +10,4 @@ logs/log-core.log
 gamemodes/gtacity.amx
 logs/plugins/mysql.log
 gamemodes/gtacity.amx
+crashinfo.txt

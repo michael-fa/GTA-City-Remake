@@ -14,7 +14,9 @@ enum ePlayerData {
 	ziviskin,
 	level,
 	respekt,
-	players_advertised
+	players_advertised,
+	perso,
+	job
 }
 new pInfo[MAX_PLAYERS][ePlayerData];
 
@@ -43,6 +45,7 @@ new pLoginTries[MAX_PLAYERS];
 new pInSkinChange[MAX_PLAYERS]; //1 = Register, 2 = Normal general change, 3 = Fraktion / Gang
 new pSkinSelIndex[MAX_PLAYERS];
 new pRentalBike[MAX_PLAYERS];
+new pInBuilding[MAX_PLAYERS];
 
 
 
@@ -62,5 +65,6 @@ stock ResetPlayerVars(playerid)
 	pLoginTries[playerid] = 0;
 	pInSkinChange[playerid] = 0;
 	pSkinSelIndex[playerid] = 0;
+	pInBuilding[playerid] = 0;
 	pRentalBike[playerid] = INVALID_VEHICLE_ID;
 }
