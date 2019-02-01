@@ -14,6 +14,7 @@
 #include "/../../gamemodes/players.pwn" //before mysql - there's some mysql related code
 #include "/../../gamemodes/mysql.pwn"
 #include "/../../gamemodes/bikerental.pwn"
+#include "/../../gamemodes/buildings.pwn"
 
 #include "/../../maps/rpg-city.pwn"
 
@@ -33,6 +34,7 @@ main()
 
 public OnGameModeInit()
 {
+	SetGameModeText("German Reallife");
 	ConnectWithMySQL();
 	ShowPlayerMarkers(false);
 	DisableNameTagLOS();
@@ -45,9 +47,29 @@ public OnGameModeInit()
 
 	//Stuff
 	LoadBikeRentals();
-	
-	SetGameModeText("German Reallife");
 
+	//Buildings
+	LoadBuildings();
+
+	//Menüs (soweit das einzige was wir jemals nutzen aus nostalgischen Gründen)
+	shmenu=CreateMenu("Stadthalle", 3, 232.000000, 175.000000, 150.0, 150.0);
+	AddMenuItem(shmenu, 0, "Arbeitsamt");
+	AddMenuItem(shmenu, 0, "Personalausweis");
+	AddMenuItem(shmenu, 0, "Organistation erstellen");
+	//AddMenuItem(stadthallenmenu, 0, "Sonderlizenzen erwerben");
+
+
+	//==========================================================
+	//              3DTEXTLABELS
+	
+	CreateDynamic3DTextLabel("Drücke ENTER", WHITE, 361.8299,173.5298,1008.3828, 20.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, VW_STADTHALLE, 3); //Stadthalle Tresen
+	//CreateDynamic3DTextLabel(""#HTML_RED"Fahrschule\n"#HTML_WHITE"Drücke ENTER um die Prüfung zu starten!\n"#HTML_GOLDENYELLOW"Kosten:"#HTML_GREEN" 25.000$", WHITE,1169.8717,1353.3077,10.9219,20.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, 0, 0);  //Fahrschule
+	
+	//==========================================================
+	//              PICKUPS
+	
+	CreateDynamicPickup(1239, 0, 361.8299,173.5298,1008.3828, VW_STADTHALLE, 3); //Stadthalle Tresen
+	//CreateDynamicPickup(1581, 0, 1169.8717,1353.3077,10.9219, 0, 0); //fahrschule
 
 	return 1;
 }
@@ -87,6 +109,16 @@ public OnPlayerConnect(playerid)
 	
 	//reset all to 0
 	memcpy(pInfo[playerid], DefaultPlayerArray, 0, sizeof(DefaultPlayerArray)*4, sizeof(pInfo[]));
+	DebugPrint("loading buildings..");
+	new _idx;
+	for(new i=0; i<sizeof(Buildings); i++)
+	{
+		if(Buildings[i][mapicon]==-1)continue; //Nicht jedes Gebäude hat ein Mapicon.
+		DebugPrint("Load building %d", i);
+		Buildings[i][mapiconid] = _idx; //Um das Icon später noch mal wieder zu verwenden
+		SetPlayerMapIcon(playerid, _idx, Buildings[i][enterx], Buildings[i][entery], Buildings[i][enterz], Buildings[i][mapicon], mapicon_color, MAPICON_LOCAL);
+		_idx++;
+	}
 
 	//Weapon Skill like RPG-City
 	for(new i=0; i<10; i++)SetPlayerSkillLevel(playerid, i, 1000);
@@ -99,6 +131,12 @@ public OnPlayerDisconnect(playerid, reason)
 	//Save User to MySQL
 	SaveUserData(playerid);
 
+	//Reset Map Icons der Buildings[]...
+	for(new i=0; i<sizeof(Buildings); i++)
+	{
+		if(Buildings[i][mapiconid]==0xC)continue; //Nicht jedes Gebäude hat ein Mapicon.
+		RemovePlayerMapIcon(playerid, Buildings[i][mapiconid]);
+	}
 
 	//Hat er noch ein Fahrrad gemietet?
 	if(IsValidVehicle(pRentalBike[playerid]))
@@ -263,11 +301,29 @@ public OnVehicleRespray(playerid, vehicleid, color1, color2)
 
 public OnPlayerSelectedMenuRow(playerid, row)
 {
+	//Wir gehen hier wild davon aus dass nur ein einziges Menü vom Spieler genutzt werden kann - Stadthalle.
+	TogglePlayerControllable(playerid, true);
+	switch(row)
+	{
+		case 0: //Perso
+		{
+			if(pInfo[playerid][perso]==1)
+				SendClientMessage(playerid, GREY, "* Du besitzt schon einen Personalausweis."), ShowMenuForPlayer(shmenu, playerid);
+			else
+			{
+				pInfo[playerid][perso]=1;
+				SendClientMessage(playerid, CYAN, "* Du hast dir einen Personalausweis besorgt.");
+				//ShowNotificationToPlayer(playerid, "Stadthalle", "Du hast dir einen Personalausweis besorgt.", 6); Maybe featured later!
+				HideMenuEx(_:shmenu, playerid);
+			}
+		}
+	}
 	return 1;
 }
 
 public OnPlayerExitedMenu(playerid)
 {
+	HideMenuEx(_:shmenu, playerid);
 	return 1;
 }
 
@@ -352,6 +408,57 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		}
 	}
 
+	//Buildings
+	for(new i=0; i<sizeof(Buildings); i++)
+	{
+		if(IsPlayerInRangeOfPoint(playerid, 2.3, Buildings[i][enterx],Buildings[i][entery],Buildings[i][enterz]) && PRESSED(KEY_SECONDARY_ATTACK))
+		{
+			pInBuilding[playerid]=i;
+			SetPlayerPos(playerid, Buildings[i][exitx],Buildings[i][exity],Buildings[i][exitz]);
+			SetPlayerFacingAngle(playerid, Buildings[i][exitr]);
+			SetPlayerVirtualWorld(playerid, Buildings[i][vworldin]);
+			SetPlayerInterior(playerid, Buildings[i][intin]);
+			SetCameraBehindPlayer(playerid);
+			TimedFreeze(playerid, 1000);
+			
+			switch(_:Buildings[i][btype])
+			{
+				case BUILDING_FRAK:
+				{
+					
+				}
+				case BUILDING_FASTFOOD:
+				{
+					
+				}
+				case BUILDING_BANK:
+				{
+					
+				}
+			}
+			break;
+		}
+		
+		else if(IsPlayerInRangeOfPoint(playerid, 2.3, Buildings[i][exitx],Buildings[i][exity],Buildings[i][exitz]) && PRESSED(KEY_SECONDARY_ATTACK))
+		{
+			pInBuilding[playerid]=Buildings[i][buildingidout];
+			SetPlayerPos(playerid, Buildings[i][enterx],Buildings[i][entery],Buildings[i][enterz]);
+			SetPlayerFacingAngle(playerid, Buildings[i][enterr]);
+			SetPlayerVirtualWorld(playerid, Buildings[i][vworldout]);
+			SetPlayerInterior(playerid, Buildings[i][intout]);
+			SetCameraBehindPlayer(playerid);
+			TimedFreeze(playerid, 1000);
+			break;
+		}
+	}
+
+	//Stadthalle Tresen 
+	if(IsPlayerInRangeOfPoint(playerid, 3.0, 361.8299,173.5298,1008.3828) && !MenuFixActive(playerid) && PRESSED(KEY_SECONDARY_ATTACK))
+	{
+		TogglePlayerControllable(playerid, false);
+		ShowMenuForPlayer(shmenu, playerid), spv(playerid, "MenuCloseFix", 1);
+	}
+
 	return 1;
 }
 
@@ -413,6 +520,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 
 			//Zum beginn vielleicht noch extra ein paar sachen setzen
 			pInfo[playerid][db_id]=cache_insert_id();
+			pInfo[playerid][loggedin]=true;
 			pInfo[playerid][regdate]=gettime();
 			pInfo[playerid][adminlevel] = 0;
 			pInfo[playerid][sex] = 0;
@@ -423,6 +531,8 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			pInfo[playerid][respekt] = 0;
 			pInfo[playerid][loggedin]=true;
 			pInfo[playerid][players_advertised]=0;
+			pInfo[playerid][perso] = 0;
+			pInfo[playerid][job] = 0;
 
 
 
@@ -483,6 +593,8 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			cache_get_value_name_int(0, "level", pInfo[playerid][level]);
 			cache_get_value_name_int(0, "respekt", pInfo[playerid][respekt]);
 			cache_get_value_name_int(0, "players_advertised", pInfo[playerid][players_advertised]);
+			cache_get_value_name_int(0, "perso", pInfo[playerid][perso]);
+			cache_get_value_name_int(0, "job", pInfo[playerid][job]);
 			pInfo[playerid][loggedin]=true;
 
 
@@ -528,7 +640,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			else
 			{
 				//query == str | I re-use it.
-				format(query, sizeof(query), "* Du wurdest von "#HTML_YELLOW"%s"#HTML_WHITE" geworben.", inputtext);
+				format(query, sizeof(query), "* Du hast angegeben, von "#HTML_YELLOW"%s"#HTML_WHITE" angeworben zu sein.", inputtext);
 				SendClientMessage(playerid, WHITE, query);
 				new pid = ReturnPlayerID(inputtext);
 				if(pid!=INVALID_PLAYER_ID && IsPlayerConnected(pid) && pInfo[playerid][loggedin])
