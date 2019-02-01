@@ -6,3 +6,4 @@ server_log.txt
 *.log
 samp-server.exe
 gamemodes/gtacity.amx
+logs/log-core.log
