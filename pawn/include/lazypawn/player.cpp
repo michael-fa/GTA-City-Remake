@@ -102,6 +102,19 @@ stock GetPlayerIDFromName(name[])
 	return INVALID_PLAYER_ID;
 }
 
+//if you only got a name, wanna find a player with same name return the id
+stock ReturnPlayerID(text[])
+{
+	new ret = INVALID_PLAYER_ID;
+	foreachplayer()
+	{
+		if(!IsPlayerConnected(i))continue;
+		if(strcmp(PlayerName(i), text, true))continue;
+		ret = i;
+	}
+	return i;
+}
+
 //pass a players name or ID in STRING-FORMAT and it'll give you the correct NAME or ID, depending on what you've passed.
 dpublic:ReturnUser(text[])
 {
