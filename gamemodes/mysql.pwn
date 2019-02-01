@@ -117,7 +117,9 @@ stock SaveUserData(playerid)
 	ziviskin = '%d', \
 	level = '%d', \
 	respekt = '%d', \
-	players_advertised = '%d' \
+	players_advertised = '%d', \
+	perso = = '%d', \
+	job = = '%d' \
 	WHERE id = '%d'", 
 	pInfo[playerid][regdate],
 	gettime(),
@@ -130,6 +132,8 @@ stock SaveUserData(playerid)
 	pInfo[playerid][level],
 	pInfo[playerid][respekt],
 	pInfo[playerid][players_advertised],
+	pInfo[playerid][perso],
+	pInfo[playerid][job],
 	pInfo[playerid][db_id]);
 	mysql_query(dbhandle, query);
 	return true;
