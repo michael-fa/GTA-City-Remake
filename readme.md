@@ -28,7 +28,7 @@ ausführen, und vollen Respekt vor der Arbeit von jedem aus der Community.
 Ich habe damals 2012 als kompletter PC-Noob angefangen auf GTA-City zu spielen, was mir eine neue "Welt" zeigte.
 
 
-:clap: Ich möchte einen großen Dank an Siedler und **alle** Admins von RPG-City für dieses tolle Projekt schriftlich festlegen :clap:
+:clap: Ich möchte einen großen Dank an Siedler und **alle** Admins von RPG-City für dieses tolle Projekt und eine geniale Zeit ausdrücken! :clap:
 
 
 
@@ -40,7 +40,7 @@ Ich habe damals 2012 als kompletter PC-Noob angefangen auf GTA-City zu spielen, 
    - Sublime Text 3 Workspace / project Datei.
    - SA-MP Server.cfg
    - plugins (include / binaries)  - + MYSQL dependencies!
-   - Database Backup
+   - Database Backup (unregelmäßig geupdatet)
 
 
 
@@ -68,6 +68,7 @@ Hierbei ist dennoch der Fokus aller Events (callbacks) in der Hauptdatei, nur wi
    - Sscanf (Quelle noch unbekannt)
    - ocmd von [Kleiner Opa].
    - [Pawn Language Plugin] von Southclaws
+   - dotSILENT für sein [Fixes2] Plugin!
 
 
 
@@ -89,3 +90,4 @@ Hierbei ist dennoch der Fokus aller Events (callbacks) in der Hauptdatei, nur wi
 [Sublime Text und Pawn]: <https://github.com/Southclaws/pawn-sublime-language>
 [Pawn Language Plugin]: <https://github.com/Southclaws/pawn-sublime-language#pawn-language-plugin>
 [Y Sever Includes]: <https://github.com/Y-Less>
+[Fixes2]: <https://forum.sa-mp.com/showthread.php?t=622694>
