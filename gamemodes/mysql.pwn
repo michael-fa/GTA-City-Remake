@@ -32,10 +32,26 @@ stock DisconnectMySQL()
 
 
 
+//Its only used in onregistercheck which is present here, so why not keep that also in here
+dpublic:LoginRegisterTimeLeft(playerid)
+{
+	if(!IsPlayerConnected(playerid))return true;
+	if(!pInfo[playerid][loggedin])
+	{
+		SendClientMessage(playerid, GREY, "Du wurdest gekickt, da du zulange zum Einloggen gebraucht hast.");
+		KickEx(playerid);
+	}
+
+	return true;
+}
+
 
 
 dpublic:OnRegisterCheck(playerid)
 {
+	//Nach 60 Sekunden kicken, wenn er nicht eingeloggt ist.
+	pTimerIDs[playerid][getloggedintimer]=SetTimerEx_("LoginRegisterTimeLeft", 60000, 0, 1, "i", playerid);
+
 	new rows;
 	cache_get_row_count(rows);
 	if(rows==0)
@@ -64,5 +80,57 @@ dpublic:OnRegisterCheck(playerid)
 		
 		ShowPlayerDialog(playerid, DIALOG_LOGIN, DIALOG_STYLE_PASSWORD, "GTA-City", "{FFFFFF}Willkommen auf GTA-City Reallife!\nDein Account wurde in der Datenbank gefunden.\nGib dein Passwort niemals weiter. Auch nicht an Admins oder Supporter!\nDu kannst dich nun einloggen. Bitte gib ein Passwort ein:", "Ok", "Abbrechen");
 	}
+	return true;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//============================================================================================================================
+//													Verschiedene Dinge
+
+
+
+stock SaveUserData(playerid)
+{
+	if(!pInfo[playerid][loggedin])return false;
+	new query[256], tmp_ipport[22];
+	NetStats_GetIpPort(playerid, tmp_ipport, 22);
+	mysql_format(dbhandle, query, sizeof(query), "UPDATE accounts SET \
+	regdate = '%d', \
+	last_seen = '%d', \
+	last_ip = '%s', \
+	sex = '%d', \
+	money = '%d', \
+	bank = '%d', \
+	adminlevel = '%d', \
+	ziviskin = '%d', \
+	level = '%d', \
+	respekt = '%d', \
+	players_advertised = '%d' \
+	WHERE id = '%d'", 
+	pInfo[playerid][regdate],
+	gettime(),
+	tmp_ipport,
+	pInfo[playerid][sex],
+	GetPlayerMoney(playerid),
+	pInfo[playerid][bank],
+	pInfo[playerid][adminlevel],
+	pInfo[playerid][ziviskin],
+	pInfo[playerid][level],
+	pInfo[playerid][respekt],
+	pInfo[playerid][players_advertised],
+	pInfo[playerid][db_id]);
+	mysql_query(dbhandle, query);
 	return true;
 }

@@ -30,7 +30,8 @@ enum SpawnReason {
 
 //Player bound timers
 enum ePTimers {
-	bikerental
+	bikerental,
+	getloggedintimer
 } new pTimerIDs[MAX_PLAYERS][ePTimers];
 
 
