@@ -1,5 +1,7 @@
 #define MAX_LOGIN_TRIES      3
 #define MAX_PASSWORD_LEN     128
+#define STARTMONEY           5000
+#define STARTMONEYBANK		 10000
 
 
 
@@ -19,5 +21,6 @@ new ZiviSkins_W[] = {9,12,13,40,41,55,56,90,91,93,191,192,193};
 enum {
 	DIALOG_LOGIN,
 	DIALOG_REGISTER,
-	DIALOG_SEX
+	DIALOG_SEX,
+	DIALOG_UWU //User werben User
 }
