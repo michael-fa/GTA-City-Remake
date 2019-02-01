@@ -15,7 +15,7 @@ stock LoadBikeRentals()
 	for(new i=0; i<sizeof(BikeRental); i++)
 	{
 		new str[128];
-		format(str, sizeof(str), "Fahrradverleih\nSpieler unter Level 4 können\nhier für %d$ ein Fahrrad mieten.\nEnter zum Kaufen", BikeRental[i][price]);
+		format(str, sizeof(str), ""#HTML_LIME"Fahrradverleih\n"#HTML_WHITE"Spieler unter Level 4 können\nhier für %d$ ein Fahrrad mieten.\n"#HTML_LIME"Enter zum Kaufen", BikeRental[i][price]);
 		CreateDynamic3DTextLabel(str, WHITE, BikeRental[i][_x], BikeRental[i][_y], BikeRental[i][_z], 15);
 		CreateDynamicPickup(1274, 1, BikeRental[i][_x], BikeRental[i][_y], BikeRental[i][_z]);
 	}
