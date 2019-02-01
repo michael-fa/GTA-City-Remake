@@ -107,6 +107,7 @@ dpublic:CALLBACK()
 #define HTML_SELECTION                  "{899f60}"
 #define HTML_LOGIN                      "{A4C391}"
 #define HTML_YELLOW                     "{E1FF33}"
+#define HTML_LIME						"{87FF00}"
 #define HTML_NEWBE                      "{FF00FF}"
 #define HTML_DCHAT                      "{FF584D}"
 #define HTML_RCHAT                      "{0091FF}"
