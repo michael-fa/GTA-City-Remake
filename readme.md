@@ -3,7 +3,7 @@
 
 
 
-:construction: **Script Status:**     Initial prep. :construction:
+:construction: **Script Status:**     Anfang. :construction:
 
 ## Entwicklung
 1. Clone / Download meiner Repo.
