@@ -104,7 +104,7 @@ dpublic:OnRegisterCheck(playerid)
 stock SaveUserData(playerid)
 {
 	if(!pInfo[playerid][loggedin])return false;
-	new query[256], tmp_ipport[22];
+	new query[400], tmp_ipport[22];
 	NetStats_GetIpPort(playerid, tmp_ipport, 22);
 	mysql_format(dbhandle, query, sizeof(query), "UPDATE accounts SET \
 	regdate = '%d', \
@@ -118,8 +118,8 @@ stock SaveUserData(playerid)
 	level = '%d', \
 	respekt = '%d', \
 	players_advertised = '%d', \
-	perso = = '%d', \
-	job = = '%d' \
+	perso = '%d', \
+	job = '%d' \
 	WHERE id = '%d'", 
 	pInfo[playerid][regdate],
 	gettime(),

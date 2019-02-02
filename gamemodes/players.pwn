@@ -44,8 +44,9 @@ new SpawnReason:pSpawnReason[MAX_PLAYERS];
 new pLoginTries[MAX_PLAYERS];
 new pInSkinChange[MAX_PLAYERS]; //1 = Register, 2 = Normal general change, 3 = Fraktion / Gang
 new pSkinSelIndex[MAX_PLAYERS];
-new pRentalBike[MAX_PLAYERS];
+new pRentalBike[MAX_PLAYERS] = INVALID_VEHICLE_ID;
 new pInBuilding[MAX_PLAYERS];
+new bool:pDisableCheckPointOnEnter[MAX_PLAYERS];
 
 
 

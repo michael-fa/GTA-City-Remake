@@ -35,6 +35,8 @@ enum {
 //menus
 new Menu:shmenu;
 
+
+//Hide menu stuff - idk just gonna leave it here
 dpublic:InMenuFix(menu, playerid)
 {
 	SetPVarInt(playerid, "MenuCloseFix", 0);
@@ -43,8 +45,7 @@ dpublic:InMenuFix(menu, playerid)
 	return true;
 }
 
-//Hide menu stuff - idk just gonna leave it here
-stock HideMenuEx(menu, playerid) { SetTimerEx_("InMenuFix", 1000, 0, 1, "ii", menu, playerid); }
+stock HideMenuEx(menu, playerid) { SetTimerEx_("InMenuFix", 400, 0, 1, "ii", menu, playerid); }
 stock MenuFixActive(playerid)
 {
 	if(GetPVarInt(playerid, "MenuCloseFix") == 1)

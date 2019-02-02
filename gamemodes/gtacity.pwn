@@ -7,8 +7,10 @@
 #include <Dini>
 #include <fixes2>
 
+//Lazypawn collection by lp_
 #include "lazypawn/main.cpp"
 
+//Gamemode related
 #include "/../../gamemodes/buildinfo.pwn" //always on top - DEBUG is set here!
 #include "/../../gamemodes/common.pwn"
 #include "/../../gamemodes/players.pwn" //before mysql - there's some mysql related code
@@ -16,12 +18,11 @@
 #include "/../../gamemodes/bikerental.pwn"
 #include "/../../gamemodes/buildings.pwn"
 
+//Maps
 #include "/../../maps/rpg-city.pwn"
 
-
-
-
-
+//Textdraw
+#include "/../../gamemodes/textdraws/servertd.pwn"
 
 
 main()
@@ -51,6 +52,9 @@ public OnGameModeInit()
 	//Buildings
 	LoadBuildings();
 
+
+
+	//==========================================================
 	//Menüs (soweit das einzige was wir jemals nutzen aus nostalgischen Gründen)
 	shmenu=CreateMenu("Stadthalle", 3, 232.000000, 175.000000, 150.0, 150.0);
 	AddMenuItem(shmenu, 0, "Arbeitsamt");
@@ -59,17 +63,32 @@ public OnGameModeInit()
 	//AddMenuItem(stadthallenmenu, 0, "Sonderlizenzen erwerben");
 
 
+
+
+
 	//==========================================================
 	//              3DTEXTLABELS
 	
 	CreateDynamic3DTextLabel("Drücke ENTER", WHITE, 361.8299,173.5298,1008.3828, 20.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, VW_STADTHALLE, 3); //Stadthalle Tresen
 	//CreateDynamic3DTextLabel(""#HTML_RED"Fahrschule\n"#HTML_WHITE"Drücke ENTER um die Prüfung zu starten!\n"#HTML_GOLDENYELLOW"Kosten:"#HTML_GREEN" 25.000$", WHITE,1169.8717,1353.3077,10.9219,20.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, 0, 0);  //Fahrschule
 	
+
+
+
+
+
 	//==========================================================
 	//              PICKUPS
 	
 	CreateDynamicPickup(1239, 0, 361.8299,173.5298,1008.3828, VW_STADTHALLE, 3); //Stadthalle Tresen
 	//CreateDynamicPickup(1581, 0, 1169.8717,1353.3077,10.9219, 0, 0); //fahrschule
+
+
+
+
+	//==========================================================
+	//				Textdraws
+	TD_ServerTD_Load(); //URL unter Radar; GTA-City Logo neben Wepicon;
 
 	return 1;
 }
@@ -107,6 +126,12 @@ public OnPlayerConnect(playerid)
 {
 	if(IsPlayerNPC(playerid))return true;
 	
+	//Goosebumps activated
+	PlayerPlaySound(playerid,1185,0.0,0.0,0.0);
+	TextDrawShowForPlayer(playerid, ServerTD[0]);
+	TextDrawShowForPlayer(playerid, ServerTD[1]);
+	TextDrawShowForPlayer(playerid, ServerTD[2]);
+
 	//reset all to 0
 	memcpy(pInfo[playerid], DefaultPlayerArray, 0, sizeof(DefaultPlayerArray)*4, sizeof(pInfo[]));
 	DebugPrint("loading buildings..");
@@ -233,6 +258,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 {
 	if(oldstate == PLAYER_STATE_ONFOOT && newstate == PLAYER_STATE_DRIVER) // Player entered a vehicle as a driver
 	{
+		//Fahrräder haben bei uns keine Motoren! Keine!
 		if(IsABike(GetPlayerVehicleID(playerid)))
 			ToggleVehicleEngine(GetPlayerVehicleID(playerid));
 	}
@@ -241,6 +267,8 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 
 public OnPlayerEnterCheckpoint(playerid)
 {
+	if(pDisableCheckPointOnEnter[playerid])
+		DisablePlayerCheckpoint(playerid),PlayerPlaySound(playerid,1150,0.0,0.0,0.0);
 	return 1;
 }
 
@@ -308,7 +336,7 @@ public OnPlayerSelectedMenuRow(playerid, row)
 		case 0: //Perso
 		{
 			if(pInfo[playerid][perso]==1)
-				SendClientMessage(playerid, GREY, "* Du besitzt schon einen Personalausweis."), ShowMenuForPlayer(shmenu, playerid);
+				SendClientMessage(playerid, GREY, "* Du besitzt schon einen Personalausweis."), ShowMenuForPlayer(shmenu, playerid), spv(playerid, "MenuCloseFix", 1);
 			else
 			{
 				pInfo[playerid][perso]=1;
@@ -339,11 +367,25 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	if(NearestBikeRental(playerid)!=INVALID_BIKE_RENTAL && RELEASED(KEY_SECONDARY_ATTACK))
 	{
 		if(pInfo[playerid][level]>4)return SendClientMessage(playerid, GREY, "Nur Spieler unter Level 4 können sich Fahrräder mieten.");
+		if(pRentalBike[playerid]!=INVALID_VEHICLE_ID || IsValidVehicle(pRentalBike[playerid]))
+		{
+			new basic_floats, Float:ang;
+			GetPlayerPos(playerid, x,y,z);
+			GetXYInFrontOfPlayer(playerid, x,y,4.0);
+			GetPlayerFacingAngle(playerid, ang);
+			SetVehicleZAngle_(pRentalBike[playerid], ang); 
+			SetVehiclePos(pRentalBike[playerid], x,y,z);
+			SetPlayerCheckpoint(playerid, x,y,z, 4.0);
+			pDisableCheckPointOnEnter[playerid] = true;
+			SendClientMessage(playerid, GREY, "Du hast schon ein Fahrrad gemietet. Es wurde zu dir gebracht.");
+			return true;
+		}
+
 		if(GetPlayerMoney(playerid)<BikeRental[NearestBikeRental(playerid)][price])return SendClientMessage(playerid, GREY, "Du hast nicht genügend Geld dabei.");
 		GivePlayerMoney(playerid, -BikeRental[NearestBikeRental(playerid)][price]);
 		pRentalBike[playerid]=CreateVehicle(481, 1776.5442,-1890.0557,13.3868,281.1611, -1, -1, 900); //15 Minuten
 		PutPlayerInVehicle(playerid, pRentalBike[playerid], 0);
-		ToggleVehicleEngine(GetPlayerVehicleID(playerid));//Dann kann er direkt los fahren (müsste erst absteigen um statechange zu triggern)
+		ToggleVehicleEngine(GetPlayerVehicleID(playerid));//Dann kann er direkt los fahren (müsste erst absteigen um statechange event zu triggern)
 		pTimerIDs[playerid][bikerental]=SetTimerEx_("BikeRentalEnd", 900*1000, 0, 1, "i", playerid);
 		SendClientMessage(playerid, YELLOW, "* Du hast dir ein BMX für 15 Minuten gemietet.");
 	}
@@ -419,7 +461,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 			SetPlayerVirtualWorld(playerid, Buildings[i][vworldin]);
 			SetPlayerInterior(playerid, Buildings[i][intin]);
 			SetCameraBehindPlayer(playerid);
-			TimedFreeze(playerid, 1000);
+			TimedFreeze(playerid, 400);
 			
 			switch(_:Buildings[i][btype])
 			{
@@ -534,7 +576,8 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			pInfo[playerid][perso] = 0;
 			pInfo[playerid][job] = 0;
 
-
+			//Login track
+			StopPlayerSound(playerid);
 
 
 
@@ -604,6 +647,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 
 			//Normal spawnen (haus, frak usw)
 			pSpawnReason[playerid] = SpawnReason:SPAWN_LOGIN;
+			StopPlayerSound(playerid);//Login track
 
 			SetSpawnInfo(playerid, 0, pInfo[playerid][ziviskin], 1760.9659,-1895.8420,13.5616, 270.3469, 0,0, 0,0, 0,0);
 			TogglePlayerSpectating(playerid,false);

@@ -244,7 +244,7 @@ public ZCarFix(vehicleid, Float:angle)
 	return SetVehicleZAngle(vehicleid, Float:angle);
 }
 
-stock SetZCar(vehicleid, Float:z_angle)
+stock SetVehicleZAngle_(vehicleid, Float:z_angle)
 {if(!IsValidVehicle(vehicleid))return false; return SetTimerEx("ZCarFix", 700, false, "if", vehicleid, z_angle);}
 //=========================================================================
 

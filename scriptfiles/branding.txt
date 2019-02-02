@@ -1,0 +1,39 @@
+// TextDraw developed using Zamaroht's Textdraw Editor 1.0
+
+// On top of script:
+new Text:Textdraw0;
+new Text:Textdraw1;
+new Text:Textdraw2;
+
+// In OnGameModeInit prefferably, we procced to create our textdraws:
+Textdraw0 = TextDrawCreate(82.000000, 427.000000, "www.gta-city.de");
+TextDrawAlignment(Textdraw0, 2);
+TextDrawBackgroundColor(Textdraw0, 255);
+TextDrawFont(Textdraw0, 2);
+TextDrawLetterSize(Textdraw0, 0.269999, 1.300000);
+TextDrawColor(Textdraw0, -1);
+TextDrawSetOutline(Textdraw0, 1);
+TextDrawSetProportional(Textdraw0, 1);
+TextDrawSetSelectable(Textdraw0, 0);
+
+Textdraw1 = TextDrawCreate(579.000000, 7.000000, "gta city");
+TextDrawAlignment(Textdraw1, 2);
+TextDrawBackgroundColor(Textdraw1, 255);
+TextDrawFont(Textdraw1, 0);
+TextDrawLetterSize(Textdraw1, 0.660000, 1.500000);
+TextDrawColor(Textdraw1, -1);
+TextDrawSetOutline(Textdraw1, 1);
+TextDrawSetProportional(Textdraw1, 1);
+TextDrawSetSelectable(Textdraw1, 0);
+
+Textdraw2 = TextDrawCreate(549.000000, 23.000000, "REALLIFE");
+TextDrawBackgroundColor(Textdraw2, 255);
+TextDrawFont(Textdraw2, 3);
+TextDrawLetterSize(Textdraw2, 0.459999, 1.200001);
+TextDrawColor(Textdraw2, -5635841);
+TextDrawSetOutline(Textdraw2, 1);
+TextDrawSetProportional(Textdraw2, 1);
+TextDrawSetSelectable(Textdraw2, 0);
+
+// You can now use TextDrawShowForPlayer(-ForAll), TextDrawHideForPlayer(-ForAll) and
+// TextDrawDestroy functions to show, hide, and destroy the textdraw.

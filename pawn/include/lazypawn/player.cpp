@@ -309,3 +309,31 @@ stock IsPlayerSprinting(playerid)
 	
 	return (keys & KEY_SPRINT) && ((1222 <= index <= 1236) || index == 1196);
 }
+
+stock GetXYInFrontOfPlayer(playerid,&Float:x,&Float:y,Float:dis)
+{
+    new Float:pos[3];
+    GetPlayerPos(playerid,pos[0],pos[1],pos[2]);
+    GetPlayerFacingAngle(playerid,pos[2]);
+    GetXYInFrontOfPoint(pos[0],pos[1],x,y,pos[2],dis);
+}
+
+stock GetXYBehindPlayer(playerid,&Float:x,&Float:y,Float:dis)
+{
+    new Float:pos[3];
+    GetPlayerPos(playerid,pos[0],pos[1],pos[2]);
+    GetPlayerFacingAngle(playerid,pos[2]);
+    GetXYBehindPoint(pos[0],pos[1],x,y,pos[2],dis);
+}
+
+stock GetXYInFrontOfPoint(Float:x,Float:y,&Float:x2,&Float:y2,Float:angle,Float:distance)
+{
+    x2 = x + (distance * floatsin(-angle,degrees));
+    y2 = y + (distance * floatcos(-angle,degrees));
+}
+
+stock GetXYBehindPoint(Float:x,Float:y,&Float:x2,&Float:y2,Float:angle,Float:distance)
+{
+    x2 = x - (distance * floatsin(-angle,degrees));
+    y2 = y - (distance * floatcos(-angle,degrees));
+}
