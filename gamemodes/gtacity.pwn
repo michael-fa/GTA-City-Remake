@@ -369,13 +369,15 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		if(pInfo[playerid][level]>4)return SendClientMessage(playerid, GREY, "Nur Spieler unter Level 4 können sich Fahrräder mieten.");
 		if(pRentalBike[playerid]!=INVALID_VEHICLE_ID || IsValidVehicle(pRentalBike[playerid]))
 		{
+			//Bringen wir dem Spieler ruhig mal das fahrrad, somit können sie das Fahrrad tatsächlich immer nutzen wenn sie es brauchen
+			//later sogar gut wenn man mehrere points hat kann man immer den lokalsten anfinden wenn man es nicht findet
 			new basic_floats, Float:ang;
 			GetPlayerPos(playerid, x,y,z);
 			GetXYInFrontOfPlayer(playerid, x,y,4.0);
 			GetPlayerFacingAngle(playerid, ang);
 			SetVehicleZAngle_(pRentalBike[playerid], ang); 
 			SetVehiclePos(pRentalBike[playerid], x,y,z);
-			SetPlayerCheckpoint(playerid, x,y,z, 4.0);
+			SetPlayerCheckpoint(playerid, x,y,z, 1.0);
 			pDisableCheckPointOnEnter[playerid] = true;
 			SendClientMessage(playerid, GREY, "Du hast schon ein Fahrrad gemietet. Es wurde zu dir gebracht.");
 			return true;
