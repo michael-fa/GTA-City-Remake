@@ -1,5 +1,8 @@
 #define INVALID_BIKE_RENTAL sizeof(BikeRental) 
 
+//Minuten sind hardcoded in dem sinne dass der Scripter im Gamemode die Minuten angeben muss, um bikeRentalEnd aufzurufen.
+
+
 
 enum eBikeRental {
 	Float:_x,
@@ -9,7 +12,11 @@ enum eBikeRental {
 } new BikeRental[][eBikeRental] = {
 	{1772.0225,-1895.7983,13.5537, 300}
 };
+//add bike rental above: {x,y,z, price}
 
+
+
+//mainly to be used when gamemode inits
 stock LoadBikeRentals()
 {
 	for(new i=0; i<sizeof(BikeRental); i++)
@@ -21,6 +28,7 @@ stock LoadBikeRentals()
 	}
 }
 
+//get nearest bike rental station
 stock NearestBikeRental(playerid)
 {
 	for(new i=0; i<sizeof(BikeRental); i++)
@@ -32,6 +40,8 @@ stock NearestBikeRental(playerid)
 	return INVALID_BIKE_RENTAL;
 }
 
+
+//call it via timer oder whatever
 dpublic:BikeRentalEnd(playerid)
 {
 	if(!IsPlayerConnected(playerid) || pInfo[playerid][loggedin])
