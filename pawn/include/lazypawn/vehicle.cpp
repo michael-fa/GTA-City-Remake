@@ -207,6 +207,16 @@ stock ToggleVehicleEngine(vehicleid)
 	return SetVehicleParamsEx(vehicleid, tmp[0], tmp[1], tmp[2], tmp[3], tmp[4], tmp[5], tmp[6]);
 }
 
+//Toggles all doors closed / open. true if car is spawned and success on toggle, false if vehicle is wrong
+stock ToggleVehicleDoors(vehicleid)
+{
+	if(!IsValidVehicle(vehicleid))return false;
+	new tmp[7];
+	GetVehicleParamsEx(vehicleid, tmp[0], tmp[1], tmp[2], tmp[3], tmp[4], tmp[5], tmp[6]);
+	tmp[3]=!tmp[3];
+	return SetVehicleParamsEx(vehicleid, tmp[0], tmp[1], tmp[2], tmp[3], tmp[4], tmp[5], tmp[6]);
+}
+
 //Sends a message in car, basically to all players sitting inside the vehicle, ID given as arg
 stock SendMessageInCar(vehicleid, color, string[])
 {
