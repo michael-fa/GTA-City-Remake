@@ -31,6 +31,25 @@ stock DisconnectMySQL()
 }
 
 
+stock LoadGameModeSettings()
+{
+	new query[256];
+	mysql_format(dbhandle, query, sizeof(query), "SELECT * FROM gamemode");
+	mysql_query(dbhandle, query);
+	cache_get_value_name_int(0, "staatskasse", CFG[staatskasse]);
+	return true;
+}
+
+stock SaveGameModeSettings()
+{
+	new query[256];
+	mysql_format(dbhandle, query, sizeof(query), "UPDATE gamemode SET \
+		staatskasse = '%s'", CFG[staatskasse]);
+	mysql_query(dbhandle, query);
+	return true;
+}
+
+
 
 //Its only used in onregistercheck which is present here, so why not keep that also in here
 dpublic:LoginRegisterTimeLeft(playerid)

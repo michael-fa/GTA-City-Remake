@@ -4,6 +4,7 @@
 #define LP_INC_PLAYER
 #include <a_samp>
 #include "utils.cpp"
+#include "vehicle.cpp"
 
 //DEFINES
 #define KickEx(%0) SetTimerEx("KickTimer", 400, false, "i", %0)
@@ -179,6 +180,29 @@ stock TimedFreeze(playerid, time)
 dpublic:_TimedFreeze(playerid)return TogglePlayerControllable(playerid,true);
 //================================
 
+
+//Get Nearest Vehicle from Player
+//(C) by Michael F. aka lp_
+stock GetNearestVehicle (playerid) {
+	new basic_floats, Float:dist_, Float:f_[3], closest = INVALID_VEHICLE_ID, Float:ldist; 
+	GetPlayerPos(playerid, x,y,z);
+
+	foreachvehicle()
+	{
+		if(!IsValidVehicle(i))continue;
+		GetVehiclePos(i, f_[0], f_[1], f_[2]);
+	
+		ldist = dist_ = GetDistance3D(x,y,z, f_[0], f_[1], f_[2]); //he is less than 100 meters to the point {X, Y, Z}
+
+		
+		if(dist_ > dist_)continue; //wont use it if its out of passed range
+
+
+
+		if(dist_ < ldist)closest = i; //make a new king on the hill
+	}
+	return closest;
+}
 
 
 

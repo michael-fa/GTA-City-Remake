@@ -13,7 +13,9 @@
 //Gamemode related
 #include "/../../gamemodes/buildinfo.pwn" //always on top - DEBUG is set here!
 #include "/../../gamemodes/common.pwn"
+#include "/../../gamemodes/utils.pwn"
 #include "/../../gamemodes/players.pwn" //before mysql - there's some mysql related code
+#include "/../../gamemodes/vehicles.pwn"
 #include "/../../gamemodes/mysql.pwn"
 #include "/../../gamemodes/bikerental.pwn"
 #include "/../../gamemodes/buildings.pwn"
@@ -25,16 +27,26 @@
 #include "/../../gamemodes/textdraws/servertd.pwn"
 
 
+
+
+
+
+
 main()
 {
-	print("\n[>] RPG City Gamemode ("#GM_VER" | "#GM_SAMPVER") by "#GM_DEVELOPER"");
-	printf("   > BUILD ON %s,  %s", __date, __time);
-	DebugPrint("   > !! DEBUG BUILD !!");
+	print("\nMain:\n------------");
+	#if defined GM_DEBUG
+	printf(" GTA-City Script %s: DEBUG Build on [%s %s] by [%s] for SAMP %s",GM_VER, __date, __time, #GM_DEVELOPER, GM_SAMPVER);
+	#else 
+	printf(" GTA-City Script %s, build on %s %s (@%s), >>PUBLIC<<.", GM_VER, __date, __time, #GM_DEVELOPER);
+	#endif
+	print("------------\n__________________________________________________________________________\n\n");
 }
 
 
 public OnGameModeInit()
 {
+	print("           ___________ OnGameModeInit ___________\n\n");
 	SetGameModeText("German Reallife");
 	ConnectWithMySQL();
 	ShowPlayerMarkers(false);
@@ -42,14 +54,17 @@ public OnGameModeInit()
 	ManualVehicleEngineAndLights();
 	DisableInteriorEnterExits();
 	EnableStuntBonusForAll(false);
+	LoadGameModeSettings();
+
 
 	//Maps
 	LoadRPGCityMap();
 
+
 	//Stuff
 	LoadBikeRentals();
 
-	//Buildings
+	// Buildings
 	LoadBuildings();
 
 
@@ -64,13 +79,33 @@ public OnGameModeInit()
 
 
 
+	//==========================================================
+	//Fahrschulautos
+	FahrschulCar[0] = AddStaticVehicle(516,1361.6854,-1635.5836,13.2168,271.6830,119,1); // fahrschulcar
+	FahrschulCar[1] = AddStaticVehicle(516,1361.5942,-1643.2540,13.2167,270.5070,119,1); // fahrschulcar
+	FahrschulCar[2] = AddStaticVehicle(516,1361.7661,-1650.9171,13.2167,271.2143,119,1); // fahrschulcar
+	FahrschulCar[3] = AddStaticVehicle(516,1361.8253,-1658.7679,13.2170,271.9048,119,1); // fahrschulcar
+	FahrschulCar[4] = AddStaticVehicle(516,1374.8750,-1633.8547,13.2170,90.3638,119,1); // fahrschulcar
+	FahrschulCar[5] = AddStaticVehicle(516,1374.6290,-1638.5990,13.2168,89.9399,119,1); // fahrschulcar
+	new str[256]; //USED FOR ALL STUFF BELOW.. MAKE SURE TO CLEAN AFTER / BEFORE USING!
+	for(new i=0; i<sizeof(FahrschulCar); i++)
+	{
+			ToggleVehicleDoors(FahrschulCar[i]); //Closed
+			SetVehicleNumberPlate(FahrschulCar[i], "FAHRSCHULE");
+			carLocked[FahrschulCar[i]]=false; // see vehicles.pwm @ line "new bool:carLocked"
+	}
+
+
+
+
+
 
 
 	//==========================================================
 	//              3DTEXTLABELS
 	
-	CreateDynamic3DTextLabel("Drücke ENTER", WHITE, 361.8299,173.5298,1008.3828, 20.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, VW_STADTHALLE, 3); //Stadthalle Tresen
-	//CreateDynamic3DTextLabel(""#HTML_RED"Fahrschule\n"#HTML_WHITE"Drücke ENTER um die Prüfung zu starten!\n"#HTML_GOLDENYELLOW"Kosten:"#HTML_GREEN" 25.000$", WHITE,1169.8717,1353.3077,10.9219,20.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, 0, 0);  //Fahrschule
+	CreateDynamic3DTextLabel(""#HTML_LIME"Stadthalle\n"#HTML_WHITE"Drücke [ENTER] für einen Personalausweis\neinem Job oder einer Organisation", WHITE, 361.8299,173.5298,1008.3828, 10.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, VW_STADTHALLE, 3); //Stadthalle Tresen
+	CreateDynamic3DTextLabel(""#HTML_LIME"Fahrschule\n"#HTML_WHITE"Drücke [ENTER] um die Prüfung zu starten!\n"#HTML_LIME"Kosten: 25.000$", WHITE,1369.3827,-1647.7343,13.3828,10.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, 0, 0);  //Fahrschule
 	
 
 
@@ -81,7 +116,7 @@ public OnGameModeInit()
 	//              PICKUPS
 	
 	CreateDynamicPickup(1239, 0, 361.8299,173.5298,1008.3828, VW_STADTHALLE, 3); //Stadthalle Tresen
-	//CreateDynamicPickup(1581, 0, 1169.8717,1353.3077,10.9219, 0, 0); //fahrschule
+	CreateDynamicPickup(19133, 0, 1369.3827,-1647.7343,13.3828, 0, 0); //fahrschule
 
 
 
@@ -89,12 +124,13 @@ public OnGameModeInit()
 	//==========================================================
 	//				Textdraws
 	TD_ServerTD_Load(); //URL unter Radar; GTA-City Logo neben Wepicon;
-
 	return 1;
 }
 
 public OnGameModeExit()
 {
+	SaveGameModeSettings();
+
 	DisconnectMySQL();
 	return 1;
 }
@@ -134,12 +170,15 @@ public OnPlayerConnect(playerid)
 
 	//reset all to 0
 	memcpy(pInfo[playerid], DefaultPlayerArray, 0, sizeof(DefaultPlayerArray)*4, sizeof(pInfo[]));
-	DebugPrint("loading buildings..");
+	pFSCar[playerid] = INVALID_VEHICLE_ID;
+	pRentalBike[playerid] = INVALID_VEHICLE_ID;
+	
+
+	//Map Icons der Gebäude laden 
 	new _idx;
 	for(new i=0; i<sizeof(Buildings); i++)
 	{
 		if(Buildings[i][mapicon]==-1)continue; //Nicht jedes Gebäude hat ein Mapicon.
-		DebugPrint("Load building %d", i);
 		Buildings[i][mapiconid] = _idx; //Um das Icon später noch mal wieder zu verwenden
 		SetPlayerMapIcon(playerid, _idx, Buildings[i][enterx], Buildings[i][entery], Buildings[i][enterz], Buildings[i][mapicon], mapicon_color, MAPICON_LOCAL);
 		_idx++;
@@ -246,6 +285,39 @@ public OnPlayerCommandText(playerid, cmdtext[])
 
 public OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
 {
+	//Marking vwhicle
+	new bool:isFSCar = false;
+
+	//Mark vehicle as Fahrschul Car
+	for(new i=0; i<sizeof(FahrschulCar); i++)
+	{
+		if(FahrschulCar[i] == vehicleid){isFSCar = true; break;}
+	}
+
+
+
+
+
+
+	//All the checks
+	//======================================================
+
+	//Check if player is in driving school
+	if(isFSCar && !pInFahrschule[playerid] && ispassenger)
+	{
+			TogglePlayerControllable(playerid, true);
+			new basic_floats;
+			GetPlayerPos(playerid, x,y,z);
+			SetPlayerPos(playerid, x,y,z);
+			SendClientMessage(playerid, GREY, "Du hast keinen Schlüssel für dieses Fahrzeug.");
+	}
+	else if(pFSCar[playerid] == 0 && pInFahrschule[playerid] && !ispassenger && isFSCar)
+	{
+		pFSCar[playerid] = vehicleid;
+		DebugPrint("fscar %d", vehicleid);
+		carLocked[vehicleid] = false;
+		ToggleVehicleDoors_(vehicleid);
+	}
 	return 1;
 }
 
@@ -390,6 +462,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		ToggleVehicleEngine(GetPlayerVehicleID(playerid));//Dann kann er direkt los fahren (müsste erst absteigen um statechange event zu triggern)
 		pTimerIDs[playerid][bikerental]=SetTimerEx_("BikeRentalEnd", 900*1000, 0, 1, "i", playerid);
 		SendClientMessage(playerid, YELLOW, "* Du hast dir ein BMX für 15 Minuten gemietet.");
+		return true;
 	}
 	
 
@@ -501,8 +574,47 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	{
 		TogglePlayerControllable(playerid, false);
 		ShowMenuForPlayer(shmenu, playerid), spv(playerid, "MenuCloseFix", 1);
+		return true;
 	}
 
+
+	//Fahrschule Starten
+	if(IsPlayerInRangeOfPoint(playerid, 3.0, 1369.3827,-1647.7343,13.3828) && !pInFahrschule[playerid] && PRESSED(KEY_SECONDARY_ATTACK))
+	{
+		if(GetPlayerMoney(playerid)<25000)return SendClientMessage(playerid, GREY, ""HTML_GREY"Für den Fahrkurs benötigst du "HTML_RED"25.0000$"HTML_GREY".");
+		GivePlayerMoney(playerid, -25000);
+		CFG[staatskasse]+=25000;
+		pInFahrschule[playerid] = true;
+		SendClientMessage(playerid, CYAN, "Du hast den Fahrschulkurs gestartet. Steig in ein "HTML_YELLOW" freies "HTML_LIGHTBLUE" Fahrschulauto ein.");
+		SendClientMessage(playerid,WHITE,"{FFFA00}Du kannst das Fahrzeug mit {FF3C00}/motor{FFFA00} starten. Die Scheinwerfer können mit {FF3C00}/licht{FFFA00} angeschaltet werden.");
+		//^da er nicht OnPlayerEnterVehicle triggern kann wenn das fahrzeug gamemode-side abgeschlossen ist.
+		return 1;
+	}
+
+	//Fahrzeug interaktion
+	printf("%d", GetClosestVehicleFromPlayer(playerid));
+	if(GetClosestVehicleFromPlayer(playerid) != INVALID_VEHICLE_ID)
+	{
+		new veh = GetClosestVehicleFromPlayer(playerid);
+
+		//Open the doors from your vehicle
+		if(RELEASED(KEY_ANALOG_LEFT) && IsValidVehicle(veh))
+		{
+			DebugPrint("1");
+			if(pFSCar[playerid] == veh){
+				DebugPrint("2");
+				carLocked[veh] =! carLocked[veh], ToggleVehicleDoors_(veh);
+				GameTextForPlayer(playerid, carLocked[veh] ? ("~r~abgeschlossen") : ("~g~aufgeschlossen"), 2000, 3);
+				return true;
+			}
+		}
+
+		//Start engine from any vehicle
+		if(RELEASED(KEY_ANALOG_LEFT) && IsValidVehicle(veh))
+		{
+			if(veh == pFSCar[playerid])return ToggleVehicleEngine(veh);
+		}
+	}
 	return 1;
 }
 
@@ -528,6 +640,9 @@ public OnPlayerStreamOut(playerid, forplayerid)
 
 public OnVehicleStreamIn(vehicleid, forplayerid)
 {
+	new tmp[7];
+	GetVehicleParamsEx(vehicleid, tmp[0], tmp[1], tmp[2], tmp[3], tmp[4], tmp[5], tmp[6]);
+	SetVehicleParamsEx(vehicleid, tmp[0], tmp[1], tmp[2], carLocked[vehicleid], tmp[4], tmp[5], tmp[6]);
 	return 1;
 }
 

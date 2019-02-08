@@ -207,6 +207,19 @@ stock Float:GetZDistance(Float:az, Float:bz)
 	return result;
 }
 
+//================================
+//get's the distance as a FLOAT or INT between 3d positions
+stock Float:GetDistance3D(Float:x, Float:y, Float:z, Float:x2, Float:y2, Float:z2)
+{
+	new Float:range;
+    x2 -= x;
+    y2 -= y;
+    z2 -= z;
+    range = ((x2 * x2) + (y2 * y2) + (z2 * z2));
+    return range;
+}
+//================================
+
 //exploding a string by seperating it with given delimeter, return as array
 stock explode(const strsrc[], strdest[][], delimiter)
 {

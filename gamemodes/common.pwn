@@ -62,36 +62,3 @@ new Menu:shmenu;
 
 
 
-
-
-
-
-
-
-//Hide menu stuff - idk just gonna leave it here
-dpublic:InMenuFix(menu, playerid)
-{
-	SetPVarInt(playerid, "MenuCloseFix", 0);
-	TogglePlayerControllable(playerid, true);
-	HideMenuForPlayer(Menu:menu, playerid);
-	return true;
-}
-
-stock HideMenuEx(menu, playerid) { SetTimerEx_("InMenuFix", 400, 0, 1, "ii", menu, playerid); }
-stock MenuFixActive(playerid)
-{
-	if(GetPVarInt(playerid, "MenuCloseFix") == 1)
-		return true;
-	else return false;
-}
-
-
-#if defined DEBUG
-ocmd:pos(playerid, params[])
-{
-	new basic_floats;
-	if(sscanf(params, "fff", x,y,z))return SendClientMessage(playerid, WHITE, "params: x,y,z");
-	SetPlayerPos(playerid, x,y,z);
-	return true;
-}
-#endif
