@@ -203,8 +203,10 @@ stock ToggleVehicleEngine(vehicleid)
 	if(!IsValidVehicle(vehicleid))return false;
 	new tmp[7];
 	GetVehicleParamsEx(vehicleid, tmp[0], tmp[1], tmp[2], tmp[3], tmp[4], tmp[5], tmp[6]);
-	tmp[0]=!tmp[0];
-	return SetVehicleParamsEx(vehicleid, tmp[0], tmp[1], tmp[2], tmp[3], tmp[4], tmp[5], tmp[6]);
+	if(tmp[0]==1)tmp[0]=0;
+	else tmp[0]=1;
+	SetVehicleParamsEx(vehicleid, tmp[0], tmp[1], tmp[2], tmp[3], tmp[4], tmp[5], tmp[6]);
+	return tmp[0];
 }
 
 

@@ -291,6 +291,7 @@ public OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
 	//Mark vehicle as Fahrschul Car
 	for(new i=0; i<sizeof(FahrschulCar); i++)
 	{
+		DebugPrint("%d is found as a fahrschulcar", vehicleid);
 		if(FahrschulCar[i] == vehicleid){isFSCar = true; break;}
 	}
 
@@ -303,7 +304,7 @@ public OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
 	//======================================================
 
 	//Check if player is in driving school
-	if(isFSCar && !pInFahrschule[playerid] && ispassenger)
+	if(isFSCar && !pInFahrschule[playerid] && !ispassenger)
 	{
 			TogglePlayerControllable(playerid, true);
 			new basic_floats;
@@ -311,7 +312,7 @@ public OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
 			SetPlayerPos(playerid, x,y,z);
 			SendClientMessage(playerid, GREY, "Du hast keinen Schlüssel für dieses Fahrzeug.");
 	}
-	else if(pFSCar[playerid] == 0 && pInFahrschule[playerid] && !ispassenger && isFSCar)
+	if(pFSCar[playerid] == INVALID_VEHICLE_ID && pInFahrschule[playerid] && !ispassenger && isFSCar)
 	{
 		pFSCar[playerid] = vehicleid;
 		DebugPrint("fscar %d", vehicleid);
@@ -585,34 +586,36 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		GivePlayerMoney(playerid, -25000);
 		CFG[staatskasse]+=25000;
 		pInFahrschule[playerid] = true;
-		SendClientMessage(playerid, CYAN, "Du hast den Fahrschulkurs gestartet. Steig in ein "HTML_YELLOW" freies "HTML_LIGHTBLUE" Fahrschulauto ein.");
+		SendClientMessage(playerid, CYAN, "Du hast den Fahrschulkurs gestartet. Steig in ein "HTML_YELLOW" freies "HTML_CYAN" Fahrschulauto ein.");
 		SendClientMessage(playerid,WHITE,"{FFFA00}Du kannst das Fahrzeug mit {FF3C00}/motor{FFFA00} starten. Die Scheinwerfer können mit {FF3C00}/licht{FFFA00} angeschaltet werden.");
 		//^da er nicht OnPlayerEnterVehicle triggern kann wenn das fahrzeug gamemode-side abgeschlossen ist.
 		return 1;
 	}
 
-	//Fahrzeug interaktion
-	printf("%d", GetClosestVehicleFromPlayer(playerid));
+	//Fahrzeug interaktion von außen
 	if(GetClosestVehicleFromPlayer(playerid) != INVALID_VEHICLE_ID)
 	{
 		new veh = GetClosestVehicleFromPlayer(playerid);
 
-		//Open the doors from your vehicle
+		//Open the doors from vehicle //let that be this way - it works inside and outside of car
 		if(RELEASED(KEY_ANALOG_LEFT) && IsValidVehicle(veh))
 		{
-			DebugPrint("1");
 			if(pFSCar[playerid] == veh){
-				DebugPrint("2");
 				carLocked[veh] =! carLocked[veh], ToggleVehicleDoors_(veh);
-				GameTextForPlayer(playerid, carLocked[veh] ? ("~r~abgeschlossen") : ("~g~aufgeschlossen"), 2000, 3);
-				return true;
+				GameTextForPlayer(playerid, carLocked[veh] ? ("~r~abgeschlossen") : ("~g~aufgeschlossen"), 1000, 1);
 			}
 		}
+	}
 
-		//Start engine from any vehicle
-		if(RELEASED(KEY_ANALOG_LEFT) && IsValidVehicle(veh))
+	if(GetPlayerVehicleID(playerid) != 0 & newkeys)
+	{
+		//Start engine from vehicle
+		if(RELEASED(KEY_ANALOG_RIGHT) && GetPlayerVehicleID(playerid) != INVALID_VEHICLE_ID)
 		{
-			if(veh == pFSCar[playerid])return ToggleVehicleEngine(veh);
+			if(GetPlayerVehicleID(playerid) == pFSCar[playerid])
+			{
+				GameTextForPlayer(playerid, ToggleVehicleEngine(GetPlayerVehicleID(playerid)) ? ("~g~Motor an") : ("~r~Motor aus"), 1000, 1);
+			}
 		}
 	}
 	return 1;

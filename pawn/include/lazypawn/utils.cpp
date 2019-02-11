@@ -94,6 +94,7 @@ dpublic:CALLBACK()
 #define HTML_GREEN     					"{66CC00}"
 #define HTML_LIGHTBLUE     				"{3399FF}"
 #define HTML_LIGHTYELLOW     			"{CCFF00}"
+#define HTML_CYAN 						"{00FFFF}"
 #define HTML_PURPLE      				"{E599FF}"
 #define HTML_DARKBLUE                   "{0000FF}"
 #define HTML_DARKRED                    "{E10000}"
