@@ -1,3 +1,5 @@
+//Player functions from lazypawn - modified!
+
 #if defined LP_INC_PLAYER
   #endinput
 #endif
