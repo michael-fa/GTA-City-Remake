@@ -69,7 +69,11 @@ dpublic:LoginRegisterTimeLeft(playerid)
 dpublic:OnRegisterCheck(playerid)
 {
 	//Nach 60 Sekunden kicken, wenn er nicht eingeloggt ist.
+	#if defined DEBUG 
+
+	#else
 	pTimerIDs[playerid][getloggedintimer]=SetTimerEx_("LoginRegisterTimeLeft", 60000, 0, 1, "i", playerid);
+	#endif
 
 	new rows;
 	cache_get_row_count(rows);
