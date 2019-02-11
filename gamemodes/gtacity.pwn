@@ -285,14 +285,18 @@ public OnPlayerCommandText(playerid, cmdtext[])
 
 public OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
 {
-	//Marking vwhicle
+	//Marking vehicle
 	new bool:isFSCar = false;
 
 	//Mark vehicle as Fahrschul Car
 	for(new i=0; i<sizeof(FahrschulCar); i++)
 	{
-		DebugPrint("%d is found as a fahrschulcar", vehicleid);
-		if(FahrschulCar[i] == vehicleid){isFSCar = true; break;}
+		if(FahrschulCar[i] == vehicleid)
+		{
+			DebugPrint("%d is found as a fahrschulcar", vehicleid);
+			isFSCar = true; 
+			break;
+		}
 	}
 
 
@@ -331,9 +335,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 {
 	if(oldstate == PLAYER_STATE_ONFOOT && newstate == PLAYER_STATE_DRIVER) // Player entered a vehicle as a driver
 	{
-		//Fahrräder haben bei uns keine Motoren! Keine!
-		if(IsABike(GetPlayerVehicleID(playerid)))
-			ToggleVehicleEngine(GetPlayerVehicleID(playerid));
+		if(IsABike(GetPlayerVehicleID(playerid)))VehicleEngineOn(GetPlayerVehicleID(playerid));
 	}
 	return 1;
 }
@@ -437,7 +439,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
 
 	//Near bike rental
-	if(NearestBikeRental(playerid)!=INVALID_BIKE_RENTAL && RELEASED(KEY_SECONDARY_ATTACK))
+	if(NearestBikeRental(playerid)!=INVALID_BIKE_RENTAL && RELEASED(KEY_SECONDARY_ATTACK) && !IsPlayerInAnyVehicle(playerid))
 	{
 		if(pInfo[playerid][level]>4)return SendClientMessage(playerid, GREY, "Nur Spieler unter Level 4 können sich Fahrräder mieten.");
 		if(pRentalBike[playerid]!=INVALID_VEHICLE_ID || IsValidVehicle(pRentalBike[playerid]))
@@ -452,7 +454,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 			SetVehiclePos(pRentalBike[playerid], x,y,z);
 			SetPlayerCheckpoint(playerid, x,y,z, 1.0);
 			pDisableCheckPointOnEnter[playerid] = true;
-			SendClientMessage(playerid, GREY, "Du hast schon ein Fahrrad gemietet. Es wurde zu dir gebracht.");
+			SendClientMessage(playerid, YELLOW, "* Du hast schon ein Fahrrad gemietet. Es wurde zu dir gebracht.");
 			return true;
 		}
 
@@ -460,7 +462,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		GivePlayerMoney(playerid, -BikeRental[NearestBikeRental(playerid)][price]);
 		pRentalBike[playerid]=CreateVehicle(481, 1776.5442,-1890.0557,13.3868,281.1611, -1, -1, 900); //15 Minuten
 		PutPlayerInVehicle(playerid, pRentalBike[playerid], 0);
-		ToggleVehicleEngine(GetPlayerVehicleID(playerid));//Dann kann er direkt los fahren (müsste erst absteigen um statechange event zu triggern)
+		//ToggleVehicleEngine(GetPlayerVehicleID(playerid));//Dann kann er direkt los fahren (müsste erst absteigen um statechange event zu triggern)
 		pTimerIDs[playerid][bikerental]=SetTimerEx_("BikeRentalEnd", 900*1000, 0, 1, "i", playerid);
 		SendClientMessage(playerid, YELLOW, "* Du hast dir ein BMX für 15 Minuten gemietet.");
 		return true;
@@ -529,7 +531,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	//Buildings
 	for(new i=0; i<sizeof(Buildings); i++)
 	{
-		if(IsPlayerInRangeOfPoint(playerid, 2.3, Buildings[i][enterx],Buildings[i][entery],Buildings[i][enterz]) && PRESSED(KEY_SECONDARY_ATTACK))
+		if(IsPlayerInRangeOfPoint(playerid, 2.3, Buildings[i][enterx],Buildings[i][entery],Buildings[i][enterz]) && PRESSED(KEY_SECONDARY_ATTACK) && !IsPlayerInAnyVehicle(playerid))
 		{
 			pInBuilding[playerid]=i;
 			SetPlayerPos(playerid, Buildings[i][exitx],Buildings[i][exity],Buildings[i][exitz]);
@@ -557,7 +559,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 			break;
 		}
 		
-		else if(IsPlayerInRangeOfPoint(playerid, 2.3, Buildings[i][exitx],Buildings[i][exity],Buildings[i][exitz]) && PRESSED(KEY_SECONDARY_ATTACK))
+		else if(IsPlayerInRangeOfPoint(playerid, 2.3, Buildings[i][exitx],Buildings[i][exity],Buildings[i][exitz]) && PRESSED(KEY_SECONDARY_ATTACK) && !IsPlayerInAnyVehicle(playerid))
 		{
 			pInBuilding[playerid]=Buildings[i][buildingidout];
 			SetPlayerPos(playerid, Buildings[i][enterx],Buildings[i][entery],Buildings[i][enterz]);
@@ -580,7 +582,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 
 
 	//Fahrschule Starten
-	if(IsPlayerInRangeOfPoint(playerid, 3.0, 1369.3827,-1647.7343,13.3828) && !pInFahrschule[playerid] && PRESSED(KEY_SECONDARY_ATTACK))
+	if(IsPlayerInRangeOfPoint(playerid, 3.0, 1369.3827,-1647.7343,13.3828) && !pInFahrschule[playerid] && PRESSED(KEY_SECONDARY_ATTACK) && !IsPlayerInAnyVehicle(playerid))
 	{
 		if(GetPlayerMoney(playerid)<25000)return SendClientMessage(playerid, GREY, ""HTML_GREY"Für den Fahrkurs benötigst du "HTML_RED"25.0000$"HTML_GREY".");
 		GivePlayerMoney(playerid, -25000);
@@ -607,6 +609,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		}
 	}
 
+	//Fahrzeug von innen interaktion
 	if(GetPlayerVehicleID(playerid) != 0 & newkeys)
 	{
 		//Start engine from vehicle
