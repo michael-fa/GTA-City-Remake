@@ -1,7 +1,7 @@
 // 2018 GTA-CITY REMAKE by lp_ aka Michael F.
 //     
 //      File:           /gamemodes/utils.pwn
-//      Description:    Dump for functions I use throughout developement
+//      Description:    Dump for functions I use throughout development
 
 
 
