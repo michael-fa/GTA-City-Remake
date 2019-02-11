@@ -62,7 +62,7 @@ Hierbei ist dennoch der Fokus aller Events (callbacks) in der Hauptdatei, nur wi
 ## Danke @
    - [MySQL Plugin] von BlueG / Maddinat0r
    - [Streamer Plugin] Plugin von Icognito
-   - [Crashdetect] & [seinen Kompiler]
+   - Zeex für [Crashdetect] & [seinen Kompiler]
    - [Dini] von BlueG
    - [a_zones] von Cueball
    - Sscanf (Quelle noch unbekannt)
