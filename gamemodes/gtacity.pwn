@@ -14,14 +14,18 @@
 #include "/../../gamemodes/buildinfo.pwn" //always on top - DEBUG is set here!
 #include "/../../gamemodes/common.pwn"
 #include "/../../gamemodes/utils.pwn"
-#include "/../../gamemodes/players.pwn" //before mysql - there's some mysql related code
-#include "/../../gamemodes/vehicles.pwn"
+#include "/../../gamemodes/players.pwn"
 #include "/../../gamemodes/mysql.pwn"
+#include "/../../gamemodes/vehicles.pwn"
+#include "/../../gamemodes/checkpoints.pwn"
 #include "/../../gamemodes/bikerental.pwn"
 #include "/../../gamemodes/buildings.pwn"
+#include "/../../gamemodes/biz.pwn"  //mysql related
+
 
 //Maps
 #include "/../../maps/rpg-city.pwn"
+
 
 //Textdraw
 #include "/../../gamemodes/textdraws/servertd.pwn"
@@ -34,19 +38,20 @@
 
 main()
 {
-	print("\nMain:\n------------");
+	print("\n------------\n\nMain:\n------------");
 	#if defined GM_DEBUG
 	printf(" GTA-City Script %s: DEBUG Build on [%s %s] by [%s] for SAMP %s",GM_VER, __date, __time, #GM_DEVELOPER, GM_SAMPVER);
 	#else 
 	printf(" GTA-City Script %s, build on %s %s (@%s), >>PUBLIC<<.", GM_VER, __date, __time, #GM_DEVELOPER);
 	#endif
-	print("------------\n__________________________________________________________________________\n\n");
+	print("\n\n__________________________________________________________________________");
 }
 
 
 public OnGameModeInit()
 {
-	print("           ___________ OnGameModeInit ___________\n\n");
+	print("\n\n__________________________________________________________________________\n");
+	print("\nGameModeInit:\n------------");
 	SetGameModeText("German Reallife");
 	ConnectWithMySQL();
 	ShowPlayerMarkers(false);
@@ -107,8 +112,6 @@ public OnGameModeInit()
 	CreateDynamic3DTextLabel(""#HTML_LIME"Stadthalle\n"#HTML_WHITE"Drücke [ENTER] für einen Personalausweis\neinem Job oder einer Organisation", WHITE, 361.8299,173.5298,1008.3828, 10.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, VW_STADTHALLE, 3); //Stadthalle Tresen
 	CreateDynamic3DTextLabel(""#HTML_LIME"Fahrschule\n"#HTML_WHITE"Drücke [ENTER] um die Prüfung zu starten!\n"#HTML_LIME"Kosten: 25.000$", WHITE,1369.3827,-1647.7343,13.3828,10.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, 0, 0);  //Fahrschule
 	
-
-
 
 
 
@@ -175,14 +178,7 @@ public OnPlayerConnect(playerid)
 	
 
 	//Map Icons der Gebäude laden 
-	new _idx;
-	for(new i=0; i<sizeof(Buildings); i++)
-	{
-		if(Buildings[i][mapicon]==-1)continue; //Nicht jedes Gebäude hat ein Mapicon.
-		Buildings[i][mapiconid] = _idx; //Um das Icon später noch mal wieder zu verwenden
-		SetPlayerMapIcon(playerid, _idx, Buildings[i][enterx], Buildings[i][entery], Buildings[i][enterz], Buildings[i][mapicon], mapicon_color, MAPICON_LOCAL);
-		_idx++;
-	}
+	LoadBuildingIconsFP(playerid);
 
 	//Weapon Skill like RPG-City
 	for(new i=0; i<10; i++)SetPlayerSkillLevel(playerid, i, 1000);
@@ -214,6 +210,7 @@ public OnPlayerDisconnect(playerid, reason)
 	memcpy(pTimerIDs[playerid], DefaultPTimerArray, 0, 1, sizeof(pTimerIDs[]));
 
 
+	//@player.pwn - set all variables we created to default's
 	ResetPlayerVars(playerid);
 
 	return 1;
@@ -285,44 +282,6 @@ public OnPlayerCommandText(playerid, cmdtext[])
 
 public OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
 {
-	//Marking vehicle
-	new bool:isFSCar = false;
-
-	//Mark vehicle as Fahrschul Car
-	for(new i=0; i<sizeof(FahrschulCar); i++)
-	{
-		if(FahrschulCar[i] == vehicleid)
-		{
-			DebugPrint("%d is found as a fahrschulcar", vehicleid);
-			isFSCar = true; 
-			break;
-		}
-	}
-
-
-
-
-
-
-	//All the checks
-	//======================================================
-
-	//Check if player is in driving school
-	if(isFSCar && !pInFahrschule[playerid] && !ispassenger)
-	{
-			TogglePlayerControllable(playerid, true);
-			new basic_floats;
-			GetPlayerPos(playerid, x,y,z);
-			SetPlayerPos(playerid, x,y,z);
-			SendClientMessage(playerid, GREY, "Du hast keinen Schlüssel für dieses Fahrzeug.");
-	}
-	if(pFSCar[playerid] == INVALID_VEHICLE_ID && pInFahrschule[playerid] && !ispassenger && isFSCar)
-	{
-		pFSCar[playerid] = vehicleid;
-		DebugPrint("fscar %d", vehicleid);
-		carLocked[vehicleid] = false;
-		ToggleVehicleDoors_(vehicleid);
-	}
 	return 1;
 }
 
@@ -335,20 +294,71 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 {
 	if(oldstate == PLAYER_STATE_ONFOOT && newstate == PLAYER_STATE_DRIVER) // Player entered a vehicle as a driver
 	{
-		if(IsABike(GetPlayerVehicleID(playerid)))VehicleEngineOn(GetPlayerVehicleID(playerid));
+		if(IsABike(GetPlayerVehicleID(playerid)))VehicleEngineOn(GetPlayerVehicleID(playerid)); //Bikes don't have engines.. so turn them on I guess.
+
+		
+
+
+		//Marking vehicle
+		new bool:isFSCar = false;
+		//Mark vehicle as Fahrschul Car
+		for(new i=0; i<sizeof(FahrschulCar); i++)
+		{
+			if(FahrschulCar[i] == GetPlayerVehicleID(playerid))
+			{
+				isFSCar = true; 
+				break;
+			}
+		}
+
+
+		//All the checks
+		//======================================================
+
+		//Check if player is in driving school
+		if(isFSCar && !pInFahrschule[playerid])
+		{
+			RemovePlayerFromVehicle(playerid);
+			SendClientMessage(playerid, GREY, "Du hast keinen Schlüssel für dieses Fahrzeug.");
+		}
+
+		if(pFSCar[playerid] == INVALID_VEHICLE_ID && pInFahrschule[playerid] && isFSCar)
+		{
+			pFSCar[playerid] = GetPlayerVehicleID(playerid);
+			SetPlayerCheckpoint_(playerid, FsCp[0][0],FsCp[0][1],FsCp[0][2], 3.0, 0, false);
+		}
 	}
 	return 1;
 }
 
-public OnPlayerEnterCheckpoint(playerid)
+public OnPlayerLeaveRaceCheckpoint(playerid)
 {
-	if(pDisableCheckPointOnEnter[playerid])
-		DisablePlayerCheckpoint(playerid),PlayerPlaySound(playerid,1150,0.0,0.0,0.0);
 	return 1;
 }
 
-public OnPlayerLeaveCheckpoint(playerid)
+public OnPlayerEnterCheckpoint_(playerid, cpid)
 {
+	if(cpid == -1)
+	{
+		DebugPrint(" IDIOT! Use SetPlayerCheckpoint_ instead of SetPlayerCheckpoint! - Or checkpoints.pwn is bugged");
+		return true; //If a CHECKPOINT ever doesn't "execute code" - its cuz of SOMEONE not using SetPlayerCheckPoint_
+	}
+	if(pInFahrschule[playerid])
+	{
+		if(FsCp[cpid+1][0] == -1.0 && FsCp[cpid+1][1] == -1.0 && FsCp[cpid+1][2] == -1.0) //Finished 
+		{
+			SendClientMessage(playerid, 0, "Finish!");
+			pInfo[playerid][fahrschein] = 1;
+			GivePlayerMoney(playerid, (-CFG[license_price_0] / 2));
+			CFG[staatskasse]+=(-CFG[license_price_0] / 2);
+			pInFahrschule[playerid] = false;
+			pFSCar[playerid] = INVALID_VEHICLE_ID;
+			VehicleEngineOff(GetPlayerVehicleID(playerid));
+			SetVehicleToRespawn(GetPlayerVehicleID(playerid));
+			DisablePlayerCheckpoint_(playerid);
+		}
+		else SetPlayerCheckpoint_(playerid, FsCp[cpid+1][0], FsCp[cpid+1][1], FsCp[cpid+1][2], 3.0, cpid+1, false);
+	}
 	return 1;
 }
 
@@ -357,7 +367,7 @@ public OnPlayerEnterRaceCheckpoint(playerid)
 	return 1;
 }
 
-public OnPlayerLeaveRaceCheckpoint(playerid)
+public OnPlayerLeaveCheckpoint_(playerid, cpid)
 {
 	return 1;
 }
@@ -441,7 +451,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	//Near bike rental
 	if(NearestBikeRental(playerid)!=INVALID_BIKE_RENTAL && RELEASED(KEY_SECONDARY_ATTACK) && !IsPlayerInAnyVehicle(playerid))
 	{
-		if(pInfo[playerid][level]>4)return SendClientMessage(playerid, GREY, "Nur Spieler unter Level 4 können sich Fahrräder mieten.");
+		if(pInfo[playerid][level]>4)return SendClientMessage(playerid, GREY, "Nur Spieler unter Level 4 können hier Fahrräder mieten.");
 		if(pRentalBike[playerid]!=INVALID_VEHICLE_ID || IsValidVehicle(pRentalBike[playerid]))
 		{
 			//Bringen wir dem Spieler ruhig mal das fahrrad, somit können sie das Fahrrad tatsächlich immer nutzen wenn sie es brauchen
@@ -462,8 +472,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		GivePlayerMoney(playerid, -BikeRental[NearestBikeRental(playerid)][price]);
 		pRentalBike[playerid]=CreateVehicle(481, 1776.5442,-1890.0557,13.3868,281.1611, -1, -1, 900); //15 Minuten
 		PutPlayerInVehicle(playerid, pRentalBike[playerid], 0);
-		//ToggleVehicleEngine(GetPlayerVehicleID(playerid));//Dann kann er direkt los fahren (müsste erst absteigen um statechange event zu triggern)
-		pTimerIDs[playerid][bikerental]=SetTimerEx_("BikeRentalEnd", 900*1000, 0, 1, "i", playerid);
+		pTimerIDs[playerid][bikerental]=SetTimerEx_("BikeRentalEnd", 10000, 0, 1, "i", playerid); //900*1000
 		SendClientMessage(playerid, YELLOW, "* Du hast dir ein BMX für 15 Minuten gemietet.");
 		return true;
 	}
@@ -476,7 +485,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		{
 			if(RELEASED(KEY_JUMP))
 			{
-				//Forward
+				//Skin Forward
 				if(pInfo[playerid][sex]==0)
 				{
 					pSkinSelIndex[playerid]++;
@@ -495,7 +504,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 
 			if(RELEASED(KEY_SPRINT))
 			{
-				//Backwards
+				//Skin Backward
 				if(pInfo[playerid][sex]==0)
 				{
 					pSkinSelIndex[playerid]--;
@@ -539,7 +548,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 			SetPlayerVirtualWorld(playerid, Buildings[i][vworldin]);
 			SetPlayerInterior(playerid, Buildings[i][intin]);
 			SetCameraBehindPlayer(playerid);
-			TimedFreeze(playerid, 400);
+			TimedFreeze(playerid, 400); //prevent player from falling thru server objects
 			
 			switch(_:Buildings[i][btype])
 			{
@@ -584,13 +593,14 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	//Fahrschule Starten
 	if(IsPlayerInRangeOfPoint(playerid, 3.0, 1369.3827,-1647.7343,13.3828) && !pInFahrschule[playerid] && PRESSED(KEY_SECONDARY_ATTACK) && !IsPlayerInAnyVehicle(playerid))
 	{
+		if(pInfo[playerid][fahrschein])return SendClientMessage(playerid, GREY, "* Du hast bereits einen Fahrschein.");
 		if(GetPlayerMoney(playerid)<25000)return SendClientMessage(playerid, GREY, ""HTML_GREY"Für den Fahrkurs benötigst du "HTML_RED"25.0000$"HTML_GREY".");
-		GivePlayerMoney(playerid, -25000);
-		CFG[staatskasse]+=25000;
+		GivePlayerMoney(playerid, -(-CFG[license_price_0] / 2));
+		CFG[staatskasse]+=(-CFG[license_price_0] / 2);
 		pInFahrschule[playerid] = true;
 		SendClientMessage(playerid, CYAN, "Du hast den Fahrschulkurs gestartet. Steig in ein "HTML_YELLOW" freies "HTML_CYAN" Fahrschulauto ein.");
 		SendClientMessage(playerid,WHITE,"{FFFA00}Du kannst das Fahrzeug mit {FF3C00}/motor{FFFA00} starten. Die Scheinwerfer können mit {FF3C00}/licht{FFFA00} angeschaltet werden.");
-		//^da er nicht OnPlayerEnterVehicle triggern kann wenn das fahrzeug gamemode-side abgeschlossen ist.
+		SendClientMessage(playerid, CYAN, " > Die Fahrschule verlangt nur die Hälfte vom abgemachten Preis, erst nachdem du fertig bist, wird der Rest verlangt.");
 		return 1;
 	}
 
@@ -602,10 +612,13 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		//Open the doors from vehicle //let that be this way - it works inside and outside of car
 		if(RELEASED(KEY_ANALOG_LEFT) && IsValidVehicle(veh))
 		{
+			//Fahrschul Auto
 			if(pFSCar[playerid] == veh){
 				carLocked[veh] =! carLocked[veh], ToggleVehicleDoors_(veh);
 				GameTextForPlayer(playerid, carLocked[veh] ? ("~r~abgeschlossen") : ("~g~aufgeschlossen"), 1000, 1);
 			}
+
+			//andere, private, job, frak etc..
 		}
 	}
 
@@ -615,10 +628,13 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		//Start engine from vehicle
 		if(RELEASED(KEY_ANALOG_RIGHT) && GetPlayerVehicleID(playerid) != INVALID_VEHICLE_ID)
 		{
+			//Fahrschul Auto
 			if(GetPlayerVehicleID(playerid) == pFSCar[playerid])
 			{
 				GameTextForPlayer(playerid, ToggleVehicleEngine(GetPlayerVehicleID(playerid)) ? ("~g~Motor an") : ("~r~Motor aus"), 1000, 1);
 			}
+
+			//andere, private, job, frak etc..
 		}
 	}
 	return 1;
@@ -761,6 +777,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			cache_get_value_name_int(0, "players_advertised", pInfo[playerid][players_advertised]);
 			cache_get_value_name_int(0, "perso", pInfo[playerid][perso]);
 			cache_get_value_name_int(0, "job", pInfo[playerid][job]);
+			cache_get_value_name_int(0, "fahrschein", pInfo[playerid][fahrschein]);
 			pInfo[playerid][loggedin]=true;
 
 
@@ -806,7 +823,6 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			}
 			else
 			{
-				//query == str | I re-use it.
 				format(query, sizeof(query), "* Du hast angegeben, von "#HTML_YELLOW"%s"#HTML_WHITE" angeworben zu sein.", inputtext);
 				SendClientMessage(playerid, WHITE, query);
 				new pid = ReturnPlayerID(inputtext);
