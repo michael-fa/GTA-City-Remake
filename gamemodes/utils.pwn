@@ -19,7 +19,7 @@ dpublic:InMenuFix(menu, playerid)
 
 
 
-//(C) lp_ just a part of scripts intern menu stuff
+//(C) lp_ just a part of scripts intern menu stuff too small to make file
 stock HideMenuEx(menu, playerid) { SetTimerEx_("InMenuFix", 400, 0, 1, "ii", menu, playerid); }
 stock MenuFixActive(playerid)
 {
@@ -31,7 +31,7 @@ stock MenuFixActive(playerid)
 
 
 
-//(C) lp_ just a part of scripts intern DEBUG stuff
+//(C) lp_ just a part of script's intern DEBUG stuff
 #if defined DEBUG
 ocmd:pos(playerid, params[])
 {

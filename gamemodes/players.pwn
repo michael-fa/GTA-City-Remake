@@ -16,11 +16,12 @@ enum ePlayerData {
 	respekt,
 	players_advertised,
 	perso,
-	job
+	job,
+	fahrschein //auto
 }
 new pInfo[MAX_PLAYERS][ePlayerData];
 
-//possible spawn reasons, since I hate to remember numbers
+//possible spawn reasons, since I prefer letters instead of boring numbers, who or what needs them anyways
 enum SpawnReason {
 	SPAWN_LOGIN,
 	SPAWN_REGISTER,
@@ -73,4 +74,5 @@ stock ResetPlayerVars(playerid)
 	pFSCar[playerid] = INVALID_VEHICLE_ID;
 	pDisableCheckPointOnEnter[playerid] = false;
 	pInFahrschule[playerid] = false;
+	DisablePlayerCheckpoint_(playerid);
 }
