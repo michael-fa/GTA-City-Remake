@@ -31,3 +31,11 @@ stock VehicleEngineOn(vehicleid)
 	GetVehicleParamsEx(vehicleid, tmp[0], tmp[1], tmp[2], tmp[3], tmp[4], tmp[5], tmp[6]);
 	return SetVehicleParamsEx(vehicleid, 1, tmp[1], tmp[2], carLocked[vehicleid], tmp[4], tmp[5], tmp[6]);
 }
+
+stock VehicleEngineOff(vehicleid)
+{
+	if(!IsValidVehicle(vehicleid))return false;
+	new tmp[7];
+	GetVehicleParamsEx(vehicleid, tmp[0], tmp[1], tmp[2], tmp[3], tmp[4], tmp[5], tmp[6]);
+	return SetVehicleParamsEx(vehicleid, 0, tmp[1], tmp[2], carLocked[vehicleid], tmp[4], tmp[5], tmp[6]);
+}
