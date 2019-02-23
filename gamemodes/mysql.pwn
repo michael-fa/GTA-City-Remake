@@ -11,22 +11,22 @@ new gmysql_tries = 0;
 
 stock ConnectWithMySQL()
 {
-	printf("[MYSQL] Datenbankverbindung wird hergestellt..");
+	printf(" [MYSQL] Datenbankverbindung wird hergestellt..");
 	dbhandle = mysql_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DATA);
 	while(mysql_errno(dbhandle)!=0)
 	{
-		printf("[MYSQL] Verbindung fehlgeschlagen, %d Versuche übrig.", (gmysql_tries-3));
+		printf(" [MYSQL] Verbindung fehlgeschlagen, %d Versuche übrig.", (gmysql_tries-3));
 		ConnectWithMySQL();
 		if(gmysql_tries>3)return SendRconCommand("exit");
 		gmysql_tries++;
 	}
-	printf("[MYSQL] Verbindung zur Datenbank hergestellt! Handle: %d", _:dbhandle);
+	printf(" [MYSQL] Verbindung zur Datenbank hergestellt! Handle: %d", _:dbhandle);
 	return true;
 }
 
 stock DisconnectMySQL()
 {
-	printf("[MYSQL] Verbindung wurde geschlossen!");
+	printf(" [MYSQL] Verbindung wurde geschlossen!");
 	mysql_close(dbhandle);
 }
 
@@ -37,6 +37,7 @@ stock LoadGameModeSettings()
 	mysql_format(dbhandle, query, sizeof(query), "SELECT * FROM gamemode");
 	mysql_query(dbhandle, query);
 	cache_get_value_name_int(0, "staatskasse", CFG[staatskasse]);
+	cache_get_value_name_int(0, "license_price_0", CFG[license_price_0]);
 	return true;
 }
 
@@ -44,7 +45,8 @@ stock SaveGameModeSettings()
 {
 	new query[256];
 	mysql_format(dbhandle, query, sizeof(query), "UPDATE gamemode SET \
-		staatskasse = '%s'", CFG[staatskasse]);
+		staatskasse = '%d', \
+		license_price_0 = '%d'", CFG[staatskasse], CFG[license_price_0]);
 	mysql_query(dbhandle, query);
 	return true;
 }
@@ -142,7 +144,8 @@ stock SaveUserData(playerid)
 	respekt = '%d', \
 	players_advertised = '%d', \
 	perso = '%d', \
-	job = '%d' \
+	job = '%d', \
+	fahrschein = '%d' \
 	WHERE id = '%d'", 
 	pInfo[playerid][regdate],
 	gettime(),
@@ -157,6 +160,7 @@ stock SaveUserData(playerid)
 	pInfo[playerid][players_advertised],
 	pInfo[playerid][perso],
 	pInfo[playerid][job],
+	pInfo[playerid][fahrschein],
 	pInfo[playerid][db_id]);
 	mysql_query(dbhandle, query);
 	return true;
