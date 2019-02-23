@@ -46,3 +46,16 @@ stock LoadBuildings(){
 		CreateDynamic3DTextLabel(Buildings[i][labelin], WHITE, Buildings[i][exitx], Buildings[i][exity], Buildings[i][exitz], 15.0);
 	}
 }
+
+stock LoadBuildingIconsFP(playerid)
+{
+	new _idx;
+	for(new i=0; i<sizeof(Buildings); i++)
+	{
+		if(Buildings[i][mapicon]==-1)continue; //Nicht jedes Gebäude hat ein Mapicon.
+		Buildings[i][mapiconid] = _idx; //Um das Icon später noch mal wieder zu verwenden
+		SetPlayerMapIcon(playerid, _idx, Buildings[i][enterx], Buildings[i][entery], Buildings[i][enterz], Buildings[i][mapicon], mapicon_color, MAPICON_LOCAL);
+		_idx++;
+	}
+	return true;
+}
