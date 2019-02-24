@@ -13,14 +13,17 @@ stock ConnectWithMySQL()
 {
 	printf(" [MYSQL] Datenbankverbindung wird hergestellt..");
 	dbhandle = mysql_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DATA);
-	while(mysql_errno(dbhandle)!=0)
+	while(mysql_errno(dbhandle)!=0 && gmysql_tries < 3)
 	{
-		printf(" [MYSQL] Verbindung fehlgeschlagen, %d Versuche übrig.", (gmysql_tries-3));
-		ConnectWithMySQL();
-		if(gmysql_tries>3)return SendRconCommand("exit");
 		gmysql_tries++;
+		printf(" [MYSQL] Verbindung fehlgeschlagen nach %d. Versuch!", gmysql_tries);
+		dbhandle = mysql_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DATA);
 	}
-	printf(" [MYSQL] Verbindung zur Datenbank hergestellt! Handle: %d", _:dbhandle);
+	if(mysql_errno(dbhandle)==0)printf(" [MYSQL] Verbindung zur Datenbank hergestellt! Handle: %d", _:dbhandle);
+	else {
+		print(" [MYSQL] Verbindung konnte nicht hergestellt werden!\nSERVER WIRD HERUNTERGEFAHREN!");
+		SendRconCommand("exit");
+	}
 	return true;
 }
 
@@ -109,6 +112,31 @@ dpublic:OnRegisterCheck(playerid)
 }
 
 
+public OnQueryError(errorid, const error[], const callback[], const query[], MySQL:handle)
+{
+	printf("========================== ERROR ==========================");
+	printf("MYSQL ERROR %d : %s (callback %s\nQuery: %s)", errorid, error, callback,  query);
+	switch(errorid)
+	{
+		case 2002:
+		{
+			new stamp[6];
+			gettime(stamp[0], stamp[1], stamp[2]);
+			getdate(stamp[3], stamp[4], stamp[5]);
+			printf("%0d:%0d:%0d - %0d.%0d.%0d [MYSQL_ERROR] Lost connection to MySQL Server Database!", stamp[0], stamp[1], stamp[2], stamp[5], stamp[4], stamp[3]);
+			SendRconCommand("exit");
+		}
+		case ER_SYNTAX_ERROR:
+		{
+			new stamp[6];
+			gettime(stamp[0], stamp[1], stamp[2]);
+			getdate(stamp[3], stamp[4], stamp[5]);
+			printf("%0d:%0d:%0d - %0d.%0d.%0d [MYSQL_ERROR] SYNTAX ERROR in query %s under %s", stamp[0], stamp[1], stamp[2], stamp[5], stamp[4], stamp[3], query, callback);
+		}
+	}
+	printf("========================== ERROR ==========================");
+	return 1;
+}
 
 
 
