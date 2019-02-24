@@ -43,9 +43,10 @@ stock LoadBusinesses()
 		for(new i=0; i<MAX_BIZ; i++)
 		{
 			if(Business[i][is_valid])continue; //Dont overwrite used businesses
-			mysql_format(dbhandle, str, sizeof(str), "SELECT * from biz WHERE id = '%d'", i);
-			mysql_query(dbhandle, str);
-			if(count==1)
+			mysql_format(dbhandle, str, sizeof(str), "SELECT * FROM biz WHERE id = '%d'", i);
+			mysql_query(dbhandle, str, true);
+			cache_get_row_count(count);
+			if(count>0)
 			{
 				cache_get_value_name_int(0, "id", Business[i][db_id]);
 				cache_get_value_name_int(0, "type", _:Business[i][biztype]);
@@ -58,6 +59,7 @@ stock LoadBusinesses()
 				cache_get_value_name_float(0, "int_y", Business[i][int_y]);
 				cache_get_value_name_float(0, "int_z", Business[i][int_z]);
 				cache_get_value_name_int(0, "interior", Business[i][int]);
+				Business[i][is_valid] = true;
 
 				switch(Business[i][biztype])
 				{
@@ -67,7 +69,7 @@ stock LoadBusinesses()
 						new tmp_owner[MAX_PLAYER_NAME];
 						mysql_format(dbhandle, str, sizeof(str), "SELECT name FROM accounts WHERE id='%d'", Business[i][owner]);
 						mysql_query(dbhandle, str);
-
+						cache_get_value_name(0, "name", tmp_owner);
 						format(str, sizeof(str), "Supermarkt\nBesitzer: %s", tmp_owner);
 						CreateDynamic3DTextLabel(str, WHITE, Business[i][p_x], Business[i][p_y], Business[i][p_z], 10.0);
 					}
@@ -78,6 +80,28 @@ stock LoadBusinesses()
 				}
 			}
 		}
+	}
+	return true;
+}
+
+stock SaveBusinesses()
+{
+	new str[256];
+	for(new i=0; i<MAX_BIZ; i++)
+	{
+		if(!Business[i][is_valid])continue;
+		mysql_format(dbhandle, str, sizeof(str), "UPDATE biz SET \
+			owner = '%d', \
+			type = '%d', \
+			kasse = '%d', \
+			interior = '%d' \
+			WHERE id = '%d'",
+			Business[i][owner],
+			_:Business[i][biztype],
+			Business[i][kasse],
+			Business[i][int],
+			Business[i][db_id]);
+		mysql_query(dbhandle, str);
 	}
 	return true;
 }
