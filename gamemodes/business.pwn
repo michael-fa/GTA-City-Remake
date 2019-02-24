@@ -18,6 +18,7 @@ enum eBusiness
 	BizType:biztype,
 	owner, //mysql
 	kasse,
+	price,
 	Float:p_x,
 	Float:p_y,
 	Float:p_z,
@@ -52,6 +53,7 @@ stock LoadBusinesses()
 				cache_get_value_name_int(0, "type", _:Business[i][biztype]);
 				cache_get_value_name_int(0, "owner", Business[i][owner]);
 				cache_get_value_name_int(0, "kasse", Business[i][kasse]);
+				cache_get_value_name_int(0, "price", Business[i][price]);
 				cache_get_value_name_float(0, "p_x", Business[i][p_x]);
 				cache_get_value_name_float(0, "p_y", Business[i][p_y]);
 				cache_get_value_name_float(0, "p_z", Business[i][p_z]);
@@ -66,12 +68,22 @@ stock LoadBusinesses()
 					case BIZ_SHOP:
 					{
 						CreateDynamicPickup(19592, 1, Business[i][p_x], Business[i][p_y], Business[i][p_z]); //basket
-						new tmp_owner[MAX_PLAYER_NAME];
-						mysql_format(dbhandle, str, sizeof(str), "SELECT name FROM accounts WHERE id='%d'", Business[i][owner]);
-						mysql_query(dbhandle, str);
-						cache_get_value_name(0, "name", tmp_owner);
-						format(str, sizeof(str), "Supermarkt\nBesitzer: %s", tmp_owner);
-						CreateDynamic3DTextLabel(str, WHITE, Business[i][p_x], Business[i][p_y], Business[i][p_z], 10.0);
+						if(Business[i][owner] == 0)
+						{
+							//Kein Owner
+							format(str, sizeof(str), "Supermarkt\nPreis: %d", Business[i][price]);
+							CreateDynamic3DTextLabel(str, WHITE, Business[i][p_x], Business[i][p_y], Business[i][p_z], 10.0);
+						}
+						else 
+						{
+							new tmp_owner[MAX_PLAYER_NAME];
+							mysql_format(dbhandle, str, sizeof(str), "SELECT name FROM accounts WHERE id='%d'", Business[i][owner]);
+							mysql_query(dbhandle, str);
+							cache_get_value_name(0, "name", tmp_owner);
+							format(str, sizeof(str), "Supermarkt\nBesitzer: %s", tmp_owner);
+							CreateDynamic3DTextLabel(str, WHITE, Business[i][p_x], Business[i][p_y], Business[i][p_z], 10.0);
+						}
+						
 					}
 					case BIZ_AMMUNATION:
 					{
@@ -94,11 +106,13 @@ stock SaveBusinesses()
 			owner = '%d', \
 			type = '%d', \
 			kasse = '%d', \
+			price = '%d', \
 			interior = '%d' \
 			WHERE id = '%d'",
 			Business[i][owner],
 			_:Business[i][biztype],
 			Business[i][kasse],
+			Business[i][price],
 			Business[i][int],
 			Business[i][db_id]);
 		mysql_query(dbhandle, str);
