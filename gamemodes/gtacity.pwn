@@ -20,7 +20,7 @@
 #include "/../../gamemodes/checkpoints.pwn"
 #include "/../../gamemodes/bikerental.pwn"
 #include "/../../gamemodes/buildings.pwn"
-#include "/../../gamemodes/biz.pwn"  //mysql related
+#include "/../../gamemodes/business.pwn"  //mysql related
 
 
 //Maps
@@ -71,6 +71,9 @@ public OnGameModeInit()
 
 	// Buildings
 	LoadBuildings();
+
+	//Businesses
+	LoadBusinesses();
 
 
 
@@ -133,6 +136,7 @@ public OnGameModeInit()
 public OnGameModeExit()
 {
 	SaveGameModeSettings();
+	SaveBusinesses();
 
 	DisconnectMySQL();
 	return 1;
@@ -714,6 +718,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			pInfo[playerid][players_advertised]=0;
 			pInfo[playerid][perso] = 0;
 			pInfo[playerid][job] = 0;
+			pInfo[playerid][fahrschein] = 0;
 
 			//Login track
 			StopPlayerSound(playerid);
