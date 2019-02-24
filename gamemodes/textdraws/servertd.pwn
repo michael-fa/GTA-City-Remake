@@ -6,7 +6,7 @@ stock TD_ServerTD_Load() {
 	TextDrawBackgroundColor(ServerTD[0], 255);
 	TextDrawFont(ServerTD[0], 2);
 	TextDrawLetterSize(ServerTD[0], 0.269999, 1.300000);
-	TextDrawColor(ServerTD[0], -1);
+	TextDrawColor(ServerTD[0], 0xB4B6B3);
 	TextDrawSetOutline(ServerTD[0], 1);
 	TextDrawSetProportional(ServerTD[0], 1);
 	TextDrawSetSelectable(ServerTD[0], 0);
