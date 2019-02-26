@@ -70,7 +70,7 @@ Hierbei ist dennoch der Fokus aller Events (callbacks) in der Hauptdatei, nur wi
    - [Dini] von BlueG
    - [a_zones] von Cueball
    - Sscanf (Quelle noch unbekannt)
-   - Yashas für seine verbesserte Version von [zcmd], I-ZCMD.
+   - Yashas für seine verbesserte Version von [zcmd], [I-ZCMD].
    - [Pawn Language Plugin] von Southclaws
    - dotSILENT für sein [Fixes2] Plugin!
 
