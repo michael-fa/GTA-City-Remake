@@ -70,7 +70,7 @@ Hierbei ist dennoch der Fokus aller Events (callbacks) in der Hauptdatei, nur wi
    - [Dini] von BlueG
    - [a_zones] von Cueball
    - Sscanf (Quelle noch unbekannt)
-   - Yashas für seine verbesserte Version von [zcmd] I-ZCMD
+   - Yashas für seine verbesserte Version von [zcmd], I-ZCMD.
    - [Pawn Language Plugin] von Southclaws
    - dotSILENT für sein [Fixes2] Plugin!
 
@@ -91,6 +91,7 @@ Hierbei ist dennoch der Fokus aller Events (callbacks) in der Hauptdatei, nur wi
 [Dini]: <https://dracoblue.net/downloads/dini/>
 [a_zones]: <https://forum.sa-mp.com/showthread.php?t=27598>
 [zcmd]: <https://forum.sa-mp.com/showthread.php?t=576114>
+[I-ZCMD]: <https://github.com/YashasSamaga/I-ZCMD>
 [Sublime Text und Pawn]: <https://github.com/Southclaws/pawn-sublime-language>
 [Pawn Language Plugin]: <https://github.com/Southclaws/pawn-sublime-language#pawn-language-plugin>
 [Y Sever Includes]: <https://github.com/Y-Less>
