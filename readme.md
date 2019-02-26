@@ -66,11 +66,11 @@ Hierbei ist dennoch der Fokus aller Events (callbacks) in der Hauptdatei, nur wi
 ## Danke @
    - [MySQL Plugin] von BlueG / Maddinat0r
    - [Streamer Plugin] Plugin von Icognito
-   - Zeex für [Crashdetect] & [seinen Kompiler]
+   - Zeex für [Crashdetect] & [seinen Kompiler] & [zcmd]
    - [Dini] von BlueG
    - [a_zones] von Cueball
    - Sscanf (Quelle noch unbekannt)
-   - [i_zcmd] (Improved).
+   - Yashas für seine verbesserte Version von [zcmd] I-ZCMD
    - [Pawn Language Plugin] von Southclaws
    - dotSILENT für sein [Fixes2] Plugin!
 
