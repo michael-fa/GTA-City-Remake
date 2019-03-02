@@ -39,13 +39,6 @@ stock PlayerName(playerid)
 	return name;
 }
 
-//Example: if(!PlayerOnline(playerid))return SendClientMessage(playerid, GREY, "Player is offline!");
-stock PlayerOnline(playerid)
-{
-	if(playerid==INVALID_PLAYER_ID && !IsPlayerConnected(playerid))return false;
-	else return true;
-}
-
 //returns the speed in mph/kmh style (if in car or not doesn't matter)
 stock GetPlayerSpeed(playerid)
 {
