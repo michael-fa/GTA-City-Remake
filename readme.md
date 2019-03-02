@@ -66,11 +66,11 @@ Hierbei ist dennoch der Fokus aller Events (callbacks) in der Hauptdatei, nur wi
 ## Danke @
    - [MySQL Plugin] von BlueG / Maddinat0r
    - [Streamer Plugin] Plugin von Icognito
-   - Zeex für [Crashdetect] & [seinen Kompiler] & [zcmd]
+   - Zeex für [Crashdetect] & [seinen Kompiler]
    - [Dini] von BlueG
    - [a_zones] von Cueball
    - Sscanf (Quelle noch unbekannt)
-   - Yashas für seine verbesserte Version von [zcmd], [I-ZCMD].
+   - kleinerOpa für [OCMD] 2.1.1
    - [Pawn Language Plugin] von Southclaws
    - dotSILENT für sein [Fixes2] Plugin!
 
@@ -90,8 +90,7 @@ Hierbei ist dennoch der Fokus aller Events (callbacks) in der Hauptdatei, nur wi
 [Crashdetect]: <https://github.com/Zeex>
 [Dini]: <https://dracoblue.net/downloads/dini/>
 [a_zones]: <https://forum.sa-mp.com/showthread.php?t=27598>
-[zcmd]: <https://forum.sa-mp.com/showthread.php?t=576114>
-[I-ZCMD]: <https://github.com/YashasSamaga/I-ZCMD>
+[OCMD]: <https://breadfish.de/index.php?thread/137761-ocmd-2-1-1-update-3-11-2013/>
 [Sublime Text und Pawn]: <https://github.com/Southclaws/pawn-sublime-language>
 [Pawn Language Plugin]: <https://github.com/Southclaws/pawn-sublime-language#pawn-language-plugin>
 [Y Sever Includes]: <https://github.com/Y-Less>
