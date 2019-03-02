@@ -1,9 +1,33 @@
+// 2019 © GTA-CITY REMAKE by lp_ aka Michael F.
+/*
+	----------------------
+	Dieses Gamemode ist in der auf dieser Repo anzufindenen Version öffetlich für jeden.
+
+	Infos für Contribs:
+		- Macht euch auf n' Modularen AUGEN KREBS gefasst.
+		- Was nicht modern oder 100% gut gescriptet? DWI!
+		- Retard? -> https://github.com/michael-fa/GTA-City-Remake/issues/new
+
+	  **Immernoch dabei ?**
+		- OCMD ist der aktuell genutzt command processor.. DWI!
+		- Contact me @ https://breadfish.de/index.php?user/36956-lp/
+		- Wehe (!) "gamemodes/gtacity.pwn" ist flooded mit one-use shit-code.
+		- Contrib't -> "Ich werde mich selbst in der Datei crediten." - gotit? kthx
+
+
+*/
+
+
+
+
+
+
 #include <a_samp>
+#include <ocmd>
 #include <crashdetect>
 #include <a_mysql>
 #include <a_zones>
 #include <streamer>
-#include <ocmd>
 #include <Dini>
 #include <fixes2>
 
@@ -13,10 +37,11 @@
 //Gamemode related
 #include "/../../gamemodes/buildinfo.pwn" //always on top - DEBUG is set here!
 #include "/../../gamemodes/common.pwn"
-#include "/../../gamemodes/utils.pwn"
 #include "/../../gamemodes/players.pwn"
+#include "/../../gamemodes/utils.pwn"
 #include "/../../gamemodes/mysql.pwn"
 #include "/../../gamemodes/vehicles.pwn"
+#include "/../../gamemodes/actors.pwn"
 #include "/../../gamemodes/checkpoints.pwn"
 #include "/../../gamemodes/bikerental.pwn"
 #include "/../../gamemodes/buildings.pwn"
@@ -29,6 +54,10 @@
 
 //Textdraw
 #include "/../../gamemodes/textdraws/servertd.pwn"
+
+//Commands
+#include "/../../gamemodes/commands/headadmin.pwn"
+#include "/../../gamemodes/commands/god.pwn"
 
 
 
@@ -107,8 +136,6 @@ public OnGameModeInit()
 
 
 
-
-
 	//==========================================================
 	//              3DTEXTLABELS
 	
@@ -167,6 +194,7 @@ public OnPlayerRequestClass(playerid, classid)
 
 public OnPlayerConnect(playerid)
 {
+
 	if(IsPlayerNPC(playerid))return true;
 	
 	//Goosebumps activated
@@ -227,6 +255,7 @@ public OnPlayerSpawn(playerid)
 		case SPAWN_LOGIN:
 		{
 			//Nach dem Login
+			DebugPrint("%s nach Login normal gespawnt. Rang: %s | Permission: %d", PlayerName(playerid), PlayerRank(playerid), pPermissions[playerid]);
 		}
 		case SPAWN_REGISTER:
 		{
@@ -276,13 +305,32 @@ public OnPlayerText(playerid, text[])
 
 public OnPlayerCommandText(playerid, cmdtext[])
 {
-	if (strcmp("/mycommand", cmdtext, true, 10) == 0)
-	{
-		// Do something here
-		return 1;
-	}
-	return 0;
+	return 1;
 }
+
+/*
+public OnPlayerCommandReceived(playerid, cmd[], params[], flags)
+{
+	if(!pInfo[playerid][loggedin])return 0;
+	DebugPrint("%s %s, if([%d]%d < %d)", cmd, params, playerid, pPermissions[playerid], flags);
+    if (pPermissions[playerid]<flags)
+    {
+    	SendClientMessage(playerid, GREY, "* Du hast keinen Zugriff auf diesen Befehl.");
+        return 0;
+    }
+
+    return 1;
+}
+
+public OnPlayerCommandPerformed(playerid, cmd[], params[], result, flags)
+{
+	if(result == -1)
+    {
+        SendClientMessage(playerid, 0xFFFFFFFF, "SERVER: Unbekannter Befehl. ("HTML_RED"/help"#HTML_WHITE")");
+        return 0;
+    }
+	return 1;
+}*/
 
 public OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
 {
@@ -452,6 +500,44 @@ public OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid)
 public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
 
+	//Fahrzeug interaktion von außen
+	if(GetClosestVehicleFromPlayer(playerid) != INVALID_VEHICLE_ID)
+	{
+		new veh = GetClosestVehicleFromPlayer(playerid);
+
+		//Open the doors from vehicle //let that be this way - it works inside and outside of car
+		if(RELEASED(KEY_ANALOG_LEFT) && IsValidVehicle(veh))
+		{
+			//Fahrschul Auto
+			if(pFSCar[playerid] == veh){
+				carLocked[veh] =! carLocked[veh], ToggleVehicleDoors_(veh);
+				GameTextForPlayer(playerid, carLocked[veh] ? ("~r~abgeschlossen") : ("~g~aufgeschlossen"), 1000, 1);
+			}
+
+			//andere, private, job, frak etc..
+
+			return 1;
+		}
+	}
+
+	//Fahrzeug von innen interaktion
+	if(GetPlayerVehicleID(playerid) != 0 & newkeys)
+	{
+		//Start engine from vehicle
+		if(RELEASED(KEY_ANALOG_RIGHT) && GetPlayerVehicleID(playerid) != INVALID_VEHICLE_ID)
+		{
+			//Fahrschul Auto
+			if(GetPlayerVehicleID(playerid) == pFSCar[playerid])
+			{
+				GameTextForPlayer(playerid, ToggleVehicleEngine(GetPlayerVehicleID(playerid)) ? ("~g~Motor an") : ("~r~Motor aus"), 1000, 1);
+			}
+
+			//andere, private, job, frak etc..
+
+			return 1;
+		}
+	}
+
 	//Near bike rental
 	if(NearestBikeRental(playerid)!=INVALID_BIKE_RENTAL && RELEASED(KEY_SECONDARY_ATTACK) && !IsPlayerInAnyVehicle(playerid))
 	{
@@ -469,7 +555,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 			SetPlayerCheckpoint(playerid, x,y,z, 1.0);
 			pDisableCheckPointOnEnter[playerid] = true;
 			SendClientMessage(playerid, YELLOW, "* Du hast schon ein Fahrrad gemietet. Es wurde zu dir gebracht.");
-			return true;
+			return 1;
 		}
 
 		if(GetPlayerMoney(playerid)<BikeRental[NearestBikeRental(playerid)][price])return SendClientMessage(playerid, GREY, "Du hast nicht genügend Geld dabei.");
@@ -478,7 +564,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		PutPlayerInVehicle(playerid, pRentalBike[playerid], 0);
 		pTimerIDs[playerid][bikerental]=SetTimerEx_("BikeRentalEnd", 10000, 0, 1, "i", playerid); //900*1000
 		SendClientMessage(playerid, YELLOW, "* Du hast dir ein BMX für 15 Minuten gemietet.");
-		return true;
+		return 1;
 	}
 	
 
@@ -585,6 +671,29 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		}
 	}
 
+	//Businesses
+	for(new i=0; i<sizeof(Business); i++)
+	{
+		if(IsPlayerInRangeOfPoint(playerid, 2.3, Business[i][p_x], Business[i][p_y], Business[i][p_z]) && PRESSED(KEY_SECONDARY_ATTACK) && !IsPlayerInAnyVehicle(playerid))
+		{
+			SetPlayerVirtualWorld(playerid, Business[i][iVW]);
+			SetPlayerInterior(playerid, Business[i][int]);
+			SetPlayerPos(playerid, Business[i][int_x], Business[i][int_y], Business[i][int_z]);
+			SetPlayerFacingAngle(playerid, Business[i][int_r]);
+			SetCameraBehindPlayer(playerid);
+			return 1;
+		}
+		else if(IsPlayerInRangeOfPoint(playerid, 2.3, Business[i][int_x], Business[i][int_y], Business[i][int_z]) && PRESSED(KEY_SECONDARY_ATTACK) && !IsPlayerInAnyVehicle(playerid))
+		{
+			SetPlayerInterior(playerid, 0);
+			SetPlayerVirtualWorld(playerid, 0);
+			SetPlayerPos(playerid, Business[i][p_x], Business[i][p_y], Business[i][p_z]);
+			SetPlayerFacingAngle(playerid, Business[i][p_r]);
+			SetCameraBehindPlayer(playerid);
+			return 1;
+		}
+	}
+
 	//Stadthalle Tresen 
 	if(IsPlayerInRangeOfPoint(playerid, 3.0, 361.8299,173.5298,1008.3828) && !MenuFixActive(playerid) && PRESSED(KEY_SECONDARY_ATTACK))
 	{
@@ -608,39 +717,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		return 1;
 	}
 
-	//Fahrzeug interaktion von außen
-	if(GetClosestVehicleFromPlayer(playerid) != INVALID_VEHICLE_ID)
-	{
-		new veh = GetClosestVehicleFromPlayer(playerid);
-
-		//Open the doors from vehicle //let that be this way - it works inside and outside of car
-		if(RELEASED(KEY_ANALOG_LEFT) && IsValidVehicle(veh))
-		{
-			//Fahrschul Auto
-			if(pFSCar[playerid] == veh){
-				carLocked[veh] =! carLocked[veh], ToggleVehicleDoors_(veh);
-				GameTextForPlayer(playerid, carLocked[veh] ? ("~r~abgeschlossen") : ("~g~aufgeschlossen"), 1000, 1);
-			}
-
-			//andere, private, job, frak etc..
-		}
-	}
-
-	//Fahrzeug von innen interaktion
-	if(GetPlayerVehicleID(playerid) != 0 & newkeys)
-	{
-		//Start engine from vehicle
-		if(RELEASED(KEY_ANALOG_RIGHT) && GetPlayerVehicleID(playerid) != INVALID_VEHICLE_ID)
-		{
-			//Fahrschul Auto
-			if(GetPlayerVehicleID(playerid) == pFSCar[playerid])
-			{
-				GameTextForPlayer(playerid, ToggleVehicleEngine(GetPlayerVehicleID(playerid)) ? ("~g~Motor an") : ("~r~Motor aus"), 1000, 1);
-			}
-
-			//andere, private, job, frak etc..
-		}
-	}
+	
 	return 1;
 }
 
@@ -707,7 +784,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			pInfo[playerid][db_id]=cache_insert_id();
 			pInfo[playerid][loggedin]=true;
 			pInfo[playerid][regdate]=gettime();
-			pInfo[playerid][adminlevel] = 0;
+			pInfo[playerid][rank] = Rank:PLAYER;
 			pInfo[playerid][sex] = 0;
 			pInfo[playerid][ziviskin] = ZiviSkins_M[0];
 			pInfo[playerid][money]=STARTMONEY, GivePlayerMoney(playerid, STARTMONEY);
@@ -722,6 +799,12 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 
 			//Login track
 			StopPlayerSound(playerid);
+
+
+			//Permissions
+			#if !defined DEBUG
+			pPermissions[playerid] = 0;
+			#endif
 
 
 
@@ -773,7 +856,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			//Einloggen!
 			cache_get_value_name_int(0, "id", pInfo[playerid][db_id]);
 			cache_get_value_name_int(0, "regdate", pInfo[playerid][regdate]);
-			cache_get_value_name_int(0, "adminlevel", pInfo[playerid][adminlevel]);
+			cache_get_value_name_int(0, "rank", _:pInfo[playerid][rank]);
 			cache_get_value_name_int(0, "money", pInfo[playerid][money]), GivePlayerMoney(playerid, pInfo[playerid][money]);
 			cache_get_value_name_int(0, "bank", pInfo[playerid][bank]);
 			cache_get_value_name_int(0, "ziviskin", pInfo[playerid][ziviskin]);
@@ -785,7 +868,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			cache_get_value_name_int(0, "fahrschein", pInfo[playerid][fahrschein]);
 			pInfo[playerid][loggedin]=true;
 
-
+			pPermissions[playerid]=RankToPerm(playerid);
 
 
 
