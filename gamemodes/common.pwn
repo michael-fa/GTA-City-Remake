@@ -54,7 +54,11 @@ enum {
 //Virtuelle Welten
 enum {
 	VW_ZERO,
-	VW_STADTHALLE
+	VW_STADTHALLE,
+	VW_SHOP = 2000,
+	VW_AMMUNATION = 2050,
+	VW_BURGERSHOT = 2100,
+	VW_CLUCKNBELL = 2150
 }
 
 
