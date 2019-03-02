@@ -1,10 +1,11 @@
-// 2018 GTA-CITY REMAKE by lp_ aka Michael F.
+// 2019 © GTA-CITY REMAKE by lp_ aka Michael F.
 //     
 //      File:           /gamemodes/utils.pwn
-//      Description:    Dump for functions I use throughout development
+//      Description:    Scheiß den nirgenswo anders zuorden KANN | WILL.
 
 
 
+#define noaccess SendClientMessage(playerid, GREY, "* Du hast keinen Zugriff auf diesen Befehl.")
 
 
 //(C) lp_ just a part of scripts intern stuff
@@ -31,16 +32,43 @@ stock MenuFixActive(playerid)
 
 
 
-//(C) lp_ just a part of script's intern DEBUG stuff
-#if defined DEBUG
-ocmd:pos(playerid, params[])
+stock RankToPerm(playerid)
 {
-    new basic_floats;
-    if(sscanf(params, "fff", x,y,z))return SendClientMessage(playerid, WHITE, "params: x,y,z");
-    SetPlayerPos(playerid, x,y,z);
-    return true;
+    switch(pInfo[playerid][rank])
+    {
+        case PLAYER:return 0; //@players.pwn
+        case SUPPORTER:return PERM_SUPPORTER;  //@players.pwn
+        case ADMIN:return PERM_ADMIN | PERM_SUPPORTER;  //@players.pwn
+        case HEAD_ADMIN:return PERM_HEAD_ADMIN | PERM_ADMIN | PERM_SUPPORTER;  //@players.pwn
+        case PROJEKTLEITER:return PERM_PROJLEITER | PERM_HEAD_ADMIN | PERM_ADMIN | PERM_SUPPORTER;  //@players.pwn
+    }
+    return PERM_PLAYER;  //@players.pwn
 }
-#endif
 
+stock Rank:IntRank(int)
+{
+    switch(int)
+    {
+        case 0:return PLAYER;
+        case 1:return SUPPORTER;
+        case 2:return ADMIN;
+        case 3:return HEAD_ADMIN;
+        case 4:return PROJEKTLEITER;
+    }
+    return PLAYER;
+}
 
+stock PlayerRank(playerid) {
+    new tmp[32];
+    tmp = ("Spieler");
+    switch(pInfo[playerid][rank])
+    {
+        case PLAYER:tmp=("Spieler");
+        case SUPPORTER:tmp=("Supporter");
+        case ADMIN:tmp=("Admin");
+        case HEAD_ADMIN:tmp=("Head Admin");
+        case PROJEKTLEITER: tmp=("Projektleiter");
+    }
+    return tmp;
+}
 
