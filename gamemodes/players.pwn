@@ -1,3 +1,8 @@
+// 2019 © GTA-CITY REMAKE by lp_ aka Michael F.
+//     
+//      File:           /gamemodes/players.pwn
+//      Description:    Kram das für Spieler ist, oder von diesen genutzt wird
+
 
 new DefaultPlayerArray[] = {0, 0, 0, 0, 0, 5000, 10000};
 new DefaultPTimerArray[] = {-1};
@@ -6,7 +11,7 @@ new DefaultPTimerArray[] = {-1};
 enum ePlayerData {
 	bool:loggedin,
 	db_id,
-	adminlevel,
+	Rank:rank,
 	regdate,
 	sex,
 	money, //also for anti-cheat purposes
@@ -31,6 +36,26 @@ enum SpawnReason {
 }
 
 
+//Player Command Flags
+const PERM_PLAYER = 0;
+enum (<<= 1)
+{
+    PERM_SUPPORTER = 1,     // 0b00000000000000000000000000000010
+    PERM_ADMIN,   // 0b00000000000000000000000000000100
+    PERM_HEAD_ADMIN,
+    PERM_PROJLEITER,
+    PERM_GOD
+};
+
+enum Rank {
+	PLAYER,
+	SUPPORTER,
+	ADMIN,
+	HEAD_ADMIN,
+	PROJEKTLEITER
+}
+
+
 //Player bound timers
 enum ePTimers {
 	bikerental,
@@ -50,6 +75,7 @@ new pFSCar[MAX_PLAYERS] = {INVALID_PLAYER_ID, ...};
 new pInBuilding[MAX_PLAYERS];
 new bool:pDisableCheckPointOnEnter[MAX_PLAYERS];
 new bool:pInFahrschule[MAX_PLAYERS];
+new pPermissions[MAX_PLAYERS];
 
 
 
@@ -66,6 +92,7 @@ stock KillAllTimers(playerid)
 //Makes main file cleaner
 stock ResetPlayerVars(playerid)
 {
+	pPermissions[playerid] = PERM_PLAYER;
 	pLoginTries[playerid] = 0;
 	pInSkinChange[playerid] = 0;
 	pSkinSelIndex[playerid] = 0;
@@ -75,4 +102,11 @@ stock ResetPlayerVars(playerid)
 	pDisableCheckPointOnEnter[playerid] = false;
 	pInFahrschule[playerid] = false;
 	DisablePlayerCheckpoint_(playerid);
+}
+
+//Check, aus lazypawn herausgenommen
+stock PlayerOnline(playerid)
+{
+	if(playerid==INVALID_PLAYER_ID && !IsPlayerConnected(playerid) && !pInfo[playerid][loggedin])return false;
+	else return true;
 }
