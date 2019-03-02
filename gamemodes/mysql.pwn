@@ -1,3 +1,8 @@
+// 2019 © GTA-CITY REMAKE by lp_ aka Michael F.
+//     
+//      File:           /gamemodes/mysql.pwn
+//      Description:    Alles was mit MYSQL zusammen arbeitet.
+
 #define MYSQL_HOST "127.0.0.1"
 #define MYSQL_USER "root"
 #define MYSQL_PASS ""
@@ -166,7 +171,7 @@ stock SaveUserData(playerid)
 	sex = '%d', \
 	money = '%d', \
 	bank = '%d', \
-	adminlevel = '%d', \
+	rank = '%d', \
 	ziviskin = '%d', \
 	level = '%d', \
 	respekt = '%d', \
@@ -181,7 +186,7 @@ stock SaveUserData(playerid)
 	pInfo[playerid][sex],
 	GetPlayerMoney(playerid),
 	pInfo[playerid][bank],
-	pInfo[playerid][adminlevel],
+	_:pInfo[playerid][rank],
 	pInfo[playerid][ziviskin],
 	pInfo[playerid][level],
 	pInfo[playerid][respekt],
