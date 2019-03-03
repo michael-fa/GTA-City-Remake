@@ -96,7 +96,7 @@ stock ResetPlayerVars(playerid)
 	pLoginTries[playerid] = 0;
 	pInSkinChange[playerid] = 0;
 	pSkinSelIndex[playerid] = 0;
-	pInBuilding[playerid] = 0;
+	pInBuilding[playerid] = -1;
 	pRentalBike[playerid] = INVALID_VEHICLE_ID;
 	pFSCar[playerid] = INVALID_VEHICLE_ID;
 	pDisableCheckPointOnEnter[playerid] = false;

@@ -8,6 +8,11 @@
 #define noaccess SendClientMessage(playerid, GREY, "* Du hast keinen Zugriff auf diesen Befehl.")
 
 
+#if !defined isnull
+    #define isnull(%1) \
+                ((!(%1[0])) || (((%1[0]) == '\1') && (!(%1[1]))))
+#endif
+
 //(C) lp_ just a part of scripts intern stuff
 dpublic:InMenuFix(menu, playerid)
 {
@@ -71,4 +76,5 @@ stock PlayerRank(playerid) {
     }
     return tmp;
 }
+
 

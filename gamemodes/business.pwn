@@ -3,6 +3,10 @@
 //MySQL benötigt!
 
 
+//To do
+// - Map Icons for each Shop, Ammu...-Type.
+
+
 #define MAX_BIZ 200 // Maximale Geschäfte
 #define MAX_BIZ_NAME 32 //Beschreibung max. Länge
 
@@ -10,6 +14,17 @@ enum BizType {
 	BIZ_SHOP, //Supermarkt / 24/7
 	BIZ_AMMUNATION
 }
+
+enum eShopTypes {
+	shop_int,
+	Float:shop_x,
+	Float:shop_y,
+	Float:shop_z,
+	Float:shop_r,
+	shop_name[128]
+} new ShopTypes[][eShopTypes] = {
+	{17, -25.9657,-187.1451,1003.5469,354.1385, "Singleplayer 24/7\tInterior 17"}
+};
 
 
 enum eBusiness
@@ -30,7 +45,10 @@ enum eBusiness
 	Float:int_z,
 	Float:int_r,
 	int,
-	iVW
+	iVW,
+	STREAMER_TAG_3D_TEXT_LABEL: _labels[3], //enter, exit, front desk or whatever.
+	STREAMER_TAG_ACTOR: _actors[4], //let them have 4 actors max
+	STREAMER_TAG_PICKUP: _pickups[3] //enter, exit, front desk or whatever.
 }
 new Business[MAX_BIZ][eBusiness];
 
@@ -74,12 +92,12 @@ stock LoadBusinesses()
 				{
 					case BIZ_SHOP:
 					{
-						CreateDynamicPickup(19592, 1, Business[i][p_x], Business[i][p_y], Business[i][p_z]); //basket
+						Business[i][_pickups][0] = CreateDynamicPickup(19592, 1, Business[i][p_x], Business[i][p_y], Business[i][p_z]); //basket
 						if(Business[i][owner] == 0)
 						{
 							//Kein Owner
 							format(str, sizeof(str), "Supermarkt\nPreis: %d", Business[i][price]);
-							CreateDynamic3DTextLabel(str, WHITE, Business[i][p_x], Business[i][p_y], Business[i][p_z], 15.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, 0, 0);
+							Business[i][_labels][0]=CreateDynamic3DTextLabel(str, WHITE, Business[i][p_x], Business[i][p_y], Business[i][p_z], 15.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, 0, 0);
 						}
 						else 
 						{
@@ -88,14 +106,15 @@ stock LoadBusinesses()
 							mysql_query(dbhandle, str);
 							cache_get_value_name(0, "name", tmp_owner);
 							format(str, sizeof(str), "Supermarkt\n%s\nBesitzer: %s", Business[i][custom_name], tmp_owner);
-							CreateDynamic3DTextLabel(str, WHITE, Business[i][p_x], Business[i][p_y], Business[i][p_z], 15.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, 0,0);
+							Business[i][_labels][0] = CreateDynamic3DTextLabel(str, WHITE, Business[i][p_x], Business[i][p_y], Business[i][p_z], 15.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, 0,0);
 						}
 
-						//Create shop system related stuff, dasnt matter what values of Business change
-						CreateActor_(ACT_SUPERM_CASHIER, 180, -29.1886,-186.8786,1003.5469,359.0892, true, 100.0, Business[i][iVW], Business[i][int]);
-						format(str, sizeof(str), ""HTML_WHITE"Wilkommen bei "HTML_GREEN"%s"HTML_WHITE"\nDrücke ["HTML_YELLOW"F"HTML_WHITE"] hinter der Kasse", Business[i][custom_name]);
-						CreateDynamic3DTextLabel(str, WHITE, -29.1886,-186.8786,1003.6469, 10.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, Business[i][iVW], Business[i][int]);
-						CreateDynamicPickup(19198 , 1,-29.0915,-185.1253,1003.5469, Business[i][iVW], Business[i][int]);
+						//Create shop system related stuff, doesnt matter what values of Business change
+						Business[i][_actors][0] = CreateDynamicActor(180, -29.1886,-186.8786,1003.5469,359.0892, true, 100.0, Business[i][iVW], Business[i][int]);
+						if(isnull(Business[i][custom_name]))format(str, sizeof(str), ""HTML_WHITE"Wilkommen !\nDrücke ["HTML_YELLOW"F"HTML_WHITE"] hinter der Kasse");
+						else format(str, sizeof(str), ""HTML_WHITE"Wilkommen bei "HTML_GREEN"%s"HTML_WHITE"\nDrücke ["HTML_YELLOW"F"HTML_WHITE"] hinter der Kasse", Business[i][custom_name]);
+						Business[i][_labels][2] = CreateDynamic3DTextLabel(str, WHITE, -29.1886,-186.8786,1004.6460, 10.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, Business[i][iVW], Business[i][int]);
+						Business[i][_pickups][2] = CreateDynamicPickup(19198 , 1,-29.0915,-185.1253,1003.5469, Business[i][iVW], Business[i][int]);
 						
 					}
 					case BIZ_AMMUNATION:
@@ -105,8 +124,8 @@ stock LoadBusinesses()
 				}
 
 				//What buidlings have in general..
-				CreateDynamic3DTextLabel("Drücke ENTER zum Verlassen", WHITE, Business[i][int_x], Business[i][int_y], Business[i][int_z], 10.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, Business[i][iVW], Business[i][int]);
-				CreateDynamicPickup(1318, 1, Business[i][int_x], Business[i][int_y], Business[i][int_z], Business[i][iVW], Business[i][int]); //white down arrow
+				Business[i][_labels][1] = CreateDynamic3DTextLabel("Drücke ENTER zum Verlassen", WHITE, Business[i][int_x], Business[i][int_y], Business[i][int_z], 10.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, Business[i][iVW], Business[i][int]);
+				Business[i][_pickups][1] = CreateDynamicPickup(1318, 1, Business[i][int_x], Business[i][int_y], Business[i][int_z], Business[i][iVW], Business[i][int]); //white down arrow;
 			}
 		}
 	}
@@ -140,6 +159,85 @@ stock SaveBusinesses()
 	return true;
 }
 
+stock CreateBusiness(tprice, BizType:biz_type, typeID, const Float:fEnter[4])
+{
+	new free = -1;
+	for(new i = 0; i<MAX_BIZ; i++)
+	{	
+		if(Business[i][is_valid])continue;
+		free = i;
+		break;
+	}
+	if(free==-1)return false;
+	Business[free][iVW] = VW_SHOP + free;
+	Business[free][owner] = 0;
+	Business[free][is_valid] = true;
+	Business[free][biztype] = biz_type;
+	Business[free][price] = tprice;
+	Business[free][int] = ShopTypes[typeID][shop_int];
+	Business[free][int_x] = ShopTypes[typeID][shop_x];
+	Business[free][int_y] = ShopTypes[typeID][shop_y];
+	Business[free][int_z] = ShopTypes[typeID][shop_z];
+	Business[free][int_r] = ShopTypes[typeID][shop_r];
+	Business[free][p_x] = fEnter[0];
+	Business[free][p_y] = fEnter[1];
+	Business[free][p_z] = fEnter[2];
+	Business[free][p_r] = fEnter[3];
+	format(Business[free][custom_name], MAX_BIZ_NAME, "\0");
+
+
+
+
+	//MYSQL Data
+	new query[256];
+	mysql_format(dbhandle, query, sizeof(query), "INSERT INTO biz (type, owner, kasse, price, custom_name, p_x, p_y, p_z, p_r, int_x, int_y, int_z, int_r, interior) \
+		VALUES (%d, 0, 0, %d, '\n', %f, %f, %f, %f,  %f, %f, %f, %f, %d)",
+		_:biz_type,
+		tprice, 
+		Business[free][p_x], 
+		Business[free][p_y], 
+		Business[free][p_z],
+		Business[free][p_r],
+		Business[free][int_x],
+		Business[free][int_y],
+		Business[free][int_z], 
+		Business[free][int_r],
+		Business[free][int]);
+	mysql_query(dbhandle, query);
+	Business[free][db_id]=cache_insert_id();
+
+
+
+
+	//Other specific stuff
+	new str[128];
+	switch(biz_type)
+	{
+		case BIZ_SHOP:
+		{
+			Business[free][_actors][0] = CreateDynamicActor(180, -29.1886,-186.8786,1003.5469,359.0892, true, 100.0, Business[free][iVW], Business[free][int]);
+			format(str, sizeof(str), ""HTML_WHITE"Wilkommen !\nDrücke ["HTML_YELLOW"F"HTML_WHITE"] hinter der Kasse");
+			//else format(str, sizeof(str), ""HTML_WHITE"Wilkommen bei "HTML_GREEN"%s"HTML_WHITE"\nDrücke ["HTML_YELLOW"F"HTML_WHITE"] hinter der Kasse", Business[free][custom_name]);
+			Business[free][_labels][2] = CreateDynamic3DTextLabel(str, WHITE, -29.1886,-186.8786,1004.6460, 10.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, Business[free][iVW], Business[free][int]);
+			Business[free][_pickups][2] = CreateDynamicPickup(19198 , 1,-29.0915,-185.1253,1003.5469, Business[free][iVW], Business[free][int]);
+		}
+	}
+	
+
+
+	//Enter Exit Pickups
+	Business[free][_pickups][0] = CreateDynamicPickup(19592, 1, Business[free][p_x], Business[free][p_y], Business[free][p_z]); //enter
+	Business[free][_pickups][1] = CreateDynamicPickup(1318, 1, Business[free][int_x], Business[free][int_y], Business[free][int_z], Business[free][iVW], Business[free][int]); //for exit
+
+	//Enter Exit labels
+	format(str, sizeof(str), "Supermarkt\nPreis: %d", Business[free][price]);
+	Business[free][_labels][0]=CreateDynamic3DTextLabel(str, WHITE, Business[free][p_x], Business[free][p_y], Business[free][p_z], 15.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, 0, 0);
+
+	Business[free][_labels][1] = CreateDynamic3DTextLabel("Drücke ENTER zum Verlassen", WHITE, Business[free][int_x], Business[free][int_y], Business[free][int_z], 10.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, Business[free][iVW], Business[free][int]);
+	DebugPrint(" CREATED BUSINESS (db = %d): TYPE = %d, PRICE = %d", Business[free][db_id], _:Business[free][biztype], Business[free][price]);
+	
+	return true;
+}
 
 
 
@@ -150,7 +248,7 @@ stock SaveBusinesses()
 
 stock IsPlayerNearShop(playerid)
 {
-	for(new i=0; i<MAX_BUSINESS; i++)
+	for(new i=0; i<MAX_BIZ; i++)
 	{
 		if(!Business[i][is_valid])continue;
 		if(Business[i][biztype] != BizType:BIZ_SHOP)continue;
@@ -168,7 +266,7 @@ stock IsPlayerBusinessOwner(playerid, business)
 
 stock GetNearestBusiness(playerid)
 {
-	for(new i=0; i<MAX_BUSINESS; i++)
+	for(new i=0; i<MAX_BIZ; i++)
 	{
 		if(!Business[i][is_valid])continue;
 		if(IsPlayerInRangeOfPoint(playerid, 2.5, Business[i][int_x], Business[i][int_y], Business[i][int_z])))

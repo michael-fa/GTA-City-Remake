@@ -41,7 +41,7 @@
 #include "/../../gamemodes/utils.pwn"
 #include "/../../gamemodes/mysql.pwn"
 #include "/../../gamemodes/vehicles.pwn"
-#include "/../../gamemodes/actors.pwn"
+//#include "/../../gamemodes/actors.pwn" unnecessary
 #include "/../../gamemodes/checkpoints.pwn"
 #include "/../../gamemodes/bikerental.pwn"
 #include "/../../gamemodes/buildings.pwn"
@@ -56,8 +56,8 @@
 #include "/../../gamemodes/textdraws/servertd.pwn"
 
 //Commands
-#include "/../../gamemodes/commands/headadmin.pwn"
-#include "/../../gamemodes/commands/god.pwn"
+#include "/../../gamemodes/cmds/god.pwn" //IsGod is used in files underneath
+#include "/../../gamemodes/cmds/headadmin.pwn"
 
 
 
@@ -207,7 +207,7 @@ public OnPlayerConnect(playerid)
 	memcpy(pInfo[playerid], DefaultPlayerArray, 0, sizeof(DefaultPlayerArray)*4, sizeof(pInfo[]));
 	pFSCar[playerid] = INVALID_VEHICLE_ID;
 	pRentalBike[playerid] = INVALID_VEHICLE_ID;
-	
+	ResetPlayerVars(playerid);
 
 	//Map Icons der Gebäude laden 
 	LoadBuildingIconsFP(playerid);
@@ -666,7 +666,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 			SetPlayerVirtualWorld(playerid, Buildings[i][vworldout]);
 			SetPlayerInterior(playerid, Buildings[i][intout]);
 			SetCameraBehindPlayer(playerid);
-			TimedFreeze(playerid, 1000);
+			TimedFreeze(playerid, 400);
 			break;
 		}
 	}
@@ -681,9 +681,10 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 			SetPlayerPos(playerid, Business[i][int_x], Business[i][int_y], Business[i][int_z]);
 			SetPlayerFacingAngle(playerid, Business[i][int_r]);
 			SetCameraBehindPlayer(playerid);
+			TimedFreeze(playerid, 400);
 			return 1;
 		}
-		else if(IsPlayerInRangeOfPoint(playerid, 2.3, Business[i][int_x], Business[i][int_y], Business[i][int_z]) && PRESSED(KEY_SECONDARY_ATTACK) && !IsPlayerInAnyVehicle(playerid))
+		else if(IsPlayerInRangeOfPoint(playerid, 2.3, Business[i][int_x], Business[i][int_y], Business[i][int_z]) && Business[i][iVW] == GetPlayerVirtualWorld(playerid) && PRESSED(KEY_SECONDARY_ATTACK) && !IsPlayerInAnyVehicle(playerid))
 		{
 			SetPlayerInterior(playerid, 0);
 			SetPlayerVirtualWorld(playerid, 0);
@@ -773,8 +774,6 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			mysql_format(dbhandle, query, sizeof(query), "INSERT INTO accounts (name, password, salt, last_seen, last_ip) VALUES ('%e', '%e', '%e', '%d', '%e')",
 			PlayerName(playerid), hashed_pass, salt, gettime(), tmp_ip);
 			mysql_query(dbhandle, query);
-			
-			
 
 
 

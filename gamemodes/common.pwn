@@ -47,7 +47,8 @@ enum {
 	DIALOG_SEX,
 	DIALOG_UWU, //User werben User
 	DIALOG_JOBS,
-	DIALOG_ALTER
+	DIALOG_ALTER,
+	DIALOG_CBIZ
 }
 
 
