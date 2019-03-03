@@ -1,7 +1,9 @@
-//Ripped back in 2014-13 or maybe 15. 
-//dont exactly know what is there and what not
-//will maybe slowly sort the code, find out and comment what each createobject is for.
-//still low priority.
+//In 2014 oder 2015 geleaked, einiges ist also nicht mehr aktuell..
+//Fixen hat low priority.
+//Nach und nach mach ich hier und da mal comments wo was ungefär ist.
+
+//LISTE:
+ //Buschreien 6x und Zäune ~6x auf dem Fußweg vorm LSPD sind in rZ verbuggt.
 
 
 stock LoadRPGCityMap()
