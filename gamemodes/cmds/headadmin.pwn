@@ -30,7 +30,7 @@ ocmd:cbiz(playerid, params[])
 	if(!IsHeadAdmin(playerid))return noaccess;
 	new _btype;
 	if(sscanf(params, "i", _btype))return SendClientMessage(playerid, WHITE, "Verwendung: /cbiz [Typ des Geschäftes, 0 = BIZ_SHOP, 1 = BIZ_AMMUNATION]");
-	if(GetPlayerInterior(playerid) != 0)return SendClientMessage(playerid, GREY, "* Geschäfte lassen sich nich in einem Interior setzen!");
+	if(GetPlayerInterior(playerid) != 0)return SendClientMessage(playerid, GREY, "* Geschäfte lassen sich nicht in einem Interior setzen!");
 	if(GetPlayerVirtualWorld(playerid) != 0)return SendClientMessage(playerid, GREY, "* Geschäfte lassen sich NUR in der VW 0 erstellen.");
 	if(pInBuilding[playerid]!=-1)return SendClientMessage(playerid, GREY, "* Geschäfte lassen sich nicht innerhalb Gebäude erstellen.");
 
@@ -49,5 +49,16 @@ ocmd:cbiz(playerid, params[])
 			//ShowPlayerDialog(playerid, DIALOG_CBIZ, )
 		}
 	}*/
+	return true;
+}
+
+ocmd:dbiz(playerid, params[])
+{
+	if(!IsHeadAdmin(playerid))return noaccess;
+	if(GetPlayerInterior(playerid) != 0)return SendClientMessage(playerid, GREY, "* Geschäfte lassen sich nicht in einem Interior löschen!");
+	if(GetPlayerVirtualWorld(playerid) != 0)return SendClientMessage(playerid, GREY, "* Geschäfte lassen sich NUR in der VW 0 löschen.");
+	if(pInBuilding[playerid]!=-1)return SendClientMessage(playerid, GREY, "* Geschäfte lassen sich nicht innerhalb Gebäude löschen.");
+	if(GetNearestBusiness(playerid)==-1)return SendClientMessage(playerid, GREY, "* Es ist kein Geschäft in der Nähe.");
+	DeleteBusiness(GetNearestBusiness(playerid));
 	return true;
 }
