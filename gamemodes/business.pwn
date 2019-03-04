@@ -56,6 +56,7 @@ new Business[MAX_BIZ][eBusiness];
 
 stock LoadBusinesses()
 {
+	if(GetUptime()>180)return true; //Nur zur sicherheit, eigentlich sollte das EINMAL aufgerufen werden.
 	new str[256];
 	mysql_format(dbhandle, str, sizeof(str), "SELECT * from biz");
 	mysql_query(dbhandle, str);
@@ -239,6 +240,28 @@ stock CreateBusiness(tprice, BizType:biz_type, typeID, const Float:fEnter[4])
 	return true;
 }
 
+stock DeleteBusiness(b)
+{
+	if(!Business[b][is_valid])return false;
+	DestroyDynamicPickup(Business[b][_pickups][0]);
+	DestroyDynamicPickup(Business[b][_pickups][1]);
+	DestroyDynamicPickup(Business[b][_pickups][2]);
+	DestroyDynamic3DTextLabel(Business[b][_labels][0]);
+	DestroyDynamic3DTextLabel(Business[b][_labels][1]);
+	DestroyDynamic3DTextLabel(Business[b][_labels][2]);
+	DestroyDynamicActor(Business[b][_actors][0]);
+	DestroyDynamicActor(Business[b][_actors][1]);
+	DestroyDynamicActor(Business[b][_actors][2]);
+	DestroyDynamicActor(Business[b][_actors][3]);
+	new str[128];
+	mysql_format(dbhandle, str, 128, "DELETE FROM biz WHERE db_id = '%d'", b);
+	mysql_query(dbhandle, str);
+	Business[b][kasse] = 0;
+	Business[b][owner] = 0;
+	Business[b][custom_name] = '\0';
+	Business[b][is_valid] = false;
+	return true;
+}
 
 
 
@@ -260,6 +283,7 @@ stock IsPlayerNearShop(playerid)
 
 stock IsPlayerBusinessOwner(playerid, business)
 {
+	if(!Business[business][is_valid])return false;
 	if(Business[business][owner] == pInfo[playerid][db_id])return true;
 	else false;
 }
@@ -269,8 +293,8 @@ stock GetNearestBusiness(playerid)
 	for(new i=0; i<MAX_BIZ; i++)
 	{
 		if(!Business[i][is_valid])continue;
-		if(IsPlayerInRangeOfPoint(playerid, 2.5, Business[i][int_x], Business[i][int_y], Business[i][int_z])))
+		if(IsPlayerInRangeOfPoint(playerid, 2.5, Business[i][p_x], Business[i][p_y], Business[i][p_z]))
 			return i;
-		else return -1;
 	}
+	return -1;
 }
