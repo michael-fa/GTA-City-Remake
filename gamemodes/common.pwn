@@ -16,11 +16,16 @@
 #endif
 
 
-//Gamemode Config
+//Gamemode
+	//CONFIG
 enum eGMCFG {
 	staatskasse, //staatskasse
 	license_price_0 //fahrschein(auto) preis
 } new CFG[eGMCFG];
+
+	//SA-MP Server Uptime (approximately)
+new gUpTimeVal = 0;
+stock GetUptime(){return (gettime()-gUpTimeVal);}
 
 
 
