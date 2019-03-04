@@ -254,12 +254,14 @@ stock DeleteBusiness(b)
 	DestroyDynamicActor(Business[b][_actors][2]);
 	DestroyDynamicActor(Business[b][_actors][3]);
 	new str[128];
-	mysql_format(dbhandle, str, 128, "DELETE FROM biz WHERE db_id = '%d'", b);
+	mysql_format(dbhandle, str, 128, "DELETE FROM biz WHERE id = '%d'", b);
 	mysql_query(dbhandle, str);
 	Business[b][kasse] = 0;
 	Business[b][owner] = 0;
 	Business[b][custom_name] = '\0';
 	Business[b][is_valid] = false;
+	DebugPrint(" Deleted Business %d with database ID %d", Business[b][db_id]);
+	Business[b][db_id] = 0;
 	return true;
 }
 
@@ -275,7 +277,7 @@ stock IsPlayerNearShop(playerid)
 	{
 		if(!Business[i][is_valid])continue;
 		if(Business[i][biztype] != BizType:BIZ_SHOP)continue;
-		if(!IsPlayerInRangeOfPoint(playerid, 2.5, -29.0915,-185.1253,1003.5469))continue;
+		if(!IsPlayerInRangeOfPoint(playerid, 1.0, -29.0915,-185.1253,1003.5469))continue;
 		return true;
 	}
 	return false;
@@ -293,7 +295,7 @@ stock GetNearestBusiness(playerid)
 	for(new i=0; i<MAX_BIZ; i++)
 	{
 		if(!Business[i][is_valid])continue;
-		if(IsPlayerInRangeOfPoint(playerid, 2.5, Business[i][p_x], Business[i][p_y], Business[i][p_z]))
+		if(IsPlayerInRangeOfPoint(playerid, 1.0, Business[i][p_x], Business[i][p_y], Business[i][p_z]))
 			return i;
 	}
 	return -1;
