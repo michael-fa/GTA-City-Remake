@@ -308,30 +308,6 @@ public OnPlayerCommandText(playerid, cmdtext[])
 	return SendClientMessage(playerid, GREY, "Der Befehl wurde nicht gefunden. ("HTML_RED"/help"HTML_WHITE")");
 }
 
-/*
-public OnPlayerCommandReceived(playerid, cmd[], params[], flags)
-{
-	if(!pInfo[playerid][loggedin])return 0;
-	DebugPrint("%s %s, if([%d]%d < %d)", cmd, params, playerid, pPermissions[playerid], flags);
-    if (pPermissions[playerid]<flags)
-    {
-    	SendClientMessage(playerid, GREY, "* Du hast keinen Zugriff auf diesen Befehl.");
-        return 0;
-    }
-
-    return 1;
-}
-
-public OnPlayerCommandPerformed(playerid, cmd[], params[], result, flags)
-{
-	if(result == -1)
-    {
-        SendClientMessage(playerid, 0xFFFFFFFF, "SERVER: Unbekannter Befehl. ("HTML_RED"/help"#HTML_WHITE")");
-        return 0;
-    }
-	return 1;
-}*/
-
 public OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
 {
 	return 1;
