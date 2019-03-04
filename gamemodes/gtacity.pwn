@@ -41,7 +41,6 @@
 #include "/../../gamemodes/utils.pwn"
 #include "/../../gamemodes/mysql.pwn"
 #include "/../../gamemodes/vehicles.pwn"
-//#include "/../../gamemodes/actors.pwn" unnecessary
 #include "/../../gamemodes/checkpoints.pwn"
 #include "/../../gamemodes/bikerental.pwn"
 #include "/../../gamemodes/buildings.pwn"
@@ -79,6 +78,7 @@ main()
 
 public OnGameModeInit()
 {
+	gUpTimeVal=gettime(); //Behalten das erstmal bis wir es vllt nicht mehr brauchen (who knows.)
 	print("\n\n__________________________________________________________________________\n");
 	print("\nGameModeInit:\n------------");
 	SetGameModeText("German Reallife");
