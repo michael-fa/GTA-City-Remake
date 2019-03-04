@@ -305,7 +305,7 @@ public OnPlayerText(playerid, text[])
 
 public OnPlayerCommandText(playerid, cmdtext[])
 {
-	return 1;
+	return SendClientMessage(playerid, GREY, "Der Befehl wurde nicht gefunden. ("HTML_RED"/help"HTML_WHITE")");
 }
 
 /*
