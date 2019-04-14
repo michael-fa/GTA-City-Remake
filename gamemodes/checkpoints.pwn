@@ -21,7 +21,7 @@ new ScriptedCheckpoint[MAX_PLAYERS][eScriptedCheckpoints]; //needs to be reset o
 
 
 //Ex Functions
-stock SetPlayerCheckpoint_(playerid, Float:x, Float:y, Float:z, Float:size__, cp_idx, bool:del, play_sound_ = 1150)
+stock SetPlayerCheckpoint_(playerid, Float:x, Float:y, Float:z, Float:size__, cp_idx, bool:del = true, play_sound_ = 1150)
 {
 	if(ScriptedCheckpoint[playerid][cp_id] != -1) DisablePlayerCheckpoint(playerid);
 	ScriptedCheckpoint[playerid][cp_id] = cp_idx;
