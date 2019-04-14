@@ -5,10 +5,10 @@
 
 	Infos für Contribs:
 		- Macht euch auf n' Modularen AUGEN KREBS gefasst.
-		- Was nicht modern oder 100% gut gescriptet? DWI!
+		- Was' nicht modern oder 100% gut gescriptet? DWI!
 		- Retard? -> https://github.com/michael-fa/GTA-City-Remake/issues/new
 
-	  **Immernoch dabei ?**
+	    **Immernoch dabei ?**
 		- OCMD ist der aktuell genutzt command processor.. DWI!
 		- Contact me @ https://breadfish.de/index.php?user/36956-lp/
 		- Wehe (!) "gamemodes/gtacity.pwn" ist flooded mit one-use shit-code.
@@ -39,6 +39,7 @@
 #include "/../../gamemodes/common.pwn"
 #include "/../../gamemodes/players.pwn"
 #include "/../../gamemodes/utils.pwn"
+#include "/../../gamemodes/notifications.pwn" // players.pwn uses notifications.pwn
 #include "/../../gamemodes/mysql.pwn"
 #include "/../../gamemodes/vehicles.pwn"
 #include "/../../gamemodes/checkpoints.pwn"
@@ -57,6 +58,7 @@
 //Commands
 #include "/../../gamemodes/cmds/god.pwn" //IsGod is used in files underneath
 #include "/../../gamemodes/cmds/headadmin.pwn"
+#include "/../../gamemodes/cmds/supporter.pwn"
 
 
 
@@ -256,6 +258,7 @@ public OnPlayerSpawn(playerid)
 		{
 			//Nach dem Login
 			DebugPrint("%s nach Login normal gespawnt. Rang: %s | Permission: %d", PlayerName(playerid), PlayerRank(playerid), pPermissions[playerid]);
+			ShowPlayerNotification(playerid, "Der Anfang", "Geh zur stadthalle hallo test test test test test test test.");
 		}
 		case SPAWN_REGISTER:
 		{
@@ -366,11 +369,7 @@ public OnPlayerLeaveRaceCheckpoint(playerid)
 
 public OnPlayerEnterCheckpoint_(playerid, cpid)
 {
-	if(cpid == -1)
-	{
-		DebugPrint(" IDIOT! Use SetPlayerCheckpoint_ instead of SetPlayerCheckpoint! - Or checkpoints.pwn is bugged");
-		return true; //If a CHECKPOINT ever doesn't "execute code" - its cuz of SOMEONE not using SetPlayerCheckPoint_
-	}
+	if(cpid == -1)return true; //If a CHECKPOINT ever doesn't "execute code" - its cuz of SOMEONE not using SetPlayerCheckPoint_
 	if(pInFahrschule[playerid])
 	{
 		if(FsCp[cpid+1][0] == -1.0 && FsCp[cpid+1][1] == -1.0 && FsCp[cpid+1][2] == -1.0) //Finished 
@@ -528,7 +527,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 			GetPlayerFacingAngle(playerid, ang);
 			SetVehicleZAngle_(pRentalBike[playerid], ang); 
 			SetVehiclePos(pRentalBike[playerid], x,y,z);
-			SetPlayerCheckpoint(playerid, x,y,z, 1.0);
+			SetPlayerCheckpoint_(playerid, x,y,z, 1.0, true);
 			pDisableCheckPointOnEnter[playerid] = true;
 			SendClientMessage(playerid, YELLOW, "* Du hast schon ein Fahrrad gemietet. Es wurde zu dir gebracht.");
 			return 1;
@@ -902,7 +901,6 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 				}
 
 			}
-
 		}
 	}
 	return 1;
