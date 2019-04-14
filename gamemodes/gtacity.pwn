@@ -902,6 +902,72 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 
 			}
 		}
+
+		case DIALOG_CBIZ_SHOP:
+		{
+			if(!response)
+			{
+				DeletePVar(playerid, "CBIZ_TYPE");
+				DeletePVar(playerid, "CBIZ_INTERIOR");
+				return true;
+			}
+			if(pInfo[playerid][rank] < HEAD_ADMIN)return false;
+			SetPVarInt(playerid, "CBIZ_INTERIOR", listitem);
+			ShowPlayerDialog(playerid, DIALOG_CBIZ_PRICE, DIALOG_STYLE_INPUT, "Geschäft erstellen - Preis", "Bitte gib nun den Preis ein:", "Erstellen", "Zurück");
+		}
+
+		case DIALOG_CBIZ_FASTFOOD:
+		{
+			if(!response)
+			{
+				DeletePVar(playerid, "CBIZ_TYPE");
+				DeletePVar(playerid, "CBIZ_INTERIOR");
+				return true;
+			}
+			if(pInfo[playerid][rank] < HEAD_ADMIN)return false;
+			SetPVarInt(playerid, "CBIZ_INTERIOR", listitem);
+			ShowPlayerDialog(playerid, DIALOG_CBIZ_PRICE, DIALOG_STYLE_INPUT, "Geschäft erstellen - Preis", "Bitte gib nun den Preis ein:", "Erstellen", "Zurück");
+		}
+
+		case DIALOG_CBIZ_PRICE:
+		{
+			if(!response)
+			{
+				DeletePVar(playerid, "CBIZ_INTERIOR");
+				switch(GetPVarInt(playerid, "CBIZ_TYPE"))
+				{
+					case 0:
+					{
+						//Shop
+						new str[128];
+						format(str, sizeof(str), "Interior\tBeschreibung\n");
+						for(new i=0; i<sizeof(ShopTypes); i++)
+						{
+							format(str,sizeof(str), "%s\t%d\t%s\n", str, ShopTypes[i][shop_int], ShopTypes[i][shop_name]);
+						}
+						ShowPlayerDialog(playerid, DIALOG_CBIZ_SHOP, DIALOG_STYLE_TABLIST_HEADERS, "Geschäft erstellen - Shop", str, "Weiter", "Abbrechen");
+					}
+					case 1:
+					{
+						//Fastfood
+						new str[128];
+						format(str, sizeof(str), "Interior\tBeschreibung\n");
+						for(new i=0; i<sizeof(FastfoodTypes); i++)
+						{
+							format(str,sizeof(str), "%s\t%d\t%s\n", str, FastfoodTypes[i][shop_int], FastfoodTypes[i][shop_name]);
+						}
+						ShowPlayerDialog(playerid, DIALOG_CBIZ_FASTFOOD, DIALOG_STYLE_TABLIST_HEADERS, "Geschäft erstellen - Fastfood", str, "Weiter", "Abbrechen");
+					}
+				}
+				return true;
+			}
+			if(!IsNumeric(inputtext) || isnull(inputtext)) return ShowPlayerDialog(playerid, DIALOG_CBIZ_PRICE, DIALOG_STYLE_INPUT, "Geschäft erstellen - Preis", "Bitte gib nun den Preis ein:", "Erstellen", "Zurück");
+			new pr = strval(inputtext);
+			new Float:pos[4];
+			GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
+			GetPlayerFacingAngle(playerid, pos[3]);
+			CreateBusiness(pr, BizType:GetPVarInt(playerid, "CBIZ_TYPE"), GetPVarInt(playerid, "CBIZ_INTERIOR"), pos);
+		}
 	}
 	return 1;
 }

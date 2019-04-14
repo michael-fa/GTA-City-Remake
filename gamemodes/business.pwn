@@ -5,6 +5,8 @@
 
 //To do
 // - Map Icons for each Shop, Ammu...-Type.
+// Actors of fastfood
+// Functions of fastfood and shop
 
 
 #define MAX_BIZ 200 // Maximale Geschäfte
@@ -12,18 +14,27 @@
 
 enum BizType {
 	BIZ_SHOP, //Supermarkt / 24/7
-	BIZ_AMMUNATION
+	BIZ_FASTFOOD
 }
 
-enum eShopTypes {
+enum bizTypet {
 	shop_int,
 	Float:shop_x,
 	Float:shop_y,
 	Float:shop_z,
 	Float:shop_r,
 	shop_name[128]
-} new ShopTypes[][eShopTypes] = {
-	{17, -25.9657,-187.1451,1003.5469,354.1385, "Singleplayer 24/7\tInterior 17"}
+} 
+
+new ShopTypes[][bizTypet] = {
+	{17, -25.9657,-187.1451,1003.5469,354.1385, "Singleplayer 24/7 #1"}
+};
+
+new FastfoodTypes[][bizTypet] = {
+	{10, 363.1634,-74.7327,1001.5078,320.2292, "Burger Shot"},
+	{9, 364.8855,-11.3816,1001.8516,344.8992, "Cluckin' Bell"},
+	{5, 373.825653,-117.270904,1001.499511, 0.0, "Well Stacked Pizza"},
+	{17, 377.0876,-192.6835,1000.6401,357.3184, "Rusty Browns Donuts"}
 };
 
 
@@ -97,7 +108,7 @@ stock LoadBusinesses()
 						if(Business[i][owner] == 0)
 						{
 							//Kein Owner
-							format(str, sizeof(str), "Supermarkt\nPreis: %d", Business[i][price]);
+							format(str, sizeof(str), "{FFD200}Supermarkt{FFFFFF}\nPreis: %s\n\nDrücke ENTER", AddCommas(Business[i][price]));
 							Business[i][_labels][0]=CreateDynamic3DTextLabel(str, WHITE, Business[i][p_x], Business[i][p_y], Business[i][p_z], 15.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, 0, 0);
 						}
 						else 
@@ -106,7 +117,7 @@ stock LoadBusinesses()
 							mysql_format(dbhandle, str, sizeof(str), "SELECT name FROM accounts WHERE id='%d'", Business[i][owner]);
 							mysql_query(dbhandle, str);
 							cache_get_value_name(0, "name", tmp_owner);
-							format(str, sizeof(str), "Supermarkt\n%s\nBesitzer: %s", Business[i][custom_name], tmp_owner);
+							format(str, sizeof(str), "{FFD200}Supermarkt{FFFFFF}\n{D2D2D2}%s{FFFFFF}\nBesitzer: %s\n\nDrücke ENTER", Business[i][custom_name], tmp_owner);
 							Business[i][_labels][0] = CreateDynamic3DTextLabel(str, WHITE, Business[i][p_x], Business[i][p_y], Business[i][p_z], 15.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, 0,0);
 						}
 
@@ -118,15 +129,38 @@ stock LoadBusinesses()
 						Business[i][_pickups][2] = CreateDynamicPickup(19198 , 1,-29.0915,-185.1253,1003.5469, Business[i][iVW], Business[i][int]);
 						
 					}
-					case BIZ_AMMUNATION:
+					case BIZ_FASTFOOD:
 					{
+						Business[i][_pickups][0] = CreateDynamicPickup(1559, 1, Business[i][p_x], Business[i][p_y], Business[i][p_z]+0.3); //corona
+						if(Business[i][owner] == 0)
+						{
+							//Kein Owner
+							format(str, sizeof(str), "{FFD200}Fastfood Restaurant{FFFFFF}\nPreis: %s\n\nDrücke ENTER", AddCommas(Business[i][price]));
+							Business[i][_labels][0]=CreateDynamic3DTextLabel(str, WHITE, Business[i][p_x], Business[i][p_y], Business[i][p_z], 15.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, 0, 0);
+						}
+						else 
+						{
+							new tmp_owner[MAX_PLAYER_NAME];
+							mysql_format(dbhandle, str, sizeof(str), "SELECT name FROM accounts WHERE id='%d'", Business[i][owner]);
+							mysql_query(dbhandle, str);
+							cache_get_value_name(0, "name", tmp_owner);
+							format(str, sizeof(str), "{FFD200}Fastfood Restaurant{FFFFFF}\n{D2D2D2}%s{FFFFFF}\nBesitzer: %s\n\nDrücke ENTER", Business[i][custom_name], tmp_owner);
+							Business[i][_labels][0] = CreateDynamic3DTextLabel(str, WHITE, Business[i][p_x], Business[i][p_y], Business[i][p_z], 15.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, 0,0);
+						}
+
+						/*//Create shop system related stuff, doesnt matter what values of Business change
+						Business[i][_actors][0] = CreateDynamicActor(180, -29.1886,-186.8786,1003.5469,359.0892, true, 100.0, Business[i][iVW], Business[i][int]);
+						if(isnull(Business[i][custom_name]))format(str, sizeof(str), ""HTML_WHITE"Wilkommen !\nDrücke ["HTML_YELLOW"F"HTML_WHITE"] hinter der Kasse");
+						else format(str, sizeof(str), ""HTML_WHITE"Wilkommen bei "HTML_GREEN"%s"HTML_WHITE"\nDrücke ["HTML_YELLOW"F"HTML_WHITE"] hinter der Kasse", Business[i][custom_name]);
+						Business[i][_labels][2] = CreateDynamic3DTextLabel(str, WHITE, -29.1886,-186.8786,1004.6460, 10.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, Business[i][iVW], Business[i][int]);
+						Business[i][_pickups][2] = CreateDynamicPickup(19198 , 1,-29.0915,-185.1253,1003.5469, Business[i][iVW], Business[i][int]);*/
 						
 					}
 				}
 
 				//What buidlings have in general..
 				Business[i][_labels][1] = CreateDynamic3DTextLabel("Drücke ENTER zum Verlassen", WHITE, Business[i][int_x], Business[i][int_y], Business[i][int_z], 10.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, Business[i][iVW], Business[i][int]);
-				Business[i][_pickups][1] = CreateDynamicPickup(1318, 1, Business[i][int_x], Business[i][int_y], Business[i][int_z], Business[i][iVW], Business[i][int]); //white down arrow;
+				Business[i][_pickups][1] = CreateDynamicPickup(1559, 1, Business[i][int_x], Business[i][int_y], Business[i][int_z], Business[i][iVW], Business[i][int]); //white down arrow;
 			}
 		}
 	}
@@ -175,11 +209,25 @@ stock CreateBusiness(tprice, BizType:biz_type, typeID, const Float:fEnter[4])
 	Business[free][is_valid] = true;
 	Business[free][biztype] = biz_type;
 	Business[free][price] = tprice;
-	Business[free][int] = ShopTypes[typeID][shop_int];
-	Business[free][int_x] = ShopTypes[typeID][shop_x];
-	Business[free][int_y] = ShopTypes[typeID][shop_y];
-	Business[free][int_z] = ShopTypes[typeID][shop_z];
-	Business[free][int_r] = ShopTypes[typeID][shop_r];
+	switch(biz_type)
+	{
+		case 0:
+		{
+			Business[free][int] = ShopTypes[typeID][shop_int];
+			Business[free][int_x] = ShopTypes[typeID][shop_x];
+			Business[free][int_y] = ShopTypes[typeID][shop_y];
+			Business[free][int_z] = ShopTypes[typeID][shop_z];
+			Business[free][int_r] = ShopTypes[typeID][shop_r];
+		}
+		case 1:
+		{
+			Business[free][int] = FastfoodTypes[typeID][shop_int];
+			Business[free][int_x] = FastfoodTypes[typeID][shop_x];
+			Business[free][int_y] = FastfoodTypes[typeID][shop_y];
+			Business[free][int_z] = FastfoodTypes[typeID][shop_z];
+			Business[free][int_r] = FastfoodTypes[typeID][shop_r];
+		}
+	}
 	Business[free][p_x] = fEnter[0];
 	Business[free][p_y] = fEnter[1];
 	Business[free][p_z] = fEnter[2];
@@ -217,22 +265,37 @@ stock CreateBusiness(tprice, BizType:biz_type, typeID, const Float:fEnter[4])
 		case BIZ_SHOP:
 		{
 			Business[free][_actors][0] = CreateDynamicActor(180, -29.1886,-186.8786,1003.5469,359.0892, true, 100.0, Business[free][iVW], Business[free][int]);
-			format(str, sizeof(str), ""HTML_WHITE"Wilkommen !\nDrücke ["HTML_YELLOW"F"HTML_WHITE"] hinter der Kasse");
+			format(str, sizeof(str), ""HTML_WHITE"Wilkommen !\nDrücke ["HTML_YELLOW"F"HTML_WHITE"] an der Kasse!");
 			//else format(str, sizeof(str), ""HTML_WHITE"Wilkommen bei "HTML_GREEN"%s"HTML_WHITE"\nDrücke ["HTML_YELLOW"F"HTML_WHITE"] hinter der Kasse", Business[free][custom_name]);
 			Business[free][_labels][2] = CreateDynamic3DTextLabel(str, WHITE, -29.1886,-186.8786,1004.6460, 10.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, Business[free][iVW], Business[free][int]);
 			Business[free][_pickups][2] = CreateDynamicPickup(19198 , 1,-29.0915,-185.1253,1003.5469, Business[free][iVW], Business[free][int]);
+
+			Business[free][_pickups][0] = CreateDynamicPickup(19592, 1, Business[free][p_x], Business[free][p_y], Business[free][p_z]); //enter
+
+			//Enter Exit labels
+			format(str, sizeof(str), "{FFD200}Supermarkt{FFFFFF}\nPreis: %s\n\nDrücke ENTER", AddCommas(Business[free][price]));
+			Business[free][_labels][0]=CreateDynamic3DTextLabel(str, WHITE, Business[free][p_x], Business[free][p_y], Business[free][p_z], 15.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, 0, 0);
+		}
+		case BIZ_FASTFOOD:
+		{
+			//Business[free][_actors][0] = CreateDynamicActor(180, -29.1886,-186.8786,1003.5469,359.0892, true, 100.0, Business[free][iVW], Business[free][int]);
+			//format(str, sizeof(str), ""HTML_WHITE"Wilkommen !\nDrücke ["HTML_YELLOW"F"HTML_WHITE"] an der Kasse!");
+			//else format(str, sizeof(str), ""HTML_WHITE"Wilkommen bei "HTML_GREEN"%s"HTML_WHITE"\nDrücke ["HTML_YELLOW"F"HTML_WHITE"] hinter der Kasse", Business[free][custom_name]);
+			//Business[free][_labels][2] = CreateDynamic3DTextLabel(str, WHITE, -29.1886,-186.8786,1004.6460, 10.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, Business[free][iVW], Business[free][int]);
+			//Business[free][_pickups][2] = CreateDynamicPickup(19198 , 1,-29.0915,-185.1253,1003.5469, Business[free][iVW], Business[free][int]);
+
+			Business[free][_pickups][0] = CreateDynamicPickup(1559, 1, Business[free][p_x], Business[free][p_y], Business[free][p_z]+0.3); //enter
+
+			//Enter Exit labels
+			format(str, sizeof(str), "{FFD200}Fastfood Restaurant{FFFFFF}\nPreis: %s\n\nDrücke ENTER", AddCommas(Business[free][price]));
+			Business[free][_labels][0]=CreateDynamic3DTextLabel(str, WHITE, Business[free][p_x], Business[free][p_y], Business[free][p_z], 15.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, 0, 0);
 		}
 	}
 	
 
 
 	//Enter Exit Pickups
-	Business[free][_pickups][0] = CreateDynamicPickup(19592, 1, Business[free][p_x], Business[free][p_y], Business[free][p_z]); //enter
 	Business[free][_pickups][1] = CreateDynamicPickup(1318, 1, Business[free][int_x], Business[free][int_y], Business[free][int_z], Business[free][iVW], Business[free][int]); //for exit
-
-	//Enter Exit labels
-	format(str, sizeof(str), "Supermarkt\nPreis: %d", Business[free][price]);
-	Business[free][_labels][0]=CreateDynamic3DTextLabel(str, WHITE, Business[free][p_x], Business[free][p_y], Business[free][p_z], 15.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, 0, 0);
 
 	Business[free][_labels][1] = CreateDynamic3DTextLabel("Drücke ENTER zum Verlassen", WHITE, Business[free][int_x], Business[free][int_y], Business[free][int_z], 10.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, Business[free][iVW], Business[free][int]);
 	DebugPrint(" CREATED BUSINESS (db = %d): TYPE = %d, PRICE = %d", Business[free][db_id], _:Business[free][biztype], Business[free][price]);
