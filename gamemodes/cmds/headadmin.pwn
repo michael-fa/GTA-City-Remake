@@ -6,7 +6,6 @@
 
 #define IsHeadAdmin(%0) (pPermissions[%0] >= PERM_HEAD_ADMIN | PERM_ADMIN | PERM_SUPPORTER)
 
-
 ocmd:makeadmin(playerid, params[])
 {
 	if(!IsHeadAdmin(playerid))return noaccess;
