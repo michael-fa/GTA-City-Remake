@@ -44,7 +44,7 @@ stock NearestBikeRental(playerid)
 //call it via timer oder whatever
 dpublic:BikeRentalEnd(playerid)
 {
-	if(!IsPlayerConnected(playerid) || pInfo[playerid][loggedin])
+	if(!PlayerOnline(playerid))
 		DestroyVehicle(pRentalBike[playerid]);
 	else {
 		SendClientMessage(playerid, YELLOW, "* Deine Mietzeit für das BMX ist abgelaufen.");

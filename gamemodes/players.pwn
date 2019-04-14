@@ -59,7 +59,8 @@ enum Rank {
 //Player bound timers
 enum ePTimers {
 	bikerental,
-	getloggedintimer
+	getloggedintimer,
+	notification
 } new pTimerIDs[MAX_PLAYERS][ePTimers];
 
 
@@ -107,6 +108,6 @@ stock ResetPlayerVars(playerid)
 //Check, aus lazypawn herausgenommen
 stock PlayerOnline(playerid)
 {
-	if(playerid==INVALID_PLAYER_ID && !IsPlayerConnected(playerid) && !pInfo[playerid][loggedin])return false;
+	if(playerid==INVALID_PLAYER_ID || !IsPlayerConnected(playerid) || !pInfo[playerid][loggedin])return false;
 	else return true;
 }
