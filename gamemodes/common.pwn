@@ -7,8 +7,8 @@
 
 
 
-//Debug kram - kann eigentlich so gelassen werden.
-#if defined GM_DEBUG
+//Debug kram - kann eigentlich so gelassen werden.		//	Don't ever parse strings / big arrays with this in between a while/for loop.. 
+#if defined GM_DEBUG									//  .. Took ? (almost) : (more than) 500ms foreach call(); 
 	#define DebugPrint(%0); printf("[DEBUG] "%0);
 #else
 	stock fake_nop(){return true;}
@@ -26,6 +26,7 @@ enum eGMCFG {
 	//SA-MP Server Uptime (approximately)
 new gUpTimeVal = 0;
 stock GetUptime(){return (gettime()-gUpTimeVal);}
+new bool:bOOC = false;
 
 
 
