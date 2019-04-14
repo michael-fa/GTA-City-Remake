@@ -17,11 +17,11 @@ ocmd:ooc(playerid, params[])
 		new str[260];
 		switch(pInfo[playerid][rank])
 		{
-			case 0:format(str,sizeof(str), "( [{00FF1E}OOC{FFFFFF}]: {FFFFFF}%s: {FFFFFF}%s )", PlayerName(playerid), txt);
-			case 1:format(str,sizeof(str), "( [{00FF1E}OOC{FFFFFF}]: {FFBE00}%s: {FFFFFF}%s )", PlayerName(playerid), txt);
-			case 2:format(str,sizeof(str), "( [{00FF1E}OOC{FFFFFF}]: {FF0000}%s: {FFFFFF}%s )", PlayerName(playerid), txt);
-			case 3:format(str,sizeof(str), "( [{00FF1E}OOC{FFFFFF}]: {A50000}%s: {FFFFFF}%s )", PlayerName(playerid), txt);
-			case 4:format(str,sizeof(str), "( [{00FF1E}OOC{FFFFFF}]: {00AFFF}%s: {FFFFFF}%s )", PlayerName(playerid), txt);
+			case 0:format(str,sizeof(str), "( [{00FF1E}OOC{FFFFFF}]: {FFFFFF}%s %s: {FFFFFF}%s )", PlayerRank(playerid), PlayerName(playerid), txt);
+			case 1:format(str,sizeof(str), "( [{00FF1E}OOC{FFFFFF}]: {FFBE00}%s %s: {FFFFFF}%s )", PlayerRank(playerid), PlayerName(playerid), txt);
+			case 2:format(str,sizeof(str), "( [{00FF1E}OOC{FFFFFF}]: {FF0000}%s %s: {FFFFFF}%s )", PlayerRank(playerid), PlayerName(playerid), txt);
+			case 3:format(str,sizeof(str), "( [{00FF1E}OOC{FFFFFF}]: {A50000}%s %s: {FFFFFF}%s )", PlayerRank(playerid), PlayerName(playerid), txt);
+			case 4:format(str,sizeof(str), "( [{00FF1E}OOC{FFFFFF}]: {00AFFF}%s %s: {FFFFFF}%s )", PlayerRank(playerid), PlayerName(playerid), txt);
 		}
 		SendClientMessageToAll(WHITE, str);
 	}
