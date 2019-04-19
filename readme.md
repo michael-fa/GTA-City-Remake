@@ -24,11 +24,12 @@
 Ich möchte dieses Gamemode nicht als ein besonders tolles oder wichtiges darstellen. 
 Es ist ein Versuch von mir das Script nach zu entwickeln, um den Server öffentlich
 zu ehren, nachdem er seine Zeit nun hinter sich hat. Ich möchte hierbei keinen bösen Gedanken
-ausführen, und vollen Respekt vor der Arbeit von jedem aus der Community.
+ausführen, und vollen Respekt vor der Arbeit von jedem aus der Community, außer die, die mal Angeklagter waren.
 Ich habe damals 2012 als kompletter PC-Noob angefangen auf GTA-City zu spielen, was mir eine neue "Welt" zeigte.
 
 Diesen Gamemode werde ich auf Erinnerungen und alte (rofl) abgespeicherte Screens & Positionen basieren lassen.
-Ich hab einige Dinge die ich gerne noch ein letztes Mal umsetzen möchte, (das Script ist das letzte was ich machen werde btw) und binde diese auch mit ein.
+Ich Scripte SA-MP Gamemodes nur noch als Nebenzeitvertreib.. ich kann Pawn nicht auf dauer ertragen, dann bin ich wieder mit anderen Projekten beschäftigt.
+Und ich habe einige Dinge die ich gerne noch ein letztes Mal umsetzen möchte; (das Script ist das letzte was ich machen werde btw) und binde diese auch mit ein.
 Features können also abweichen / besser sein oder waren nie auf RPG-City (2010-1018) zu finden. Ich keepe' immerhin den style - RPG-City war einer der besten deutschen Server die den SA-MP Stil am nähesten eingehalten haben.  *"It's not a custom game engine which you can script..."*
 
 
