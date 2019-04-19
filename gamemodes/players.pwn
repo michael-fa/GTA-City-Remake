@@ -77,6 +77,7 @@ new pInBuilding[MAX_PLAYERS];
 new bool:pDisableCheckPointOnEnter[MAX_PLAYERS];
 new bool:pInFahrschule[MAX_PLAYERS];
 new pPermissions[MAX_PLAYERS];
+new plastMapIconID[MAX_PLAYERS];
 
 
 
@@ -102,6 +103,7 @@ stock ResetPlayerVars(playerid)
 	pFSCar[playerid] = INVALID_VEHICLE_ID;
 	pDisableCheckPointOnEnter[playerid] = false;
 	pInFahrschule[playerid] = false;
+	plastMapIconID[playerid] = 0;
 	DisablePlayerCheckpoint_(playerid);
 }
 
