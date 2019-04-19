@@ -87,6 +87,7 @@ public OnGameModeInit()
 	ConnectWithMySQL();
 	ShowPlayerMarkers(false);
 	DisableNameTagLOS();
+	UsePlayerPedAnims();
 	ManualVehicleEngineAndLights();
 	DisableInteriorEnterExits();
 	EnableStuntBonusForAll(false);
@@ -213,6 +214,7 @@ public OnPlayerConnect(playerid)
 
 	//Map Icons der Gebäude laden 
 	LoadBuildingIconsFP(playerid);
+	LoadBusinessIconsFP(playerid);
 
 	//Weapon Skill like RPG-City
 	for(new i=0; i<10; i++)SetPlayerSkillLevel(playerid, i, 1000);
