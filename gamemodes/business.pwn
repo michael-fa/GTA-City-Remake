@@ -4,13 +4,13 @@
 
 
 //To do
-// - Map Icons for each Shop, Ammu...-Type.
-// Actors of fastfood
 // Functions of fastfood and shop
+//Add more singleplayer shops
 
 
 #define MAX_BIZ 200 // Maximale Geschäfte
 #define MAX_BIZ_NAME 32 //Beschreibung max. Länge
+
 
 enum BizType {
 	BIZ_SHOP, //Supermarkt / 24/7
@@ -26,16 +26,21 @@ enum bizTypet {
 	shop_name[128]
 } 
 
+
+
 new ShopTypes[][bizTypet] = {
 	{17, -25.9657,-187.1451,1003.5469,354.1385, "Singleplayer 24/7 #1"}
 };
 
 new FastfoodTypes[][bizTypet] = {
-	{10, 363.1634,-74.7327,1001.5078,320.2292, "Burger Shot"},
-	{9, 364.8855,-11.3816,1001.8516,344.8992, "Cluckin' Bell"},
-	{5, 373.825653,-117.270904,1001.499511, 0.0, "Well Stacked Pizza"},
-	{17, 377.0876,-192.6835,1000.6401,357.3184, "Rusty Browns Donuts"}
+	{10, 363.5319,-74.4832,1001.5078,318.2088, "Burger Shot"},
+	{9, 364.7784,-11.3707,1001.8516,12.8726, "Cluckin' Bell"},
+	{5, 372.2979,-133.3119,1001.4922,359.7931, "Well Stacked Pizza"},
+	{17, 377.0637,-193.0274,1000.6401,360.0000, "Rusty Browns Donuts"}
 };
+
+
+
 
 
 enum eBusiness
@@ -148,12 +153,25 @@ stock LoadBusinesses()
 							Business[i][_labels][0] = CreateDynamic3DTextLabel(str, WHITE, Business[i][p_x], Business[i][p_y], Business[i][p_z], 15.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, 0,0);
 						}
 
-						/*//Create shop system related stuff, doesnt matter what values of Business change
-						Business[i][_actors][0] = CreateDynamicActor(180, -29.1886,-186.8786,1003.5469,359.0892, true, 100.0, Business[i][iVW], Business[i][int]);
-						if(isnull(Business[i][custom_name]))format(str, sizeof(str), ""HTML_WHITE"Wilkommen !\nDrücke ["HTML_YELLOW"F"HTML_WHITE"] hinter der Kasse");
-						else format(str, sizeof(str), ""HTML_WHITE"Wilkommen bei "HTML_GREEN"%s"HTML_WHITE"\nDrücke ["HTML_YELLOW"F"HTML_WHITE"] hinter der Kasse", Business[i][custom_name]);
-						Business[i][_labels][2] = CreateDynamic3DTextLabel(str, WHITE, -29.1886,-186.8786,1004.6460, 10.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, Business[i][iVW], Business[i][int]);
-						Business[i][_pickups][2] = CreateDynamicPickup(19198 , 1,-29.0915,-185.1253,1003.5469, Business[i][iVW], Business[i][int]);*/
+						switch(Business[i][int])
+						{
+							case 10 : //BURGER SHOT
+							{
+								Business[i][_actors][0] = CreateDynamicActor(205, 376.7507,-65.8491,1001.5078,182.8056, true, 100.0, Business[i][iVW], Business[i][int]);
+							}
+							case 9 : //Clucknbell
+							{
+								Business[i][_actors][0] = CreateDynamicActor(167, 370.4950,-4.4926,1001.8589,184.8685, true, 100.0, Business[i][iVW], Business[i][int]);
+							}
+							case 5 : //Wellstacked
+							{
+								Business[i][_actors][0] = CreateDynamicActor(155, 374.1844,-117.2784,1001.4995,177.6487, true, 100.0, Business[i][iVW], Business[i][int]);
+							}
+							case 17 : //Rustybrownsdonuts
+							{
+								Business[i][_actors][0] = CreateDynamicActor(189, 380.7832,-189.0640,1000.6328,179.8759, true, 100.0, Business[i][iVW], Business[i][int]);
+							}
+						}
 						
 					}
 				}
@@ -275,20 +293,50 @@ stock CreateBusiness(tprice, BizType:biz_type, typeID, const Float:fEnter[4])
 			//Enter Exit labels
 			format(str, sizeof(str), "{FFD200}Supermarkt{FFFFFF}\nPreis: %s\n\nDrücke ENTER", AddCommas(Business[free][price]));
 			Business[free][_labels][0]=CreateDynamic3DTextLabel(str, WHITE, Business[free][p_x], Business[free][p_y], Business[free][p_z], 15.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, 0, 0);
+
+			//Mapicon
+			foreachplayer()
+			{
+				if(!PlayerOnline(i))continue;
+				SetPlayerMapIcon(i, plastMapIconID[i], Business[free][p_x], Business[free][p_y], Business[free][p_z], 38, 0xFFDC00FF, MAPICON_LOCAL);
+				plastMapIconID[i]++;
+			}
 		}
 		case BIZ_FASTFOOD:
 		{
-			//Business[free][_actors][0] = CreateDynamicActor(180, -29.1886,-186.8786,1003.5469,359.0892, true, 100.0, Business[free][iVW], Business[free][int]);
-			//format(str, sizeof(str), ""HTML_WHITE"Wilkommen !\nDrücke ["HTML_YELLOW"F"HTML_WHITE"] an der Kasse!");
-			//else format(str, sizeof(str), ""HTML_WHITE"Wilkommen bei "HTML_GREEN"%s"HTML_WHITE"\nDrücke ["HTML_YELLOW"F"HTML_WHITE"] hinter der Kasse", Business[free][custom_name]);
-			//Business[free][_labels][2] = CreateDynamic3DTextLabel(str, WHITE, -29.1886,-186.8786,1004.6460, 10.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, Business[free][iVW], Business[free][int]);
-			//Business[free][_pickups][2] = CreateDynamicPickup(19198 , 1,-29.0915,-185.1253,1003.5469, Business[free][iVW], Business[free][int]);
+			switch(Business[free][int])
+			{
+				case 10 : //BURGER SHOT
+				{
+					Business[free][_actors][0] = CreateDynamicActor(205, 376.7507,-65.8491,1001.5078,182.8056, true, 100.0, Business[free][iVW], Business[free][int]);
+				}
+				case 9 : //Clucknbell
+				{
+					Business[free][_actors][0] = CreateDynamicActor(167, 370.4950,-4.4926,1001.8589,184.8685, true, 100.0, Business[free][iVW], Business[free][int]);
+				}
+				case 5 : //Wellstacked
+				{
+					Business[free][_actors][0] = CreateDynamicActor(155, 374.1844,-117.2784,1001.4995,177.6487, true, 100.0, Business[free][iVW], Business[free][int]);
+				}
+				case 17 : //Rustybrownsdonuts
+				{
+					Business[free][_actors][0] = CreateDynamicActor(189, 380.7832,-189.0640,1000.6328,179.8759, true, 100.0, Business[free][iVW], Business[free][int]);
+				}
+			}
 
 			Business[free][_pickups][0] = CreateDynamicPickup(1559, 1, Business[free][p_x], Business[free][p_y], Business[free][p_z]+0.3); //enter
 
 			//Enter Exit labels
 			format(str, sizeof(str), "{FFD200}Fastfood Restaurant{FFFFFF}\nPreis: %s\n\nDrücke ENTER", AddCommas(Business[free][price]));
 			Business[free][_labels][0]=CreateDynamic3DTextLabel(str, WHITE, Business[free][p_x], Business[free][p_y], Business[free][p_z], 15.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, 0, 0);
+
+			//Mapicon
+			foreachplayer()
+			{
+				if(!PlayerOnline(i))continue;
+				SetPlayerMapIcon(i, plastMapIconID[i], Business[free][p_x], Business[free][p_y], Business[free][p_z], 50, -1, MAPICON_LOCAL);
+				plastMapIconID[i]++;
+			}
 		}
 	}
 	
@@ -362,4 +410,27 @@ stock GetNearestBusiness(playerid)
 			return i;
 	}
 	return -1;
+}
+
+
+
+stock LoadBusinessIconsFP(playerid)
+{
+	for(new i=0; i<MAX_BIZ; i++)
+	{
+		if(!Business[i][is_valid])continue;
+		switch(Business[i][biztype])
+		{
+			case 0://Shop
+			{
+				SetPlayerMapIcon(playerid, plastMapIconID[playerid], Business[i][p_x], Business[i][p_y], Business[i][p_z], 38, 0xFFDC00FF, MAPICON_LOCAL);
+				plastMapIconID[playerid]++;
+			} 
+			case 1: //Food
+			{
+				SetPlayerMapIcon(playerid, plastMapIconID[playerid], Business[i][p_x], Business[i][p_y], Business[i][p_z], 50, 0, MAPICON_LOCAL);
+				plastMapIconID[playerid]++;
+			} 
+		}
+	}
 }
