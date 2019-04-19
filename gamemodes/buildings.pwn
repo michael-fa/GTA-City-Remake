@@ -49,13 +49,12 @@ stock LoadBuildings(){
 
 stock LoadBuildingIconsFP(playerid)
 {
-	new _idx;
 	for(new i=0; i<sizeof(Buildings); i++)
 	{
 		if(Buildings[i][mapicon]==-1)continue; //Nicht jedes Gebäude hat ein Mapicon.
-		Buildings[i][mapiconid] = _idx; //Um das Icon später noch mal wieder zu verwenden
-		SetPlayerMapIcon(playerid, _idx, Buildings[i][enterx], Buildings[i][entery], Buildings[i][enterz], Buildings[i][mapicon], mapicon_color, MAPICON_LOCAL);
-		_idx++;
+		Buildings[i][mapiconid] = plastMapIconID[playerid]; //Um das Icon später noch mal wieder zu verwenden
+		SetPlayerMapIcon(playerid, plastMapIconID[playerid], Buildings[i][enterx], Buildings[i][entery], Buildings[i][enterz], Buildings[i][mapicon], mapicon_color, MAPICON_LOCAL);
+		plastMapIconID[playerid]++;
 	}
 	return true;
 }
