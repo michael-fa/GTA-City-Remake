@@ -1,6 +1,6 @@
 // 2019 © GTA-CITY REMAKE by lp_ aka Michael F.
 //     
-//      File:           /gamemodes/cmds/supporter.pwn
+//      File:           /gamemodes/cmds/player.pwn
 //      Description:    Alle normalen Spielbefehle und Befehle für Spieler halt.
 
 
