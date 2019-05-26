@@ -1,8 +1,10 @@
-//Gebäude
+// 2019 © GTA-CITY REMAKE by lp_ aka Michael F.
+//     
+//      File:           /gamemodes/buildings.pwn
+//      Description:    "Öffentliche" & andere Gebäude / Interiors
 
 enum BuildingType {
 	BUILDING_NORMAL,
-	BUILDING_FASTFOOD,
 	BUILDING_FRAK,
 	BUILDING_BANK
 }
