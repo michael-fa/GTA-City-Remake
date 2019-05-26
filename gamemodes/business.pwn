@@ -64,7 +64,8 @@ enum eBusiness
 	iVW,
 	STREAMER_TAG_3D_TEXT_LABEL: _labels[3], //enter, exit, front desk or whatever.
 	STREAMER_TAG_ACTOR: _actors[4], //let them have 4 actors max
-	STREAMER_TAG_PICKUP: _pickups[3] //enter, exit, front desk or whatever.
+	STREAMER_TAG_PICKUP: _pickups[3], //enter, exit, front desk or whatever.
+	STREAMER_TAG_AREA: area
 }
 new Business[MAX_BIZ][eBusiness];
 
@@ -136,6 +137,7 @@ stock LoadBusinesses()
 					}
 					case BIZ_FASTFOOD:
 					{
+
 						Business[i][_pickups][0] = CreateDynamicPickup(1559, 1, Business[i][p_x], Business[i][p_y], Business[i][p_z]+0.3); //corona
 						if(Business[i][owner] == 0)
 						{
@@ -158,18 +160,22 @@ stock LoadBusinesses()
 							case 10 : //BURGER SHOT
 							{
 								Business[i][_actors][0] = CreateDynamicActor(205, 376.7507,-65.8491,1001.5078,182.8056, true, 100.0, Business[i][iVW], Business[i][int]);
+								Business[i][area] = CreateDynamicCircle(376.7507,-65.8491, 2.5, Business[i][iVW], Business[i][int]);
 							}
 							case 9 : //Clucknbell
 							{
 								Business[i][_actors][0] = CreateDynamicActor(167, 370.4950,-4.4926,1001.8589,184.8685, true, 100.0, Business[i][iVW], Business[i][int]);
+								Business[i][area] = CreateDynamicCircle(370.4950,-4.4926, 2.5, Business[i][iVW], Business[i][int]);
 							}
 							case 5 : //Wellstacked
 							{
 								Business[i][_actors][0] = CreateDynamicActor(155, 374.1844,-117.2784,1001.4995,177.6487, true, 100.0, Business[i][iVW], Business[i][int]);
+								Business[i][area] = CreateDynamicCircle(374.1844,-117.2784, 2.5, Business[i][iVW], Business[i][int]);
 							}
 							case 17 : //Rustybrownsdonuts
 							{
 								Business[i][_actors][0] = CreateDynamicActor(189, 380.7832,-189.0640,1000.6328,179.8759, true, 100.0, Business[i][iVW], Business[i][int]);
+								Business[i][area] = CreateDynamicCircle(380.7832,-189.0640, 2.5, Business[i][iVW], Business[i][int]);
 							}
 						}
 						
@@ -308,19 +314,23 @@ stock CreateBusiness(tprice, BizType:biz_type, typeID, const Float:fEnter[4])
 			{
 				case 10 : //BURGER SHOT
 				{
+					Business[free][area] = CreateDynamicCircle(376.7507,-65.8491, 2.5, Business[free][iVW], Business[free][int]);
 					Business[free][_actors][0] = CreateDynamicActor(205, 376.7507,-65.8491,1001.5078,182.8056, true, 100.0, Business[free][iVW], Business[free][int]);
 				}
 				case 9 : //Clucknbell
 				{
+					Business[free][area] = CreateDynamicCircle(370.4950,-4.4926, 2.5, Business[free][iVW], Business[free][int]);
 					Business[free][_actors][0] = CreateDynamicActor(167, 370.4950,-4.4926,1001.8589,184.8685, true, 100.0, Business[free][iVW], Business[free][int]);
 				}
 				case 5 : //Wellstacked
 				{
+					Business[free][area] = CreateDynamicCircle(374.1844,-117.2784, 2.5, Business[free][iVW], Business[free][int]);
 					Business[free][_actors][0] = CreateDynamicActor(155, 374.1844,-117.2784,1001.4995,177.6487, true, 100.0, Business[free][iVW], Business[free][int]);
 				}
 				case 17 : //Rustybrownsdonuts
 				{
 					Business[free][_actors][0] = CreateDynamicActor(189, 380.7832,-189.0640,1000.6328,179.8759, true, 100.0, Business[free][iVW], Business[free][int]);
+					Business[free][area] = CreateDynamicCircle(380.7832,-189.0640, 2.5, Business[free][iVW], Business[free][int]);
 				}
 			}
 
