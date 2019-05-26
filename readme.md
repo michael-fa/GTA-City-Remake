@@ -4,6 +4,7 @@
 
 
 :construction: **Script Status:**     Anfang. :construction:
+BTW: RPG-City ist immer noch tot. Ob ein drittes reboot oder nicht.
 
 ## Entwicklung
 1. Clone / Download meiner Repo.
