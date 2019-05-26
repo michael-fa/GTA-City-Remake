@@ -9,7 +9,7 @@
 		- Retard? -> https://github.com/michael-fa/GTA-City-Remake/issues/new
 
 	    **Immernoch dabei ?**
-		- OCMD ist der aktuell genutzt command processor.. DWI!
+		- OCMD ist der aktuell genutzte command processor.. DWI!
 		- Contact me @ https://breadfish.de/index.php?user/36956-lp/
 		- Wehe (!) "gamemodes/gtacity.pwn" ist flooded mit one-use shit-code.
 		- Contrib't -> "Ich werde mich selbst in der Datei crediten." - gotit? kthx
@@ -30,6 +30,7 @@
 #include <streamer>
 #include <Dini>
 #include <fixes2>
+#include <pbars>
 
 //Lazypawn collection by lp_
 #include "lazypawn/main.cpp"
@@ -37,15 +38,18 @@
 //Gamemode related
 #include "/../../gamemodes/buildinfo.pwn" //always on top - DEBUG is set here!
 #include "/../../gamemodes/common.pwn"
+#include "/../../gamemodes/hunger_bar.pwn" //is used in players.pwn
 #include "/../../gamemodes/players.pwn"
+stock __updateHunger_FIX__ (playerid, Float:flx) { pInfo[playerid][fHunger] = flx; printf("changed hunger to %f", flx); return 1;} //Some ugly HAX when CROSS including error comes along cuz im NOT FRIENDS with that "style-of-including"
 #include "/../../gamemodes/utils.pwn"
-#include "/../../gamemodes/notifications.pwn" // players.pwn uses notifications.pwn
 #include "/../../gamemodes/mysql.pwn"
+#include "/../../gamemodes/notifications.pwn"
 #include "/../../gamemodes/vehicles.pwn"
 #include "/../../gamemodes/checkpoints.pwn"
 #include "/../../gamemodes/bikerental.pwn"
 #include "/../../gamemodes/buildings.pwn"
 #include "/../../gamemodes/business.pwn"  //mysql related
+#include "/../../gamemodes/area_events.pwn" //can be near / at / the end
 
 
 //Maps
@@ -253,18 +257,20 @@ public OnPlayerDisconnect(playerid, reason)
 }
 
 public OnPlayerSpawn(playerid)
-{
+{	
 	switch(pSpawnReason[playerid])
 	{
 		case SPAWN_LOGIN:
 		{
 			//Nach dem Login
 			DebugPrint("%s nach Login normal gespawnt. Rang: %s | Permission: %d", PlayerName(playerid), PlayerRank(playerid), pPermissions[playerid]);
-			ShowPlayerNotification(playerid, "Der Anfang", "Geh zur stadthalle hallo test test test test test test test.");
+			RenderHungerBar(playerid, true);
 		}
 		case SPAWN_REGISTER:
 		{
-			//SF Bahnhof (wir rpg halt..)
+			RenderHungerBar(playerid, true);
+
+			//LS Bahnhof (wie rpg halt..)
 			SetPlayerPos(playerid, 1760.9659,-1895.8420,13.5616);
 			SetPlayerFacingAngle(playerid, 270.3469);
 
@@ -277,11 +283,18 @@ public OnPlayerSpawn(playerid)
 		{
 			ShowPlayerDialog(playerid, DIALOG_SEX, DIALOG_STYLE_MSGBOX, "Geschlecht wählen", "Auf GTA-City kannst du in eine Weibliche oder in eine Männliche Rolle schlüpfen.\nBitte gib an, welches du für deinen Charakter möchtest.", "Weiblich" ,"Männlich");
 			//Er kann sich nen neuen ZiviSkin aussuchen!
+			SetPlayerInterior(playerid, 0);
+			SetPlayerVirtualWorld(playerid, VW_SKINCHANGE);
 			SetPlayerCameraPos(playerid, 442.8635,-1753.2231,10.0265);
 			SetPlayerCameraLookAt(playerid,437.9092,-1749.2146,9.0265);
 			SendClientMessage(playerid,-1,"{FFFFFF}Du kannst den Skin mit der {FF3C00}Shift{FFFFFF} Taste wechseln.");
 			SendClientMessage(playerid,-1,"{FFFFFF}Mit der {FF3C00}Enter{FFFFFF} Taste wählst du den Skin aus.");
 			TogglePlayerControllable(playerid, false);
+		}
+		case SPAWN_HOSPITAL:
+		{
+			UpdateHunger(playerid, 100.0);
+			pInfo[playerid][pDead] = false;
 		}
 		default: KickEx(playerid, "Du spawnst mit falscher Intention!");
 	}
@@ -290,6 +303,8 @@ public OnPlayerSpawn(playerid)
 
 public OnPlayerDeath(playerid, killerid, reason)
 {
+	pInfo[playerid][pDead] = true;
+	pSpawnReason[playerid] = SPAWN_HOSPITAL;
 	return 1;
 }
 
@@ -476,6 +491,8 @@ public OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid)
 
 public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
+	//Todo: ANTI Key Spam
+
 
 	//Fahrzeug interaktion von außen
 	if(GetClosestVehicleFromPlayer(playerid) != INVALID_VEHICLE_ID)
@@ -539,7 +556,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		GivePlayerMoney(playerid, -BikeRental[NearestBikeRental(playerid)][price]);
 		pRentalBike[playerid]=CreateVehicle(481, 1776.5442,-1890.0557,13.3868,281.1611, -1, -1, 900); //15 Minuten
 		PutPlayerInVehicle(playerid, pRentalBike[playerid], 0);
-		pTimerIDs[playerid][bikerental]=SetTimerEx_("BikeRentalEnd", 10000, 0, 1, "i", playerid); //900*1000
+		pTimerIDs[playerid][bikerental]=SetTimerEx_("BikeRentalEnd", 900*1000, 0, 1, "i", playerid); // 15 Min
 		SendClientMessage(playerid, YELLOW, "* Du hast dir ein BMX für 15 Minuten gemietet.");
 		return 1;
 	}
@@ -623,10 +640,6 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 				{
 					
 				}
-				case BUILDING_FASTFOOD:
-				{
-					
-				}
 				case BUILDING_BANK:
 				{
 					
@@ -695,6 +708,16 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		return 1;
 	}
 
+	//@OnPlayerJump
+	if(RELEASED(KEY_JUMP))
+	{
+		if(pOnPlayerJMPClDwn[playerid] < gettime())
+		{
+			pOnPlayerJMPClDwn[playerid] = gettime()+1;
+			UpdateHunger(playerid, (pInfo[playerid][fHunger] - 0.2));
+		}
+	}
+
 	
 	return 1;
 }
@@ -706,6 +729,24 @@ public OnRconLoginAttempt(ip[], password[], success)
 
 public OnPlayerUpdate(playerid)
 {
+	p_Hunger_Sec_Counter[playerid]++;
+	if(p_Hunger_Sec_Counter[playerid]>=15) //Wir warten ab, bis wir onfoot_upd_rate ca. 15 mal aufgerufen haben zum updaten
+	{
+		p_Hunger_Sec_Counter[playerid]=0;
+		//Power consumption for stuff hes doing
+		new Float:fCons = 0.02;
+		if(IsPlayerSprinting(playerid) && GetPlayerSpeed(playerid)>0)
+		{
+			fCons+=0.04;
+			print("Sprinting");
+		}
+		if(IsPlayerSwimming(playerid))
+		{
+			fCons+=0.09;
+			print("SWIM");
+		}
+		UpdateHunger(playerid, (pInfo[playerid][fHunger] - fCons));
+	}
 	return 1;
 }
 
@@ -772,6 +813,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			pInfo[playerid][perso] = 0;
 			pInfo[playerid][job] = 0;
 			pInfo[playerid][fahrschein] = 0;
+			pInfo[playerid][fHunger] = 100.0;
 
 			//Login track
 			StopPlayerSound(playerid);
@@ -787,6 +829,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			
 			//Set spawn info - Positionen dort, wo er bei der Skinauswahl stehen soll!!
 			SetSpawnInfo(playerid, 0, ZiviSkins_M[0], 437.9092,-1749.2146,9.0265,226.3349, 0,0, 0,0, 0,0);
+			SetPlayerVirtualWorld(playerid, VW_SKINCHANGE);
 			pSpawnReason[playerid] = SpawnReason:SPAWN_SKINCHANGE_ZIVI;
 			pInSkinChange[playerid] = 1; //After register
 			TogglePlayerSpectating(playerid, false); 
@@ -842,6 +885,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			cache_get_value_name_int(0, "perso", pInfo[playerid][perso]);
 			cache_get_value_name_int(0, "job", pInfo[playerid][job]);
 			cache_get_value_name_int(0, "fahrschein", pInfo[playerid][fahrschein]);
+			cache_get_value_name_float(0, "hunger", pInfo[playerid][fHunger]);
 			pInfo[playerid][loggedin]=true;
 
 			pPermissions[playerid]=RankToPerm(playerid);
@@ -851,6 +895,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 
 			//Normal spawnen (haus, frak usw)
 			pSpawnReason[playerid] = SpawnReason:SPAWN_LOGIN;
+			InitHungerBar(playerid, pInfo[playerid][fHunger]);
 			StopPlayerSound(playerid);//Login track
 
 			SetSpawnInfo(playerid, 0, pInfo[playerid][ziviskin], 1760.9659,-1895.8420,13.5616, 270.3469, 0,0, 0,0, 0,0);

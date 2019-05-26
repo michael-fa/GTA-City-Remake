@@ -22,7 +22,9 @@ enum ePlayerData {
 	players_advertised,
 	perso,
 	job,
-	fahrschein //auto
+	fahrschein, //auto
+	Float:fHunger,
+	bool:pDead
 }
 new pInfo[MAX_PLAYERS][ePlayerData];
 
@@ -30,7 +32,7 @@ new pInfo[MAX_PLAYERS][ePlayerData];
 enum SpawnReason {
 	SPAWN_LOGIN,
 	SPAWN_REGISTER,
-	SPAWN_DEATH,
+	SPAWN_HOSPITAL,
 	SPAWN_RESPAWN,
 	SPAWN_SKINCHANGE_ZIVI
 }
@@ -60,7 +62,8 @@ enum Rank {
 enum ePTimers {
 	bikerental,
 	getloggedintimer,
-	notification
+	notification,
+	getHungry
 } new pTimerIDs[MAX_PLAYERS][ePTimers];
 
 
@@ -78,6 +81,8 @@ new bool:pDisableCheckPointOnEnter[MAX_PLAYERS];
 new bool:pInFahrschule[MAX_PLAYERS];
 new pPermissions[MAX_PLAYERS];
 new plastMapIconID[MAX_PLAYERS];
+new p_Hunger_Sec_Counter[MAX_PLAYERS];
+new pOnPlayerJMPClDwn[MAX_PLAYERS];
 
 
 
@@ -91,7 +96,7 @@ stock KillAllTimers(playerid)
 
 
 
-//Makes main file cleaner
+//Lassen wir die main pwn sauberer
 stock ResetPlayerVars(playerid)
 {
 	pPermissions[playerid] = PERM_PLAYER;
@@ -104,7 +109,11 @@ stock ResetPlayerVars(playerid)
 	pDisableCheckPointOnEnter[playerid] = false;
 	pInFahrschule[playerid] = false;
 	plastMapIconID[playerid] = 0;
+	p_Hunger_Sec_Counter[playerid] = 0;
+	pOnPlayerJMPClDwn[playerid] = 0;
 	DisablePlayerCheckpoint_(playerid);
+
+	A_HungerBar[playerid][init] = false;
 }
 
 //Check, aus lazypawn herausgenommen
@@ -113,3 +122,6 @@ stock PlayerOnline(playerid)
 	if(playerid==INVALID_PLAYER_ID || !IsPlayerConnected(playerid) || !pInfo[playerid][loggedin])return false;
 	else return true;
 }
+
+//Current Timer @getHungry
+

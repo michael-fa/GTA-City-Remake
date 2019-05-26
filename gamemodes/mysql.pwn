@@ -178,7 +178,8 @@ stock SaveUserData(playerid)
 	players_advertised = '%d', \
 	perso = '%d', \
 	job = '%d', \
-	fahrschein = '%d' \
+	fahrschein = '%d', \
+	hunger = '%f' \
 	WHERE id = '%d'", 
 	pInfo[playerid][regdate],
 	gettime(),
@@ -194,6 +195,7 @@ stock SaveUserData(playerid)
 	pInfo[playerid][perso],
 	pInfo[playerid][job],
 	pInfo[playerid][fahrschein],
+	pInfo[playerid][fHunger],
 	pInfo[playerid][db_id]);
 	mysql_query(dbhandle, query);
 	return true;
