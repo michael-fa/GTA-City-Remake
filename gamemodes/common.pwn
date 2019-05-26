@@ -1,3 +1,8 @@
+// 2019 © GTA-CITY REMAKE by lp_ aka Michael F.
+//     
+//      File:           /gamemodes/common.pwn
+//      Description:    Alles globale und so, krams, vars usw. Außerdem neben gtacity.pwn zweit wichtigste Datei.
+
 #define MAX_LOGIN_TRIES      3
 #define MAX_PASSWORD_LEN     128
 #define STARTMONEY           5000
@@ -63,6 +68,7 @@ enum {
 //Virtuelle Welten
 enum {
 	VW_ZERO,
+	VW_SKINCHANGE,
 	VW_STADTHALLE,
 	VW_SHOP = 2000,
 	VW_AMMUNATION = 2050,
