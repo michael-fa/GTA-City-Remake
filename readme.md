@@ -71,7 +71,7 @@ Hierbei ist dennoch der Fokus aller Events (callbacks) in der Hauptdatei, nur wi
    - Zeex für [Crashdetect] & [seinen Kompiler]
    - [Dini] von BlueG
    - [a_zones] von Cueball
-   - Sscanf (Quelle noch unbekannt)
+   - Sscanf Include Version (Quelle mir noch unbekannt)
    - kleinerOpa für [OCMD] 2.1.1
    - [Pawn Language Plugin] von Southclaws
    - dotSILENT für sein [Fixes2] Plugin!
