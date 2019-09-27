@@ -20,8 +20,10 @@
 
 
 
+//Gamemode related BUT goes here as its 100% native code.
+#include "/../../gamemodes/buildinfo.pwn" //always on top - DEBUG is set here!
 
-
+//''Libs''
 #include <a_samp>
 #include <ocmd>
 #include <crashdetect>
@@ -32,11 +34,10 @@
 #include <fixes2>
 #include <pbars>
 
-//Lazypawn collection by lp_
+//Lazypawn function-collection by lp_
 #include "lazypawn/main.cpp"
 
 //Gamemode related
-#include "/../../gamemodes/buildinfo.pwn" //always on top - DEBUG is set here!
 #include "/../../gamemodes/common.pwn"
 #include "/../../gamemodes/hunger_bar.pwn" //is used in players.pwn
 #include "/../../gamemodes/players.pwn"
@@ -51,10 +52,8 @@ stock __updateHunger_FIX__ (playerid, Float:flx) { pInfo[playerid][fHunger] = fl
 #include "/../../gamemodes/business.pwn"  //mysql related
 #include "/../../gamemodes/area_events.pwn" //can be near / at / the end
 
-
 //Maps
 #include "/../../maps/rpg-city.pwn"
-
 
 //Textdraw
 #include "/../../gamemodes/textdraws/servertd.pwn"
