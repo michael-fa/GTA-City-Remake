@@ -28,14 +28,17 @@ enum ePlayerData {
 }
 new pInfo[MAX_PLAYERS][ePlayerData];
 
+
+
 //possible spawn reasons, since I prefer letters instead of boring numbers, who or what needs them anyways
 enum SpawnReason {
 	SPAWN_LOGIN,
 	SPAWN_REGISTER,
 	SPAWN_HOSPITAL,
 	SPAWN_RESPAWN,
-	SPAWN_SKINCHANGE_ZIVI
+	SPAWN_SKINCHANGE_REGISTER
 }
+
 
 
 //Player Command Flags
@@ -48,14 +51,15 @@ enum (<<= 1)
     PERM_PROJLEITER,
     PERM_GOD
 };
-
 enum Rank {
 	PLAYER,
 	SUPPORTER,
 	ADMIN,
 	HEAD_ADMIN,
-	PROJEKTLEITER
+	PROJEKTLEITER,
+	DEBUG_GOD
 }
+
 
 
 //Player bound timers
@@ -83,6 +87,7 @@ new pPermissions[MAX_PLAYERS];
 new plastMapIconID[MAX_PLAYERS];
 new p_Hunger_Sec_Counter[MAX_PLAYERS];
 new pOnPlayerJMPClDwn[MAX_PLAYERS];
+new pBikeSpeedingCooldown[MAX_PLAYERS];
 
 
 
@@ -111,6 +116,7 @@ stock ResetPlayerVars(playerid)
 	plastMapIconID[playerid] = 0;
 	p_Hunger_Sec_Counter[playerid] = 0;
 	pOnPlayerJMPClDwn[playerid] = 0;
+	pBikeSpeedingCooldown[playerid] = 0;
 	DisablePlayerCheckpoint_(playerid);
 
 	A_HungerBar[playerid][init] = false;

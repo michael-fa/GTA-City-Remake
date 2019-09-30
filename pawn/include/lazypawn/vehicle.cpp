@@ -82,10 +82,22 @@ stock GetVehicleDriver(vid)
 stock IsABike(vehicleid)
 {
 	if(!IsValidVehicle(vehicleid))return false;
-	new result;
+	new result = 0;
 	switch(GetVehicleModel(vehicleid))
 	{
 		case 509, 481, 510: result = GetVehicleModel(vehicleid);
+		default: result = 0;
+	}
+	return result;
+}
+
+stock IsAMotorBike(vehicleid)
+{
+	if(!IsValidVehicle(vehicleid))return false;
+	new result = 0;
+	switch(GetVehicleModel(vehicleid))
+	{
+		case 461, 462, 463, 468, 471, 448, 521, 522, 523, 581, 586: result = GetVehicleModel(vehicleid);
 		default: result = 0;
 	}
 	return result;

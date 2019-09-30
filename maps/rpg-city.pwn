@@ -4,6 +4,7 @@
 
 //LISTE:
  //Buschreien 6x und Zäune ~6x auf dem Fußweg vorm LSPD sind in rZ verbuggt.
+ //ForPlayer teil scheint ziemlich wenig RemoveObjects zu haben.. einiges könnte also noch irgendwo überlappen
 
 
 stock LoadRPGCityMap()
@@ -853,4 +854,20 @@ stock LoadRPGCityMap()
 	CreateDynamicObject(19968, 1107.92371, -1689.77576, 12.54666,   0.00000, 0.00000, 271.53226);
 	CreateDynamicObject(987, 1977.26355, 704.75598, 9.82100,   0.00000, 0.00000, -90.00000);
 	CreateDynamicObject(987, 1977.29761, 713.75012, 9.82100,   0.00000, 0.00000, -90.00000);
+}
+
+stock LoadRPGCityMap_ForPlayer(playerid)
+{
+	RemoveBuildingForPlayer(playerid, 6071, 1087.9844, -1682.3281, 19.4375, 0.25);
+	RemoveBuildingForPlayer(playerid, 647, 1051.8750, -1680.5156, 14.4609, 0.25);
+	RemoveBuildingForPlayer(playerid, 615, 1051.2500, -1678.0234, 13.2891, 0.25);
+	RemoveBuildingForPlayer(playerid, 1297, 1108.0625, -1707.1719, 15.9297, 0.25);
+	RemoveBuildingForPlayer(playerid, 647, 1055.6172, -1692.6484, 14.4609, 0.25);
+	RemoveBuildingForPlayer(playerid, 647, 1058.3125, -1695.7656, 14.6875, 0.25);
+	RemoveBuildingForPlayer(playerid, 6063, 1087.9844, -1682.3281, 19.4375, 0.25);
+	RemoveBuildingForPlayer(playerid, 647, 1097.4297, -1699.4219, 14.6875, 0.25);
+	RemoveBuildingForPlayer(playerid, 647, 1101.6563, -1699.5625, 14.6875, 0.25);
+	RemoveBuildingForPlayer(playerid, 1297, 1130.5391, -1684.3203, 15.8906, 0.25);
+	RemoveBuildingForPlayer(playerid, 625, 1978.2031, 698.9141, 10.7109, 0.25);
+	RemoveBuildingForPlayer(playerid, 625, 1978.2031, 710.0156, 10.7109, 0.25);
 }
