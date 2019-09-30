@@ -9,7 +9,8 @@
 enum E_HungerBar {
 	bool:init,
 	bool:_render,
-	PlayerBar:bar
+	PlayerBar:bar,
+	Float:fCurrentValue
 }	new A_HungerBar[MAX_PLAYERS][E_HungerBar];
 
 stock RenderHungerBar(playerid, bool:ren)
@@ -45,7 +46,7 @@ stock UpdateHunger(playerid, Float:val)
 stock InitHungerBar(playerid, Float:val) 
 {
 	A_HungerBar[playerid][init] = true;
-	A_HungerBar[playerid][bar] = CreatePlayerProgressBar(playerid, 548.0000000, 47.000000, 59.0, 5.0, GREEN, val);
+	A_HungerBar[playerid][bar] = CreatePlayerProgressBar(playerid, 548.0000000, 47.000000, 59.0, 5.0, GREEN, 100.0);
 	SetPlayerProgressBarValue(playerid, A_HungerBar[playerid][bar], val);
 	HidePlayerProgressBar(playerid, A_HungerBar[playerid][bar]);
 	return 1;
