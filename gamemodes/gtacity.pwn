@@ -20,7 +20,7 @@
 
 
 
-//Gamemode related BUT goes here as its 100% native code.
+//Gamemode related BUT goes here as its 100% native code ONLY.
 #include "/../../gamemodes/buildinfo.pwn" //always on top - DEBUG is set here!
 
 //''Libs''
@@ -117,7 +117,7 @@ public OnGameModeInit()
 	shmenu=CreateMenu("Stadthalle", 3, 232.000000, 175.000000, 150.0, 150.0);
 	AddMenuItem(shmenu, 0, "Arbeitsamt");
 	AddMenuItem(shmenu, 0, "Personalausweis");
-	AddMenuItem(shmenu, 0, "Organistation erstellen");
+	AddMenuItem(shmenu, 0, "Organisation erstellen");
 	//AddMenuItem(stadthallenmenu, 0, "Sonderlizenzen erwerben");
 
 
@@ -162,7 +162,7 @@ public OnGameModeInit()
 
 	//==========================================================
 	//				Textdraws
-	TD_ServerTD_Load(); //URL unter Radar; GTA-City Logo neben Wepicon;
+	TD_ServerTD_Load(); //URL unter Radar; GTA-City Logo neben Wepicon
 	return 1;
 }
 

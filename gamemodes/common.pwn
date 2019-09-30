@@ -59,9 +59,9 @@ enum {
 	DIALOG_UWU, //User werben User
 	DIALOG_JOBS,
 	DIALOG_ALTER,
-	DIALOG_CBIZ_SHOP,
-	DIALOG_CBIZ_FASTFOOD,
-	DIALOG_CBIZ_PRICE
+	DIALOG_CBIZ_SHOP,     // / / / / / / / / / /
+	DIALOG_CBIZ_FASTFOOD, // >> BizCreation Admin Only
+	DIALOG_CBIZ_PRICE     // / / / / / / / / / /
 }
 
 

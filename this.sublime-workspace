@@ -115,16 +115,16 @@
 			"file": "gamemodes/gtacity.pwn",
 			"settings":
 			{
-				"buffer_size": 30935,
+				"buffer_size": 34564,
 				"encoding": "Western (Windows 1252)",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "maps/rpg-city.pwn",
+			"file": ".gitignore",
 			"settings":
 			{
-				"buffer_size": 78577,
+				"buffer_size": 263,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -133,7 +133,7 @@
 			"file": "gamemodes/common.pwn",
 			"settings":
 			{
-				"buffer_size": 1282,
+				"buffer_size": 1933,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -142,34 +142,7 @@
 			"file": "gamemodes/cmds/god.pwn",
 			"settings":
 			{
-				"buffer_size": 592,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "gamemodes/cmds/headadmin.pwn",
-			"settings":
-			{
-				"buffer_size": 2968,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "gamemodes/business.pwn",
-			"settings":
-			{
-				"buffer_size": 10324,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "pawn/include/streamer.inc",
-			"settings":
-			{
-				"buffer_size": 27627,
+				"buffer_size": 576,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -178,25 +151,7 @@
 			"file": "gamemodes/players.pwn",
 			"settings":
 			{
-				"buffer_size": 2405,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "gamemodes/utils.pwn",
-			"settings":
-			{
-				"buffer_size": 2025,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "readme.md",
-			"settings":
-			{
-				"buffer_size": 4211,
+				"buffer_size": 2752,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -205,7 +160,16 @@
 			"file": "gamemodes/mysql.pwn",
 			"settings":
 			{
-				"buffer_size": 5593,
+				"buffer_size": 5638,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "gamemodes/business.pwn",
+			"settings":
+			{
+				"buffer_size": 16575,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -239,9 +203,17 @@
 	"command_palette":
 	{
 		"height": 104.0,
-		"last_filter": "Package Control: list",
+		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"Package Control: ins",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: insta",
+				"Package Control: Install Package"
+			],
 			[
 				"Package Control: list",
 				"Package Control: List Packages"
@@ -255,10 +227,6 @@
 				"Package Control: Install Package"
 			],
 			[
-				"Package Control: ins",
-				"Package Control: Install Package"
-			],
-			[
 				"Package Control: sear",
 				"Package Control: Discover Packages"
 			],
@@ -268,10 +236,6 @@
 			],
 			[
 				"Package Control: instal",
-				"Package Control: Install Package"
-			],
-			[
-				"Package Control: insta",
 				"Package Control: Install Package"
 			]
 		],
@@ -300,12 +264,21 @@
 	},
 	"expanded_folders":
 	[
-		"/C/Users/Michael/Desktop/rpg-city-remake/GTA-City-Remake",
-		"/C/Users/Michael/Desktop/rpg-city-remake/GTA-City-Remake/gamemodes",
-		"/C/Users/Michael/Desktop/rpg-city-remake/GTA-City-Remake/maps"
+		"/C/Users/Michi/source/repos/gta-city-remake",
+		"/C/Users/Michi/source/repos/gta-city-remake/gamemodes"
 	],
 	"file_history":
 	[
+		"/C/Users/Michi/source/repos/gta-city-remake/maps/rpg-city.pwn",
+		"/C/Users/Michi/source/repos/gta-city-remake/pawn/include/streamer.inc",
+		"/C/Users/Michi/source/repos/gta-city-remake/gamemodes/cmds/headadmin.pwn",
+		"/C/Users/Michi/source/repos/gta-city-remake/gamemodes/business.pwn",
+		"/C/Users/Michi/source/repos/gta-city-remake/gamemodes/utils.pwn",
+		"/C/Users/Michi/source/repos/gta-city-remake/gamemodes/buildinfo.pwn",
+		"/C/Users/Michi/source/repos/gta-city-remake/readme.md",
+		"/C/Users/Michi/source/repos/gta-city-remake/gamemodes/mysql.pwn",
+		"/C/Users/Michi/source/repos/gta-city-remake/gamemodes/bikerental.pwn",
+		"/C/Users/Michi/source/repos/gta-city-remake/pawn/include/Sscanf.inc",
 		"/C/Users/Michael/Desktop/rpg-city-remake/GTA-City-Remake/gamemodes/actors.pwn",
 		"/C/Users/Michael/Desktop/rpg-city-remake/GTA-City-Remake/gamemodes/cmds/readme.md",
 		"/C/Users/Michael/Desktop/rpg-city-remake/GTA-City-Remake/gamemodes/buildings.pwn",
@@ -416,7 +389,7 @@
 	],
 	"find":
 	{
-		"height": 49.0
+		"height": 23.0
 	},
 	"find_in_files":
 	{
@@ -430,6 +403,12 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"custom_name",
+			"Create",
+			"gamemode",
+			"name",
+			"FROM",
+			"gamemodes",
 			".\n",
 			"OnPlayerKey",
 			"OnPlayeKey",
@@ -477,7 +456,7 @@
 	"groups":
 	[
 		{
-			"selected": 5,
+			"selected": 0,
 			"sheets":
 			[
 				{
@@ -486,15 +465,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 30935,
+						"buffer_size": 34564,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								24020,
-								24020
+								5337,
+								5337
 							]
 						],
 						"settings":
@@ -505,7 +484,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 10658.0,
+						"translation.y": 1643.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
@@ -513,32 +492,30 @@
 				},
 				{
 					"buffer": 1,
-					"file": "maps/rpg-city.pwn",
+					"file": ".gitignore",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 78577,
+						"buffer_size": 263,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								164,
-								164
+								161,
+								161
 							]
 						],
 						"settings":
 						{
-							"git_savvy.repo_path": "C:\\Users\\Michael\\Desktop\\rpg-city-remake\\GTA-City-Remake",
-							"syntax": "Packages/Pawn syntax/Pawn.tmLanguage",
-							"translate_tabs_to_spaces": false
+							"syntax": "Packages/Theme - Afterglow/Prefs/Langs/Git.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
@@ -547,15 +524,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1282,
+						"buffer_size": 1933,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1097,
-								1097
+								1460,
+								1460
 							]
 						],
 						"settings":
@@ -565,10 +542,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 336.0,
+						"translation.y": 391.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
@@ -577,21 +554,80 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 592,
+						"buffer_size": 576,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								47,
-								47
+								292,
+								292
 							]
 						],
 						"settings":
 						{
 							"git_savvy.repo_path": "C:\\Users\\Michael\\Desktop\\rpg-city-remake\\GTA-City-Remake",
 							"syntax": "Packages/Pawn syntax/Pawn.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "gamemodes/players.pwn",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2752,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								310,
+								310
+							]
+						],
+						"settings":
+						{
+							"git_savvy.repo_path": "C:\\Users\\Michael\\Desktop\\rpg-city-remake\\GTA-City-Remake",
+							"syntax": "Packages/Pawn syntax/Pawn.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1204.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "gamemodes/mysql.pwn",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5638,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								959,
+								959
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Pawn syntax/Pawn.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -601,206 +637,24 @@
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "gamemodes/cmds/headadmin.pwn",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2968,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2178,
-								2178
-							]
-						],
-						"settings":
-						{
-							"git_savvy.repo_path": "C:\\Users\\Michael\\Desktop\\rpg-city-remake\\GTA-City-Remake",
-							"syntax": "Packages/Pawn syntax/Pawn.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 378.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
+					"buffer": 6,
 					"file": "gamemodes/business.pwn",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 10324,
+						"buffer_size": 16575,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								9370,
-								9370
+								376,
+								376
 							]
 						],
 						"settings":
 						{
-							"git_savvy.repo_path": "C:\\Users\\Michael\\Desktop\\rpg-city-remake\\GTA-City-Remake",
-							"syntax": "Packages/Pawn syntax/Pawn.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 3132.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "pawn/include/streamer.inc",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 27627,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								13991,
-								13991
-							]
-						],
-						"settings":
-						{
-							"git_savvy.repo_path": "C:\\Users\\Michael\\Desktop\\rpg-city-remake\\GTA-City-Remake",
-							"syntax": "Packages/Pawn syntax/Pawn.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 4056.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "gamemodes/players.pwn",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2405,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1886,
-								1886
-							]
-						],
-						"settings":
-						{
-							"git_savvy.repo_path": "C:\\Users\\Michael\\Desktop\\rpg-city-remake\\GTA-City-Remake",
-							"syntax": "Packages/Pawn syntax/Pawn.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 966.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 9,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "gamemodes/utils.pwn",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2025,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								275,
-								275
-							]
-						],
-						"settings":
-						{
-							"git_savvy.repo_path": "C:\\Users\\Michael\\Desktop\\rpg-city-remake\\GTA-City-Remake",
-							"syntax": "Packages/Pawn syntax/Pawn.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "readme.md",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4211,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1663,
-								1663
-							]
-						],
-						"settings":
-						{
-							"git_savvy.repo_path": "C:\\Users\\Michael\\Desktop\\rpg-city-remake\\GTA-City-Remake",
-							"syntax": "Packages/Markdown/Markdown.sublime-syntax",
-							"tab_size": 3,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 84.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 10,
-					"file": "gamemodes/mysql.pwn",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5593,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								7,
-								7
-							]
-						],
-						"settings":
-						{
-							"git_savvy.repo_path": "C:\\Users\\Michael\\Desktop\\rpg-city-remake\\GTA-City-Remake",
 							"syntax": "Packages/Pawn syntax/Pawn.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
@@ -808,7 +662,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 10,
+					"stack_index": 4,
 					"type": "text"
 				}
 			]
@@ -816,7 +670,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 22.0
+		"height": 23.0
 	},
 	"input":
 	{
