@@ -3,7 +3,9 @@ logs/errors.log
 logs/warnings.log
 server_log.txt
 *.log
-*.log
+*.amx
+filterscripts/*.pwn
+logs/*.log
 samp-server.exe
 gamemodes/gtacity.amx
 logs/log-core.log
@@ -11,5 +13,4 @@ gamemodes/gtacity.amx
 logs/plugins/mysql.log
 gamemodes/gtacity.amx
 crashinfo.txt
-filterscripts/TD.amx
 plugins/pawncmd.dll
