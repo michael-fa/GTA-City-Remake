@@ -41,7 +41,7 @@
 #include "/../../gamemodes/common.pwn"
 #include "/../../gamemodes/hunger_bar.pwn" //is used in players.pwn
 #include "/../../gamemodes/players.pwn"
-stock __updateHunger_FIX__ (playerid, Float:flx) { pInfo[playerid][fHunger] = flx; printf("changed hunger to %f", flx); return 1;} //Some ugly HAX when CROSS including error comes along cuz im NOT FRIENDS with that "style-of-including"
+stock __updateHunger_FIX__ (playerid, Float:flx) { pInfo[playerid][fHunger] = flx; return 1;} //Some ugly HAX when CROSS including error comes along cuz im NOT FRIENDS with that "style-of-including"
 #include "/../../gamemodes/utils.pwn"
 #include "/../../gamemodes/mysql.pwn"
 #include "/../../gamemodes/notifications.pwn"
@@ -91,7 +91,7 @@ public OnGameModeInit()
 	ShowPlayerMarkers(false);
 	DisableNameTagLOS();
 	UsePlayerPedAnims();
-	ManualVehicleEngineAndLights();
+	//ManualVehicleEngineAndLights();
 	DisableInteriorEnterExits();
 	EnableStuntBonusForAll(false);
 	LoadGameModeSettings();
@@ -183,8 +183,8 @@ public OnPlayerRequestClass(playerid, classid)
 		ClearPlayerChat(playerid);
 		TogglePlayerSpectating(playerid, true); //Remove spawn button
 		//InLogin[playerid]=true;
-		InterpolateCameraPos(playerid,1420.7859,-1626.6654,69.2661,1420.7859,-1626.6654,69.2661,1000, CAMERA_MOVE);
-		InterpolateCameraLookAt(playerid,1486.6022,-1725.1429,13.5469,1486.6022,-1725.1429,13.5469,1000, CAMERA_MOVE);
+		InterpolateCameraPos(playerid,1378.2902,-1649.3329,64.4424 ,  1521.2888,-1584.5605,72.6648,  15000, CAMERA_MOVE);
+		InterpolateCameraLookAt(playerid,1538.3491,-1736.3766,13.3828, 1440.0277,-1735.1011,13.3828, 12000, CAMERA_MOVE);
 		
 		new query[128];
 		mysql_format(dbhandle, query, sizeof(query), "SELECT id FROM accounts WHERE name = '%e'", PlayerName(playerid));
@@ -203,6 +203,10 @@ public OnPlayerConnect(playerid)
 
 	if(IsPlayerNPC(playerid))return true;
 	
+	//Remove maps
+	LoadRPGCityMap_ForPlayer(playerid);
+
+
 	//Goosebumps activated
 	PlayerPlaySound(playerid,1185,0.0,0.0,0.0);
 	TextDrawShowForPlayer(playerid, ServerTD[0]);
@@ -278,7 +282,7 @@ public OnPlayerSpawn(playerid)
 			format(str, sizeof(str), "Hallo %s!\nAuf GTA-City können Spieler bei einer gewissen Anzahl an angeworbender Spieler coole Dinge freischalten.\nWurdest du von jemandem geworden, und weißt seinen Spielnamen?\n\nDann tippe ihn unten ein!", PlayerName(playerid));
 			ShowPlayerDialog(playerid, DIALOG_UWU, DIALOG_STYLE_INPUT, "User werben User", str, "Okay!", "Schließen");
 		}
-		case SPAWN_SKINCHANGE_ZIVI:
+		case SPAWN_SKINCHANGE_REGISTER:
 		{
 			ShowPlayerDialog(playerid, DIALOG_SEX, DIALOG_STYLE_MSGBOX, "Geschlecht wählen", "Auf GTA-City kannst du in eine Weibliche oder in eine Männliche Rolle schlüpfen.\nBitte gib an, welches du für deinen Charakter möchtest.", "Weiblich" ,"Männlich");
 			//Er kann sich nen neuen ZiviSkin aussuchen!
@@ -611,6 +615,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 				pInSkinChange[playerid] = 0;
 				pInfo[playerid][ziviskin] = GetPlayerSkin(playerid);
 				TogglePlayerSpectating(playerid, false);
+				SetPlayerVirtualWorld(playerid, 0);
 				//Now set him as first spawned after register - so right stuff is happenin to him
 				pSpawnReason[playerid] = SpawnReason:SPAWN_REGISTER;
 				SetCameraBehindPlayer(playerid);
@@ -708,12 +713,36 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	}
 
 	//@OnPlayerJump
-	if(RELEASED(KEY_JUMP))
+	if(RELEASED(KEY_JUMP) && GetPlayerState(playerid) == PLAYER_STATE_ONFOOT)
 	{
 		if(pOnPlayerJMPClDwn[playerid] < gettime())
 		{
-			pOnPlayerJMPClDwn[playerid] = gettime()+1;
+			DebugPrint("Jumped");
+			pOnPlayerJMPClDwn[playerid] = ( gettime() +1 );
 			UpdateHunger(playerid, (pInfo[playerid][fHunger] - 0.2));
+		}
+	}
+
+
+	//@OnBikeSpeedup
+	//Info: Currently tested, the speed to call "slow" is under 45 mph (..ish) 
+	if(RELEASED(KEY_SPRINT) && IsPlayerInAnyVehicle(playerid))
+	{
+		if(IsABike(GetPlayerVehicleID(playerid)) && pBikeSpeedingCooldown[playerid] < gettime() && GetPlayerSpeed(playerid)>45)
+		{
+			pBikeSpeedingCooldown[playerid] = (gettime() + 1); //At this point just wait a second like OnPlayerJump.. they speed long enough to feel the exhaustion anyways.
+			UpdateHunger(playerid, (pInfo[playerid][fHunger] - 0.6));
+			DebugPrint("Speedup bike");
+		}
+	}
+
+	if(RELEASED(KEY_ACTION) && IsPlayerInAnyVehicle(playerid) )
+	{
+		if(IsABike(GetPlayerVehicleID(playerid)) && pOnPlayerJMPClDwn[playerid] < gettime())
+		{
+			pOnPlayerJMPClDwn[playerid] = (gettime() + 2); //Works better I guess since one jump takes a good minute.. less spammed code executions
+			UpdateHunger(playerid, (pInfo[playerid][fHunger] - 0.8)); //because they jump unrealistically high anyways
+			DebugPrint("Jump with bike");
 		}
 	}
 
@@ -737,12 +766,12 @@ public OnPlayerUpdate(playerid)
 		if(IsPlayerSprinting(playerid) && GetPlayerSpeed(playerid)>0)
 		{
 			fCons+=0.04;
-			print("Sprinting");
+			DebugPrint("Sprinting");
 		}
 		if(IsPlayerSwimming(playerid))
 		{
 			fCons+=0.09;
-			print("SWIM");
+			DebugPrint("SWIM");
 		}
 		UpdateHunger(playerid, (pInfo[playerid][fHunger] - fCons));
 	}
@@ -825,11 +854,13 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 
 
 
-			
+			//Bars init
+			InitHungerBar(playerid, pInfo[playerid][fHunger]);
+
 			//Set spawn info - Positionen dort, wo er bei der Skinauswahl stehen soll!!
 			SetSpawnInfo(playerid, 0, ZiviSkins_M[0], 437.9092,-1749.2146,9.0265,226.3349, 0,0, 0,0, 0,0);
 			SetPlayerVirtualWorld(playerid, VW_SKINCHANGE);
-			pSpawnReason[playerid] = SpawnReason:SPAWN_SKINCHANGE_ZIVI;
+			pSpawnReason[playerid] = SpawnReason:SPAWN_SKINCHANGE_REGISTER;
 			pInSkinChange[playerid] = 1; //After register
 			TogglePlayerSpectating(playerid, false); 
 		}
@@ -913,7 +944,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 
 		case DIALOG_UWU:
 		{
-			if(!response)return SendClientMessage(playerid, WHITE, "* Du hast angegeben, dass du von niemandem geworben wurdest.");
+			if(!response)return SendClientMessage(playerid, WHITE, "* Du hast angegeben, dass du von niemandem geworben wurdest."), SetPlayerVirtualWorld(playerid, 0);
 			if(!strlen(inputtext))
 			{
 				new str[390];
