@@ -91,7 +91,7 @@ enum eBusiness
 	STREAMER_TAG_ACTOR: _actors[4], //let them have 4 actors max
 	STREAMER_TAG_PICKUP: _pickups[3], //enter, exit, front desk or whatever.
 	STREAMER_TAG_AREA: area,
-	biz_storage[MAX_STORAGE][eStorage]
+	biz_storage[eStorage]
 }
 new Business[MAX_BIZ][eBusiness];
 
@@ -153,10 +153,6 @@ stock LoadBusinesses()
 							Business[i][_labels][0] = CreateDynamic3DTextLabel(str, WHITE, Business[i][p_x], Business[i][p_y], Business[i][p_z], 15.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, 0,0);
 						}
 
-						//Setup storage based from mysql table
-
-						for()
-
 						//Create shop system related stuff, doesnt matter what values of Business change
 						Business[i][_actors][0] = CreateDynamicActor(180, -29.1886,-186.8786,1003.5469,359.0892, true, 100.0, Business[i][iVW], Business[i][int]);
 						if(isnull(Business[i][custom_name]))format(str, sizeof(str), ""HTML_WHITE"Wilkommen !\nDrücke ["HTML_YELLOW"F"HTML_WHITE"] hinter der Kasse");
@@ -215,6 +211,10 @@ stock LoadBusinesses()
 				//What buidlings have in general..
 				Business[i][_labels][1] = CreateDynamic3DTextLabel("Drücke ENTER zum Verlassen", WHITE, Business[i][int_x], Business[i][int_y], Business[i][int_z], 10.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, Business[i][iVW], Business[i][int]);
 				Business[i][_pickups][1] = CreateDynamicPickup(1559, 1, Business[i][int_x], Business[i][int_y], Business[i][int_z], Business[i][iVW], Business[i][int]); //white down arrow;
+
+				#if defined GM_DEBUG
+				printf("  [DEBUG][BUILDING] Loaded %d building from mysql!", i);
+				#endif
 			}
 		}
 	}
@@ -274,7 +274,7 @@ stock CreateBusiness(tprice, BizType:biz_type, typeID, const Float:fEnter[4])
 			Business[free][int_z] = ShopTypes[typeID][shop_z];
 			Business[free][int_r] = ShopTypes[typeID][shop_r];
 		}
-		case 1: //ShopType is some fastfood restaurant (shop)
+		case 1: //ShopType is some fastfood place
 		{
 			Business[free][int] = FastfoodTypes[typeID][shop_int];
 			Business[free][int_x] = FastfoodTypes[typeID][shop_x];

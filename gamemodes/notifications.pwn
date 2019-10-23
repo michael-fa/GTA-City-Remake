@@ -1,7 +1,7 @@
 // 2019 © GTA-CITY REMAKE by lp_ aka Michael F.
 //     
 //      File:           /gamemodes/notifications.pwn
-//      Description:    Zeit eine schöne (!) Benachrichtigung auf dem Bildschirm an.
+//      Description:    Zeigt eine schöne (!) Benachrichtigung auf dem Bildschirm an.
 //						Sollte bisjetzt nur im Tutorial genutzt werden. Vllt beim jobben auch oder so..
 
 
