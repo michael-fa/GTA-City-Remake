@@ -8,8 +8,9 @@
 //Add more singleplayer shops
 
 
-#define MAX_BIZ 200 // Maximale Geschäfte
-#define MAX_BIZ_NAME 32 //Beschreibung max. Länge
+#define MAX_BIZ 200       // Maximale Geschäfte
+#define MAX_BIZ_NAME 32   // Beschreibung max. Länge
+#define MAX_STORAGE  128  // Lager[item]
 
 
 enum BizType {
@@ -41,6 +42,30 @@ new FastfoodTypes[][bizTypet] = {
 
 
 
+//Storage "template"
+
+enum storeItemType {
+	FOOD_BURGER,
+	DRINK_WATER, // yeah do it
+	DRINK_SPRUNK,
+	FOOD_CHNUGGETS,
+	FOOD_CHBURGER,
+	FOOD_FRIES,
+	FOOD_DONUT,
+	FOOD_CREAMDONUT,
+	FOOD_PIZZA,
+	FOOD_PIZZAL
+}
+
+enum eStorage {
+	//whatever comes to be stored 
+	storeItemType:itemType,
+	amount
+}
+
+// - STORAGE
+
+
 
 
 enum eBusiness
@@ -65,7 +90,8 @@ enum eBusiness
 	STREAMER_TAG_3D_TEXT_LABEL: _labels[3], //enter, exit, front desk or whatever.
 	STREAMER_TAG_ACTOR: _actors[4], //let them have 4 actors max
 	STREAMER_TAG_PICKUP: _pickups[3], //enter, exit, front desk or whatever.
-	STREAMER_TAG_AREA: area
+	STREAMER_TAG_AREA: area,
+	biz_storage[MAX_STORAGE][eStorage]
 }
 new Business[MAX_BIZ][eBusiness];
 
@@ -126,6 +152,10 @@ stock LoadBusinesses()
 							format(str, sizeof(str), "{FFD200}Supermarkt{FFFFFF}\n{D2D2D2}%s{FFFFFF}\nBesitzer: %s\n\nDrücke ENTER", Business[i][custom_name], tmp_owner);
 							Business[i][_labels][0] = CreateDynamic3DTextLabel(str, WHITE, Business[i][p_x], Business[i][p_y], Business[i][p_z], 15.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, 0,0);
 						}
+
+						//Setup storage based from mysql table
+
+						for()
 
 						//Create shop system related stuff, doesnt matter what values of Business change
 						Business[i][_actors][0] = CreateDynamicActor(180, -29.1886,-186.8786,1003.5469,359.0892, true, 100.0, Business[i][iVW], Business[i][int]);
@@ -235,7 +265,8 @@ stock CreateBusiness(tprice, BizType:biz_type, typeID, const Float:fEnter[4])
 	Business[free][price] = tprice;
 	switch(biz_type)
 	{
-		case 0:
+		//We have fastfood, supermarkets/ 24/7 ammunation shop etc.. 
+		case 0: //ShopType is supermarket (shop)
 		{
 			Business[free][int] = ShopTypes[typeID][shop_int];
 			Business[free][int_x] = ShopTypes[typeID][shop_x];
@@ -243,7 +274,7 @@ stock CreateBusiness(tprice, BizType:biz_type, typeID, const Float:fEnter[4])
 			Business[free][int_z] = ShopTypes[typeID][shop_z];
 			Business[free][int_r] = ShopTypes[typeID][shop_r];
 		}
-		case 1:
+		case 1: //ShopType is some fastfood restaurant (shop)
 		{
 			Business[free][int] = FastfoodTypes[typeID][shop_int];
 			Business[free][int_x] = FastfoodTypes[typeID][shop_x];
