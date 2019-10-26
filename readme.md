@@ -45,7 +45,7 @@ Features können also abweichen / besser sein oder waren nie auf RPG-City (2010-
      + [Lazypawn] von mir.
    - Sublime Text 3 Workspace / project Datei.
    - SA-MP Server.cfg
-   - plugins (include / binaries)  - + MYSQL dependencies!
+   - plugins (include / binaries) + MYSQL dependencies!
    - Database Backup (unregelmäßig geupdatet)
 
 
