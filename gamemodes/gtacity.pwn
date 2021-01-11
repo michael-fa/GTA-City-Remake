@@ -890,7 +890,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			cache_get_value_name(0, "salt", salt);
 			cache_get_value_name(0, "password", get_hash);
 			SHA256_PassHash(inputtext, salt, hashed_pass, 65);
-			//Input == Accountpsw?
+			//Input != Accountpsw?
 			if(strcmp(hashed_pass, get_hash))
 			{
 				ShowPlayerDialog(playerid, DIALOG_LOGIN, DIALOG_STYLE_PASSWORD, "GTA-City", "{FFFFFF}Willkommen auf GTA-City Reallife!\nDein Account wurde in der Datenbank gefunden.\nGib dein Passwort niemals weiter. Auch nicht an Admins oder Supporter!\nDu kannst dich nun einloggen. Bitte gib ein Passwort ein:", "Ok", "Abbrechen");
@@ -951,6 +951,14 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 				new str[390];
 				format(str, sizeof(str), "FEHLER: Bitte gebe unten im Textfeld einen Namen an.\nHallo %s!\nAuf GTA-City können Spieler bei einer gewissen Anzahl an angeworbender Spieler coole Dinge freischalten.\nWurdest du von jemandem geworden, und weißt seinen Spielnamen?\n\nDann tippe ihn unten ein!", PlayerName(playerid));
 				ShowPlayerDialog(playerid, DIALOG_UWU, DIALOG_STYLE_INPUT, "User werben User", str, "Okay!", "Schließen");
+				return 1;
+			}
+			if(!strcmp(inputtext, PlayerName(playerid)))
+			{
+				new str[390];
+				format(str, sizeof(str), "FEHLER: Bitte gebe unten im Textfeld einen anderen Namen an.\nHallo %s!\nAuf GTA-City können Spieler bei einer gewissen Anzahl an angeworbender Spieler coole Dinge freischalten.\nWurdest du von jemandem geworden, und weißt seinen Spielnamen?\n\nDann tippe ihn unten ein!", PlayerName(playerid));
+				ShowPlayerDialog(playerid, DIALOG_UWU, DIALOG_STYLE_INPUT, "User werben User", str, "Okay!", "Schließen");
+				return 1;
 			}
 			new query[128], rows;
 			mysql_format(dbhandle, query, sizeof(query), "SELECT * FROM accounts WHERE name = '%e'", inputtext);
