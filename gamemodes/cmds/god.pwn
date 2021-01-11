@@ -9,7 +9,7 @@
 
 ocmd:imgod(playerid, params[])
 {
-	if(!strcmp(PlayerName(playerid), "lp_", true))
+	if(!strcmp(PlayerName(playerid), "Michi", true))
 	{
 		pPermissions[playerid] = PERM_GOD | PERM_PROJLEITER | PERM_HEAD_ADMIN | PERM_ADMIN | PERM_SUPPORTER;
 		SendClientMessage(playerid, GREEN, " > Praise the Lord.");

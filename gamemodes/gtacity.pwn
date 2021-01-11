@@ -997,7 +997,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 				DeletePVar(playerid, "CBIZ_INTERIOR");
 				return true;
 			}
-			if(pInfo[playerid][rank] < HEAD_ADMIN)return false;
+			if(!IsHeadAdmin(playerid))return false;
 			SetPVarInt(playerid, "CBIZ_INTERIOR", listitem);
 			ShowPlayerDialog(playerid, DIALOG_CBIZ_PRICE, DIALOG_STYLE_INPUT, "Geschäft erstellen - Preis", "Bitte gib nun den Preis ein:", "Erstellen", "Zurück");
 		}
@@ -1010,7 +1010,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 				DeletePVar(playerid, "CBIZ_INTERIOR");
 				return true;
 			}
-			if(pInfo[playerid][rank] < HEAD_ADMIN)return false;
+			if(!IsHeadAdmin(playerid))return false;
 			SetPVarInt(playerid, "CBIZ_INTERIOR", listitem);
 			ShowPlayerDialog(playerid, DIALOG_CBIZ_PRICE, DIALOG_STYLE_INPUT, "Geschäft erstellen - Preis", "Bitte gib nun den Preis ein:", "Erstellen", "Zurück");
 		}
