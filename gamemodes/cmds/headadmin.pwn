@@ -4,15 +4,15 @@
 //      Description:    Befehle für leitende Administratoren
 
 
-#define IsHeadAdmin(%0) (pPermissions[%0] >= PERM_HEAD_ADMIN | PERM_ADMIN | PERM_SUPPORTER)
+#define IsHeadAdmin(%0) (pPermissions[%0] >= PERM_HEAD_ADMIN | PERM_ADMIN | PERM_SUPPORTER) || IsPlayerAdmin(%0)
 
 ocmd:makeadmin(playerid, params[])
 {
-	if(!IsHeadAdmin(playerid) && !IsPlayerAdmin(playerid))return noaccess;
+	if(!IsHeadAdmin(playerid))return noaccess;
 	new pid, _rank;
 	if(sscanf(params, "ui", pid, _rank))return SendClientMessage(playerid, WHITE, "Verwendung: /makeadmin [Spieler] [Rang Nummer]");
 	if(_rank<0 || _rank > 4)return SendClientMessage(playerid, GREY, "* Falsche Rang Nummer, versuche 0-4.");
-	if((_rank>=_:pInfo[playerid][rank]) && !IsGod(playerid))return SendClientMessage(playerid, GREY, "* Du kannst nur Ränge unter dir verteilen.");
+	if((_rank>=_:pInfo[playerid][rank]) && !IsGod(playerid) && !IsPlayerAdmin(playerid))return SendClientMessage(playerid, GREY, "* Du kannst nur Ränge unter dir verteilen.");
 	if(!PlayerOnline(pid))return SendClientMessage(playerid, GREY, "* Der angegebene Spieler ist nicht online.");
 	pInfo[pid][rank] = IntRank(_rank);
 	pPermissions[pid] = RankToPerm(playerid);
@@ -28,6 +28,7 @@ ocmd:cbiz(playerid, params[])
 {
 	if(!IsHeadAdmin(playerid))return noaccess;
 	new _btype;
+
 	if(sscanf(params, "i", _btype))return SendClientMessage(playerid, WHITE, "Verwendung: /cbiz [Typ des Geschäftes, 0 = BIZ_SHOP, 1 = FASTFOOD]");
 	if(GetPlayerInterior(playerid) != 0)return SendClientMessage(playerid, GREY, "* Geschäfte lassen sich nicht in einem Interior setzen!");
 	if(GetPlayerVirtualWorld(playerid) != 0)return SendClientMessage(playerid, GREY, "* Geschäfte lassen sich NUR in der VW 0 erstellen.");
