@@ -3,7 +3,7 @@
 //      File:           /gamemodes/cmds/supporter.pwn
 //      Description:    Befehle für min. Supporter
 
-#define IsSupporter(%0) (pPermissions[%0] >= PERM_SUPPORTER)
+#define IsSupporter(%0) (pPermissions[%0] >= PERM_SUPPORTER) || IsPlayerAdmin(playerid)
 
 ocmd:ooc(playerid, params[])
 {
