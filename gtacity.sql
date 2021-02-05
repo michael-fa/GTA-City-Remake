@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 11. Jan 2021 um 20:07
+-- Erstellungszeit: 05. Feb 2021 um 17:15
 -- Server-Version: 10.4.16-MariaDB
 -- PHP-Version: 7.4.12
 
@@ -54,7 +54,7 @@ CREATE TABLE `accounts` (
 --
 
 INSERT INTO `accounts` (`id`, `name`, `password`, `salt`, `last_seen`, `last_ip`, `regdate`, `rank`, `sex`, `ziviskin`, `money`, `bank`, `level`, `respekt`, `players_advertised`, `perso`, `job`, `fahrschein`, `hunger`) VALUES
-(1, 'Michi', '9410EF9670E0D5054B5D74700B257D2CF4767D3508A7C615208C20006AE3ABF9', '647770', 1610391901, 1270, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+(1, 'Michi', 'C0503EB200CA1F3BD8FD434ADCCC7C35D56E6210EF719F2B958F178334F8A545', 'M217N7', 1612541384, 1270, 1610393078, 0, 0, 1, 4400, 10000, 0, 0, 0, 0, 0, 0, 75.5812);
 
 -- --------------------------------------------------------
 
@@ -72,11 +72,20 @@ CREATE TABLE `biz` (
   `p_x` int(11) NOT NULL,
   `p_y` int(11) NOT NULL,
   `p_z` int(11) NOT NULL,
+  `p_r` float NOT NULL,
   `int_x` int(11) NOT NULL,
   `int_y` int(11) NOT NULL,
   `int_z` int(11) NOT NULL,
+  `int_r` int(11) NOT NULL,
   `interior` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Daten für Tabelle `biz`
+--
+
+INSERT INTO `biz` (`id`, `type`, `owner`, `kasse`, `price`, `custom_name`, `p_x`, `p_y`, `p_z`, `p_r`, `int_x`, `int_y`, `int_z`, `int_r`, `interior`) VALUES
+(1, 0, 0, 0, 650000, 0, 1833, -1842, 14, 93.5628, -26, -187, 1004, 354, 17);
 
 -- --------------------------------------------------------
 
@@ -126,7 +135,7 @@ ALTER TABLE `accounts`
 -- AUTO_INCREMENT für Tabelle `biz`
 --
 ALTER TABLE `biz`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
