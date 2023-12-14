@@ -3,8 +3,9 @@
 
 
 
-:construction: **Script Status:**     Anfang. :construction:
+:construction: **Script Status:**     Entwicklung angehalten. :construction:
 BTW: RPG-City ist immer noch tot. Ob ein drittes reboot oder nicht.
+@Sielder ich respektiere dein ganzes Projekt, aber euer gamemode könnte besser, auch in 2023.
 
 ## Entwicklung
 1. Clone / Download meiner Repo.
