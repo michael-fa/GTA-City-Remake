@@ -4,7 +4,6 @@
 #define LP_INC_MAIN
 
 #include <a_samp>
-#include <sscanf>
 #include "lazypawn\player.cpp"
 #include "lazypawn\time.cpp"
 #include "lazypawn\utils.cpp"

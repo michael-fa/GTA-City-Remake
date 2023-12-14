@@ -3,7 +3,6 @@
 #endif
 #define LP_INC_VEH
 #include <a_samp>
-#include <sscanf>
 #include "lazypawn\utils.cpp"
 
 native IsValidVehicle(vehicleid);
