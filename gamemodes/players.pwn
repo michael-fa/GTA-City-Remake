@@ -109,6 +109,11 @@ stock ResetPlayerVars(playerid)
 	pInSkinChange[playerid] = 0;
 	pSkinSelIndex[playerid] = 0;
 	pInBuilding[playerid] = -1;
+
+	//Fürn fall, aktives mietrad löschen
+	if(pRentalBike[playerid] != INVALID_VEHICLE_ID && IsValidVehicle(pRentalBike[playerid])) IsRentalBike[pRentalBike[playerid]] =false;
+		
+
 	pRentalBike[playerid] = INVALID_VEHICLE_ID;
 	pFSCar[playerid] = INVALID_VEHICLE_ID;
 	pDisableCheckPointOnEnter[playerid] = false;

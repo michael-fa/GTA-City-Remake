@@ -38,9 +38,11 @@
 //Lazypawn function-collection by lp_
 #include "lazypawn/main.cpp"
 
-//Gamemode related
+//Gamemode - reihenfolge ändern könnte Scriptfehler anzeigen!
+//			---->  REIHENFOLGE SO LASSEN! <----
 #include "/../../gamemodes/common.pwn"
-#include "/../../gamemodes/hunger_bar.pwn" //is used in players.pwn
+#include "/../../gamemodes/hunger_bar.pwn" //benutzt in players.pwn
+#include "/../../gamemodes/bikerental.pwn" //benutzt in players.pwn
 #include "/../../gamemodes/players.pwn"
 stock __updateHunger_FIX__ (playerid, Float:flx) { pInfo[playerid][fHunger] = flx; return 1;} //Some ugly HAX when CROSS including error comes along cuz im NOT FRIENDS with that "style-of-including"
 #include "/../../gamemodes/utils.pwn"
@@ -48,10 +50,9 @@ stock __updateHunger_FIX__ (playerid, Float:flx) { pInfo[playerid][fHunger] = fl
 #include "/../../gamemodes/notifications.pwn"
 #include "/../../gamemodes/vehicles.pwn"
 #include "/../../gamemodes/checkpoints.pwn"
-#include "/../../gamemodes/bikerental.pwn"
 #include "/../../gamemodes/buildings.pwn"
-#include "/../../gamemodes/business.pwn"  //mysql related
-#include "/../../gamemodes/area_events.pwn" //can be near / at / the end
+#include "/../../gamemodes/business.pwn"  //mysql
+#include "/../../gamemodes/area_events.pwn" //sollte am ende sein, kann es zumindest.
 
 //Maps
 #include "/../../maps/rpg-city.pwn"
@@ -64,12 +65,6 @@ stock __updateHunger_FIX__ (playerid, Float:flx) { pInfo[playerid][fHunger] = fl
 #include "/../../gamemodes/cmds/headadmin.pwn"
 #include "/../../gamemodes/cmds/supporter.pwn"
 
-
-
-
-
-
-
 main()
 {
 	print("\n------------\n\nMain:\n------------");
@@ -80,7 +75,6 @@ main()
 	#endif
 	print("\n\n__________________________________________________________________________");
 }
-
 
 public OnGameModeInit()
 {
@@ -321,6 +315,7 @@ public OnVehicleDeath(vehicleid, killerid)
 {
 	if(IsRentalBike[vehicleid])
 	{
+		IsRentalBike[vehicleid] = false;
 		DestroyVehicle(vehicleid);
 		return 1;
 	}
@@ -364,7 +359,6 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 			if(FahrschulCar[i] == GetPlayerVehicleID(playerid))
 			{
 				isFSCar = true; 
-				break;
 			}
 		}
 
