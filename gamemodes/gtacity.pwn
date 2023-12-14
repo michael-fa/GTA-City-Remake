@@ -319,6 +319,11 @@ public OnVehicleSpawn(vehicleid)
 
 public OnVehicleDeath(vehicleid, killerid)
 {
+	if(IsRentalBike[vehicleid])
+	{
+		DestroyVehicle(vehicleid);
+		return 1;
+	}
 	return 1;
 }
 
@@ -559,6 +564,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		if(GetPlayerMoney(playerid)<BikeRental[NearestBikeRental(playerid)][price])return SendClientMessage(playerid, GREY, "Du hast nicht genügend Geld dabei.");
 		GivePlayerMoney(playerid, -BikeRental[NearestBikeRental(playerid)][price]);
 		pRentalBike[playerid]=CreateVehicle(481, 1776.5442,-1890.0557,13.3868,281.1611, -1, -1, 900); //15 Minuten
+		IsRentalBike[pRentalBike[playerid]] = true;
 		PutPlayerInVehicle(playerid, pRentalBike[playerid], 0);
 		pTimerIDs[playerid][bikerental]=SetTimerEx_("BikeRentalEnd", 900*1000, 0, 1, "i", playerid); // 15 Min
 		SendClientMessage(playerid, YELLOW, "* Du hast dir ein BMX für 15 Minuten gemietet.");

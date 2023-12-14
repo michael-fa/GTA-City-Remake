@@ -12,6 +12,8 @@ enum eBikeRental {
 } new BikeRental[][eBikeRental] = {
 	{1772.0225,-1895.7983,13.5537, 300}
 };
+
+new bool:IsRentalBike[MAX_VEHICLES];
 //add bike rental above: {x,y,z, price}
 
 
@@ -46,6 +48,9 @@ dpublic:BikeRentalEnd(playerid)
 {
 	if(!PlayerOnline(playerid))
 		DestroyVehicle(pRentalBike[playerid]);
+
+	if(!IsValidVehicle(pRentalBike[playerid]))return 1;
+
 	else {
 		SendClientMessage(playerid, YELLOW, "* Deine Mietzeit für das BMX ist abgelaufen.");
 		DestroyVehicle(pRentalBike[playerid]);
