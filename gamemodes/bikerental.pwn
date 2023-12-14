@@ -53,10 +53,10 @@ dpublic:BikeRentalEnd(playerid)
 
 	else {
 		SendClientMessage(playerid, YELLOW, "* Deine Mietzeit für das BMX ist abgelaufen.");
+		IsRentalBike[pRentalBike[playerid]] = false;
 		DestroyVehicle(pRentalBike[playerid]);
 		pRentalBike[playerid] = INVALID_VEHICLE_ID;
 		pTimerIDs[playerid][bikerental] = -1;
-		IsRentalBike[vehicleid] = false: 
 	}
 	return 1;
 }

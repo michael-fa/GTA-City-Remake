@@ -42,7 +42,6 @@
 //			---->  REIHENFOLGE SO LASSEN! <----
 #include "/../../gamemodes/common.pwn"
 #include "/../../gamemodes/hunger_bar.pwn" //benutzt in players.pwn
-#include "/../../gamemodes/bikerental.pwn" //benutzt in players.pwn
 #include "/../../gamemodes/players.pwn"
 stock __updateHunger_FIX__ (playerid, Float:flx) { pInfo[playerid][fHunger] = flx; return 1;} //Some ugly HAX when CROSS including error comes along cuz im NOT FRIENDS with that "style-of-including"
 #include "/../../gamemodes/utils.pwn"
@@ -51,6 +50,7 @@ stock __updateHunger_FIX__ (playerid, Float:flx) { pInfo[playerid][fHunger] = fl
 #include "/../../gamemodes/vehicles.pwn"
 #include "/../../gamemodes/checkpoints.pwn"
 #include "/../../gamemodes/buildings.pwn"
+#include "/../../gamemodes/bikerental.pwn"
 #include "/../../gamemodes/business.pwn"  //mysql
 #include "/../../gamemodes/area_events.pwn" //sollte am ende sein, kann es zumindest.
 
@@ -90,22 +90,14 @@ public OnGameModeInit()
 	DisableInteriorEnterExits();
 	EnableStuntBonusForAll(false);
 	LoadGameModeSettings();
-
-
 	//Maps
 	LoadRPGCityMap();
-
-
 	//Stuff
 	LoadBikeRentals();
-
 	// Buildings
 	LoadBuildings();
-
 	//Businesses
 	LoadBusinesses();
-
-
 
 	//==========================================================
 	//Menüs (soweit das einzige was wir jemals nutzen aus nostalgischen Gründen)
@@ -116,7 +108,6 @@ public OnGameModeInit()
 	//AddMenuItem(stadthallenmenu, 0, "Sonderlizenzen erwerben");
 
 
-
 	//==========================================================
 	//Fahrschulautos
 	FahrschulCar[0] = AddStaticVehicle(516,1361.6854,-1635.5836,13.2168,271.6830,119,1); // fahrschulcar
@@ -125,7 +116,9 @@ public OnGameModeInit()
 	FahrschulCar[3] = AddStaticVehicle(516,1361.8253,-1658.7679,13.2170,271.9048,119,1); // fahrschulcar
 	FahrschulCar[4] = AddStaticVehicle(516,1374.8750,-1633.8547,13.2170,90.3638,119,1); // fahrschulcar
 	FahrschulCar[5] = AddStaticVehicle(516,1374.6290,-1638.5990,13.2168,89.9399,119,1); // fahrschulcar
-	new str[256]; //USED FOR ALL STUFF BELOW.. MAKE SURE TO CLEAN AFTER / BEFORE USING!
+	new str[256]; //Diese variable verwenden wir ggf. öfters um einfach Server-CPU ladung zu sparen.
+	//wenn wir eine temporäre value nutzen, am besten auch wiederverwendbar machen.
+	//new tmpVar = 0;
 	for(new i=0; i<sizeof(FahrschulCar); i++)
 	{
 			ToggleVehicleDoors(FahrschulCar[i]); //Closed
@@ -250,6 +243,9 @@ public OnPlayerDisconnect(playerid, reason)
 
 	//@player.pwn - set all variables we created to default's
 	ResetPlayerVars(playerid);
+	//Fürn fall, aktives mietrad löschen
+	if(pRentalBike[playerid] != INVALID_VEHICLE_ID && IsValidVehicle(pRentalBike[playerid])) IsRentalBike[pRentalBike[playerid]] = false;
+		
 
 	return 1;
 }
