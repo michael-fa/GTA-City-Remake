@@ -96,4 +96,4 @@ Hierbei ist dennoch der Fokus aller Events (callbacks) in der Hauptdatei, nur wi
 [OCMD]: <https://breadfish.de/index.php?thread/137761-ocmd-2-1-1-update-3-11-2013/>
 [Sublime Text und Pawn]: <https://github.com/Southclaws/pawn-sublime-language>
 [Pawn Language Plugin]: <https://github.com/Southclaws/pawn-sublime-language#pawn-language-plugin>
-[Y_Less]: <https://github.com/Y_Less/>
+[Y-Less]: <https://github.com/Y-Less/>
