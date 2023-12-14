@@ -10,8 +10,8 @@ ocmd:o(playerid, params[])
 	new txt[210];
 	if(sscanf(params, "s", txt))return SendClientMessage(playerid, WHITE, "Verwendung: /o (Nachricht)");
 	if(isnull(txt))return SendClientMessage(playerid, WHITE, "Verwendung: /o (Nachricht)");
-	if(!IsSupporter(playerid) && ! bOOC)
-		SendClientMessage(playerid, GREY, "* OOC ist momentan abgeschaltet.");
+	if(!IsSupporter(playerid) || ! bOOC)
+		return SendClientMessage(playerid, GREY, "* OOC ist momentan abgeschaltet.");
 	else
 	{
 		new str[260];
