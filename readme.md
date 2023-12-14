@@ -72,7 +72,7 @@ Hierbei ist dennoch der Fokus aller Events (callbacks) in der Hauptdatei, nur wi
    - Zeex für [Crashdetect] & [seinen Kompiler]
    - [Dini] von BlueG
    - [a_zones] von Cueball
-   - Sscanf Include Version (Quelle mir noch unbekannt)
+   - Sscanf Include Version ([Y_Less])
    - kleinerOpa für [OCMD] 2.1.1
    - [Pawn Language Plugin] von Southclaws
    - dotSILENT für sein [Fixes2] Plugin!
@@ -96,5 +96,4 @@ Hierbei ist dennoch der Fokus aller Events (callbacks) in der Hauptdatei, nur wi
 [OCMD]: <https://breadfish.de/index.php?thread/137761-ocmd-2-1-1-update-3-11-2013/>
 [Sublime Text und Pawn]: <https://github.com/Southclaws/pawn-sublime-language>
 [Pawn Language Plugin]: <https://github.com/Southclaws/pawn-sublime-language#pawn-language-plugin>
-[Y Sever Includes]: <https://github.com/Y-Less>
-[Fixes2]: <https://forum.sa-mp.com/showthread.php?t=622694>
+[Y_Less]: <https://github.com/Y_Less/>
