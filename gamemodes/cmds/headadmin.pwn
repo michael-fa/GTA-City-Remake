@@ -8,7 +8,7 @@
 
 ocmd:makeadmin(playerid, params[])
 {
-	if(!IsHeadAdmin(playerid) || !IsPlayerAdmin(playerid))return noaccess;
+	if(!IsHeadAdmin(playerid) && !IsPlayerAdmin(playerid))return noaccess;
 	new pid, _rank;
 	if(sscanf(params, "ui", pid, _rank))return SendClientMessage(playerid, WHITE, "Verwendung: /makeadmin [Spieler] [Rang Nummer]");
 	if(_rank<0 || _rank > 4)return SendClientMessage(playerid, GREY, "* Falsche Rang Nummer, versuche 0-4.");
