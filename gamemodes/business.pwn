@@ -20,7 +20,7 @@ enum BizType {
 
 enum bizTypet {
 	shop_int,
-	Float:shop_x,
+	Float:shop_x, 
 	Float:shop_y,
 	Float:shop_z,
 	Float:shop_r,
