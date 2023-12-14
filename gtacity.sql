@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 05. Feb 2021 um 17:15
+-- Erstellungszeit: 14. Dez 2023 um 10:27
 -- Server-Version: 10.4.16-MariaDB
 -- PHP-Version: 7.4.12
 
@@ -33,7 +33,7 @@ CREATE TABLE `accounts` (
   `password` text NOT NULL,
   `salt` text NOT NULL,
   `last_seen` int(11) NOT NULL,
-  `last_ip` int(11) NOT NULL,
+  `last_ip` text NOT NULL,
   `regdate` int(11) NOT NULL,
   `rank` int(11) NOT NULL,
   `sex` int(11) NOT NULL,
@@ -46,15 +46,16 @@ CREATE TABLE `accounts` (
   `perso` int(11) NOT NULL,
   `job` int(11) NOT NULL,
   `fahrschein` int(11) NOT NULL,
-  `hunger` float NOT NULL
+  `hunger` float NOT NULL,
+  `intutorial` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Daten für Tabelle `accounts`
 --
 
-INSERT INTO `accounts` (`id`, `name`, `password`, `salt`, `last_seen`, `last_ip`, `regdate`, `rank`, `sex`, `ziviskin`, `money`, `bank`, `level`, `respekt`, `players_advertised`, `perso`, `job`, `fahrschein`, `hunger`) VALUES
-(1, 'Michi', 'C0503EB200CA1F3BD8FD434ADCCC7C35D56E6210EF719F2B958F178334F8A545', 'M217N7', 1612541384, 1270, 1610393078, 0, 0, 1, 4400, 10000, 0, 0, 0, 0, 0, 0, 75.5812);
+INSERT INTO `accounts` (`id`, `name`, `password`, `salt`, `last_seen`, `last_ip`, `regdate`, `rank`, `sex`, `ziviskin`, `money`, `bank`, `level`, `respekt`, `players_advertised`, `perso`, `job`, `fahrschein`, `hunger`, `intutorial`) VALUES
+(1, 'Chester_Bennington', '4DB7324D2CC614B72F2342A6C3D63C098E5C4672ED754405BF224161501A752E', '63Rw23z', 1702545924, '127.0.0.1:57543', 1702545782, 0, 0, 2, 5000, 10000, 0, 0, 0, 0, 0, 0, 98.82, 0);
 
 -- --------------------------------------------------------
 
