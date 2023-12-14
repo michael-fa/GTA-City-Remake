@@ -13,12 +13,18 @@
 
 
 //Debug kram - kann eigentlich so gelassen werden.		//	Don't ever parse strings / big arrays with this in between a while/for loop.. 
-#if defined GM_DEBUG									//  .. Took ? (almost) : (more than) 500ms foreach call(); 
-	#define DebugPrint(%0); printf("[DEBUG] "%0);
+#if !defined GM_DEBUG
+#define DebugPrint(%0) DebugPrint_()
 #else
-	stock fake_nop(){return true;}
-	#define DebugPrint(%0); fake_nop();
+#define DebugPrint(%0) printf("[DEBUG] "%0)
 #endif
+
+DebugPrint_()
+{
+	return 1;
+}
+
+#pragma unused DebugPrint_
 
 
 //Gamemode
@@ -59,9 +65,9 @@ enum {
 	DIALOG_UWU, //User werben User
 	DIALOG_JOBS,
 	DIALOG_ALTER,
-	DIALOG_CBIZ_SHOP,     // / / / / / / / / / /
+	DIALOG_CBIZ_SHOP,     // VVVVVVVVVVVVVVVVVVVVVVVVV
 	DIALOG_CBIZ_FASTFOOD, // >> BizCreation Admin Only
-	DIALOG_CBIZ_PRICE     // / / / / / / / / / /
+	DIALOG_CBIZ_PRICE     // ^^^^^^^^^^^^^^^^^^^^^^^^^
 }
 
 

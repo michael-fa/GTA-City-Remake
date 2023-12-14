@@ -1,9 +1,9 @@
-// 2019 © GTA-CITY REMAKE by lp_ aka Michael F.
+// 2019 ¬© GTA-CITY REMAKE by lp_ aka Michael F.
 /*
 	----------------------
-	Dieses Gamemode ist in der auf dieser Repo anzufindenen Version ˆffetlich f¸r jeden.
+	Dieses Gamemode ist in der auf dieser Repo anzufindenen Version √∂ffetlich f√ºr jeden.
 
-	Infos f¸r Contribs:
+	Infos f√ºr Contribs:
 		- Macht euch auf n' Modularen AUGEN KREBS gefasst.
 		- Was' nicht modern oder 100% gut gescriptet? DWI!
 		- Retard? -> https://github.com/michael-fa/GTA-City-Remake/issues/new
@@ -32,6 +32,7 @@
 #include <streamer>
 #include <Dini>
 #include <fixes2>
+#include <sscanf2>
 #include <pbars>
 
 //Lazypawn function-collection by lp_
@@ -113,7 +114,7 @@ public OnGameModeInit()
 
 
 	//==========================================================
-	//Men¸s (soweit das einzige was wir jemals nutzen aus nostalgischen Gr¸nden)
+	//Men√ºs (soweit das einzige was wir jemals nutzen aus nostalgischen Gr√ºnden)
 	shmenu=CreateMenu("Stadthalle", 3, 232.000000, 175.000000, 150.0, 150.0);
 	AddMenuItem(shmenu, 0, "Arbeitsamt");
 	AddMenuItem(shmenu, 0, "Personalausweis");
@@ -145,8 +146,8 @@ public OnGameModeInit()
 	//==========================================================
 	//              3DTEXTLABELS
 	
-	CreateDynamic3DTextLabel(""#HTML_LIME"Stadthalle\n"#HTML_WHITE"Dr¸cke [ENTER] f¸r einen Personalausweis\neinem Job oder einer Organisation", WHITE, 361.8299,173.5298,1008.3828, 10.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, VW_STADTHALLE, 3); //Stadthalle Tresen
-	CreateDynamic3DTextLabel(""#HTML_LIME"Fahrschule\n"#HTML_WHITE"Dr¸cke [ENTER] um die Pr¸fung zu starten!\n"#HTML_LIME"Kosten: 25.000$", WHITE,1369.3827,-1647.7343,13.3828,10.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, 0, 0);  //Fahrschule
+	CreateDynamic3DTextLabel(""#HTML_LIME"Stadthalle\n"#HTML_WHITE"Dr√ºcke [ENTER] f√ºr einen Personalausweis\neinem Job oder einer Organisation", WHITE, 361.8299,173.5298,1008.3828, 10.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, VW_STADTHALLE, 3); //Stadthalle Tresen
+	CreateDynamic3DTextLabel(""#HTML_LIME"Fahrschule\n"#HTML_WHITE"Dr√ºcke [ENTER] um die Pr√ºfung zu starten!\n"#HTML_LIME"Kosten: 25.000$", WHITE,1369.3827,-1647.7343,13.3828,10.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, 0, 0);  //Fahrschule
 	
 
 
@@ -219,7 +220,7 @@ public OnPlayerConnect(playerid)
 	pRentalBike[playerid] = INVALID_VEHICLE_ID;
 	ResetPlayerVars(playerid);
 
-	//Map Icons der Geb‰ude laden 
+	//Map Icons der Geb√§ude laden 
 	LoadBuildingIconsFP(playerid);
 	LoadBusinessIconsFP(playerid);
 
@@ -237,7 +238,7 @@ public OnPlayerDisconnect(playerid, reason)
 	//Reset Map Icons der Buildings[]...
 	for(new i=0; i<sizeof(Buildings); i++)
 	{
-		if(Buildings[i][mapiconid]==0xC)continue; //Nicht jedes Geb‰ude hat ein Mapicon.
+		if(Buildings[i][mapiconid]==0xC)continue; //Nicht jedes Geb√§ude hat ein Mapicon.
 		RemovePlayerMapIcon(playerid, Buildings[i][mapiconid]);
 	}
 
@@ -279,19 +280,19 @@ public OnPlayerSpawn(playerid)
 
 			//Wer hat dich geworben?
 			new str[256];
-			format(str, sizeof(str), "Hallo %s!\nAuf GTA-City kˆnnen Spieler bei einer gewissen Anzahl an angeworbender Spieler coole Dinge freischalten.\nWurdest du von jemandem geworden, und weiﬂt seinen Spielnamen?\n\nDann tippe ihn unten ein!", PlayerName(playerid));
-			ShowPlayerDialog(playerid, DIALOG_UWU, DIALOG_STYLE_INPUT, "User werben User", str, "Okay!", "Schlieﬂen");
+			format(str, sizeof(str), "Hallo %s!\nAuf GTA-City k√∂nnen Spieler bei einer gewissen Anzahl an angeworbender Spieler coole Dinge freischalten.\nWurdest du von jemandem geworden, und wei√üt seinen Spielnamen?\n\nDann tippe ihn unten ein!", PlayerName(playerid));
+			ShowPlayerDialog(playerid, DIALOG_UWU, DIALOG_STYLE_INPUT, "User werben User", str, "Okay!", "Schlie√üen");
 		}
 		case SPAWN_SKINCHANGE_REGISTER:
 		{
-			ShowPlayerDialog(playerid, DIALOG_SEX, DIALOG_STYLE_MSGBOX, "Geschlecht w‰hlen", "Auf GTA-City kannst du in eine Weibliche oder in eine M‰nnliche Rolle schl¸pfen.\nBitte gib an, welches du f¸r deinen Charakter mˆchtest.", "Weiblich" ,"M‰nnlich");
+			ShowPlayerDialog(playerid, DIALOG_SEX, DIALOG_STYLE_MSGBOX, "Geschlecht w√§hlen", "Auf GTA-City kannst du in eine Weibliche oder in eine M√§nnliche Rolle schl√ºpfen.\nBitte gib an, welches du f√ºr deinen Charakter m√∂chtest.", "Weiblich" ,"M√§nnlich");
 			//Er kann sich nen neuen ZiviSkin aussuchen!
 			SetPlayerInterior(playerid, 0);
 			SetPlayerVirtualWorld(playerid, VW_SKINCHANGE);
 			SetPlayerCameraPos(playerid, 442.8635,-1753.2231,10.0265);
 			SetPlayerCameraLookAt(playerid,437.9092,-1749.2146,9.0265);
 			SendClientMessage(playerid,-1,"{FFFFFF}Du kannst den Skin mit der {FF3C00}Shift{FFFFFF} Taste wechseln.");
-			SendClientMessage(playerid,-1,"{FFFFFF}Mit der {FF3C00}Enter{FFFFFF} Taste w‰hlst du den Skin aus.");
+			SendClientMessage(playerid,-1,"{FFFFFF}Mit der {FF3C00}Enter{FFFFFF} Taste w√§hlst du den Skin aus.");
 			TogglePlayerControllable(playerid, false);
 		}
 		case SPAWN_HOSPITAL:
@@ -370,7 +371,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 		if(isFSCar && !pInFahrschule[playerid])
 		{
 			RemovePlayerFromVehicle(playerid);
-			SendClientMessage(playerid, GREY, "Du hast keinen Schl¸ssel f¸r dieses Fahrzeug.");
+			SendClientMessage(playerid, GREY, "Du hast keinen Schl√ºssel f√ºr dieses Fahrzeug.");
 		}
 
 		if(pFSCar[playerid] == INVALID_VEHICLE_ID && pInFahrschule[playerid] && isFSCar)
@@ -461,7 +462,7 @@ public OnVehicleRespray(playerid, vehicleid, color1, color2)
 
 public OnPlayerSelectedMenuRow(playerid, row)
 {
-	//Wir gehen hier wild davon aus dass nur ein einziges Men¸ vom Spieler genutzt werden kann - Stadthalle.
+	//Wir gehen hier wild davon aus dass nur ein einziges Men√º vom Spieler genutzt werden kann - Stadthalle.
 	TogglePlayerControllable(playerid, true);
 	switch(row)
 	{
@@ -497,7 +498,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	//Todo: ANTI Key Spam
 
 
-	//Fahrzeug interaktion von auﬂen
+	//Fahrzeug interaktion von au√üen
 	if(GetClosestVehicleFromPlayer(playerid) != INVALID_VEHICLE_ID)
 	{
 		new veh = GetClosestVehicleFromPlayer(playerid);
@@ -538,10 +539,10 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	//Near bike rental
 	if(NearestBikeRental(playerid)!=INVALID_BIKE_RENTAL && RELEASED(KEY_SECONDARY_ATTACK) && !IsPlayerInAnyVehicle(playerid))
 	{
-		if(pInfo[playerid][level]>4)return SendClientMessage(playerid, GREY, "Nur Spieler unter Level 4 kˆnnen hier Fahrr‰der mieten.");
+		if(pInfo[playerid][level]>4)return SendClientMessage(playerid, GREY, "Nur Spieler unter Level 4 k√∂nnen hier Fahrr√§der mieten.");
 		if(pRentalBike[playerid]!=INVALID_VEHICLE_ID || IsValidVehicle(pRentalBike[playerid]))
 		{
-			//Bringen wir dem Spieler ruhig mal das fahrrad, somit kˆnnen sie das Fahrrad tats‰chlich immer nutzen wenn sie es brauchen
+			//Bringen wir dem Spieler ruhig mal das fahrrad, somit k√∂nnen sie das Fahrrad tats√§chlich immer nutzen wenn sie es brauchen
 			//later sogar gut wenn man mehrere points hat kann man immer den lokalsten anfinden wenn man es nicht findet
 			new basic_floats, Float:ang;
 			GetPlayerPos(playerid, x,y,z);
@@ -555,12 +556,12 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 			return 1;
 		}
 
-		if(GetPlayerMoney(playerid)<BikeRental[NearestBikeRental(playerid)][price])return SendClientMessage(playerid, GREY, "Du hast nicht gen¸gend Geld dabei.");
+		if(GetPlayerMoney(playerid)<BikeRental[NearestBikeRental(playerid)][price])return SendClientMessage(playerid, GREY, "Du hast nicht gen√ºgend Geld dabei.");
 		GivePlayerMoney(playerid, -BikeRental[NearestBikeRental(playerid)][price]);
 		pRentalBike[playerid]=CreateVehicle(481, 1776.5442,-1890.0557,13.3868,281.1611, -1, -1, 900); //15 Minuten
 		PutPlayerInVehicle(playerid, pRentalBike[playerid], 0);
 		pTimerIDs[playerid][bikerental]=SetTimerEx_("BikeRentalEnd", 900*1000, 0, 1, "i", playerid); // 15 Min
-		SendClientMessage(playerid, YELLOW, "* Du hast dir ein BMX f¸r 15 Minuten gemietet.");
+		SendClientMessage(playerid, YELLOW, "* Du hast dir ein BMX f√ºr 15 Minuten gemietet.");
 		return 1;
 	}
 	
@@ -702,13 +703,13 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	if(IsPlayerInRangeOfPoint(playerid, 3.0, 1369.3827,-1647.7343,13.3828) && !pInFahrschule[playerid] && PRESSED(KEY_SECONDARY_ATTACK) && !IsPlayerInAnyVehicle(playerid))
 	{
 		if(pInfo[playerid][fahrschein])return SendClientMessage(playerid, GREY, "* Du hast bereits einen Fahrschein.");
-		if(GetPlayerMoney(playerid)<25000)return SendClientMessage(playerid, GREY, ""HTML_GREY"F¸r den Fahrkurs benˆtigst du "HTML_RED"25.0000$"HTML_GREY".");
+		if(GetPlayerMoney(playerid)<25000)return SendClientMessage(playerid, GREY, ""HTML_GREY"F√ºr den Fahrkurs ben√∂tigst du "HTML_RED"25.000$"HTML_GREY".");
 		GivePlayerMoney(playerid, -(-CFG[license_price_0] / 2));
 		CFG[staatskasse]+=(-CFG[license_price_0] / 2);
 		pInFahrschule[playerid] = true;
 		SendClientMessage(playerid, CYAN, "Du hast den Fahrschulkurs gestartet. Steig in ein "HTML_YELLOW" freies "HTML_CYAN" Fahrschulauto ein.");
-		SendClientMessage(playerid,WHITE,"{FFFA00}Du kannst das Fahrzeug mit {FF3C00}/motor{FFFA00} starten. Die Scheinwerfer kˆnnen mit {FF3C00}/licht{FFFA00} angeschaltet werden.");
-		SendClientMessage(playerid, CYAN, " > Die Fahrschule verlangt nur die H‰lfte vom abgemachten Preis, erst nachdem du fertig bist, wird der Rest verlangt.");
+		SendClientMessage(playerid,WHITE,"{FFFA00}Du kannst das Fahrzeug mit {FF3C00}/motor{FFFA00} starten. Die Scheinwerfer k√∂nnen mit {FF3C00}/licht{FFFA00} angeschaltet werden.");
+		SendClientMessage(playerid, CYAN, " > Die Fahrschule verlangt nur die H√§lfte vom abgemachten Preis, erst nachdem du fertig bist, wird der Rest verlangt.");
 		return 1;
 	}
 
@@ -759,7 +760,7 @@ public OnPlayerUpdate(playerid)
 {
 	p_Hunger_Sec_Counter[playerid]++;
 	//Schlechtes vorgehen:
-	//Bei laggs client-seitig wird der hunger nicht abgezogen. Timebugg gef‰hrdet
+	//Bei laggs client-seitig wird der hunger nicht abgezogen. Timebugg gef√§hrdet
 	if(p_Hunger_Sec_Counter[playerid]>=15) //Wir warten ab, bis wir onfoot_upd_rate ca. 15 mal aufgerufen haben zum updaten
 	{
 		p_Hunger_Sec_Counter[playerid]=0;
@@ -873,7 +874,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			//Inputfeld wurde leer gelassen, oder die eingabe ist zu kurz/lang.
 			if(!response || !strlen(inputtext) || strlen(inputtext)<6 || strlen(inputtext)>MAX_PASSWORD_LEN)return ShowPlayerDialog(playerid, DIALOG_LOGIN, DIALOG_STYLE_PASSWORD, "GTA-City", "{FFFFFF}Willkommen auf GTA-City Reallife!\nDein Account wurde in der Datenbank gefunden.\nGib dein Passwort niemals weiter. Auch nicht an Admins oder Supporter!\nDu kannst dich nun einloggen. Bitte gib ein Passwort ein:", "Ok", "Abbrechen");
 			
-			//Daten aus Tabelle laden (Wird aber nur f¸r den Salt und das PW genutzt!)
+			//Daten aus Tabelle laden (Wird aber nur f√ºr den Salt und das PW genutzt!)
 			new query[400];
 			mysql_format(dbhandle, query, sizeof(query), "SELECT * FROM accounts WHERE name = '%e'", PlayerName(playerid));
 			mysql_query(dbhandle, query);
@@ -949,15 +950,15 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			if(!strlen(inputtext))
 			{
 				new str[390];
-				format(str, sizeof(str), "FEHLER: Bitte gebe unten im Textfeld einen Namen an.\nHallo %s!\nAuf GTA-City kˆnnen Spieler bei einer gewissen Anzahl an angeworbender Spieler coole Dinge freischalten.\nWurdest du von jemandem geworden, und weiﬂt seinen Spielnamen?\n\nDann tippe ihn unten ein!", PlayerName(playerid));
-				ShowPlayerDialog(playerid, DIALOG_UWU, DIALOG_STYLE_INPUT, "User werben User", str, "Okay!", "Schlieﬂen");
+				format(str, sizeof(str), "FEHLER: Bitte gebe unten im Textfeld einen Namen an.\nHallo %s!\nAuf GTA-City k√∂nnen Spieler bei einer gewissen Anzahl an angeworbender Spieler coole Dinge freischalten.\nWurdest du von jemandem geworden, und wei√üt seinen Spielnamen?\n\nDann tippe ihn unten ein!", PlayerName(playerid));
+				ShowPlayerDialog(playerid, DIALOG_UWU, DIALOG_STYLE_INPUT, "User werben User", str, "Okay!", "Schlie√üen");
 				return 1;
 			}
 			if(!strcmp(inputtext, PlayerName(playerid)))
 			{
 				new str[390];
-				format(str, sizeof(str), "FEHLER: Bitte gebe unten im Textfeld einen anderen Namen an.\nHallo %s!\nAuf GTA-City kˆnnen Spieler bei einer gewissen Anzahl an angeworbender Spieler coole Dinge freischalten.\nWurdest du von jemandem geworden, und weiﬂt seinen Spielnamen?\n\nDann tippe ihn unten ein!", PlayerName(playerid));
-				ShowPlayerDialog(playerid, DIALOG_UWU, DIALOG_STYLE_INPUT, "User werben User", str, "Okay!", "Schlieﬂen");
+				format(str, sizeof(str), "FEHLER: Bitte gebe unten im Textfeld einen anderen Namen an.\nHallo %s!\nAuf GTA-City k√∂nnen Spieler bei einer gewissen Anzahl an angeworbender Spieler coole Dinge freischalten.\nWurdest du von jemandem geworden, und wei√üt seinen Spielnamen?\n\nDann tippe ihn unten ein!", PlayerName(playerid));
+				ShowPlayerDialog(playerid, DIALOG_UWU, DIALOG_STYLE_INPUT, "User werben User", str, "Okay!", "Schlie√üen");
 				return 1;
 			}
 			new query[128], rows;
@@ -966,8 +967,8 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			cache_get_row_count(rows);
 			if(rows==0){
 				new str[390];
-				format(str, sizeof(str), "FEHLER: Der Spieler %s hat noch nicht auf diesen Server gespielt.\nHallo %s!\nAuf GTA-City kˆnnen Spieler bei einer gewissen Anzahl an angeworbender Spieler coole Dinge freischalten.\nWurdest du von jemandem geworden, und weiﬂt seinen Spielnamen?\n\nDann tippe ihn unten ein!", inputtext, PlayerName(playerid));
-				ShowPlayerDialog(playerid, DIALOG_UWU, DIALOG_STYLE_INPUT, "User werben User", str, "Okay!", "Schlieﬂen");
+				format(str, sizeof(str), "FEHLER: Der Spieler %s hat noch nicht auf diesen Server gespielt.\nHallo %s!\nAuf GTA-City k√∂nnen Spieler bei einer gewissen Anzahl an angeworbender Spieler coole Dinge freischalten.\nWurdest du von jemandem geworden, und wei√üt seinen Spielnamen?\n\nDann tippe ihn unten ein!", inputtext, PlayerName(playerid));
+				ShowPlayerDialog(playerid, DIALOG_UWU, DIALOG_STYLE_INPUT, "User werben User", str, "Okay!", "Schlie√üen");
 			}
 			else
 			{
@@ -981,7 +982,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 					pInfo[pid][players_advertised]++;
 				}
 				else {
-					//Is offline, m¸ssen dem so in der db einen neuen setzen
+					//Is offline, m√ºssen dem so in der db einen neuen setzen
 					mysql_format(dbhandle, query, sizeof(query), "UPDATE accounts SET players_advertised = players_advertised +1 WHERE name = '%e'", inputtext);
 					mysql_query(dbhandle, query);
 				}
@@ -999,7 +1000,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			}
 			if(!IsHeadAdmin(playerid))return false;
 			SetPVarInt(playerid, "CBIZ_INTERIOR", listitem);
-			ShowPlayerDialog(playerid, DIALOG_CBIZ_PRICE, DIALOG_STYLE_INPUT, "Gesch‰ft erstellen - Preis", "Bitte gib nun den Preis ein:", "Erstellen", "Zur¸ck");
+			ShowPlayerDialog(playerid, DIALOG_CBIZ_PRICE, DIALOG_STYLE_INPUT, "Gesch√§ft erstellen - Preis", "Bitte gib nun den Preis ein:", "Erstellen", "Zur√ºck");
 		}
 
 		case DIALOG_CBIZ_FASTFOOD:
@@ -1012,7 +1013,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			}
 			if(!IsHeadAdmin(playerid))return false;
 			SetPVarInt(playerid, "CBIZ_INTERIOR", listitem);
-			ShowPlayerDialog(playerid, DIALOG_CBIZ_PRICE, DIALOG_STYLE_INPUT, "Gesch‰ft erstellen - Preis", "Bitte gib nun den Preis ein:", "Erstellen", "Zur¸ck");
+			ShowPlayerDialog(playerid, DIALOG_CBIZ_PRICE, DIALOG_STYLE_INPUT, "Gesch√§ft erstellen - Preis", "Bitte gib nun den Preis ein:", "Erstellen", "Zur√ºck");
 		}
 
 		case DIALOG_CBIZ_PRICE:
@@ -1031,7 +1032,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 						{
 							format(str,sizeof(str), "%s\t%d\t%s\n", str, ShopTypes[i][shop_int], ShopTypes[i][shop_name]);
 						}
-						ShowPlayerDialog(playerid, DIALOG_CBIZ_SHOP, DIALOG_STYLE_TABLIST_HEADERS, "Gesch‰ft erstellen - Shop", str, "Weiter", "Abbrechen");
+						ShowPlayerDialog(playerid, DIALOG_CBIZ_SHOP, DIALOG_STYLE_TABLIST_HEADERS, "Gesch√§ft erstellen - Shop", str, "Weiter", "Abbrechen");
 					}
 					case 1:
 					{
@@ -1042,12 +1043,12 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 						{
 							format(str,sizeof(str), "%s\t%d\t%s\n", str, FastfoodTypes[i][shop_int], FastfoodTypes[i][shop_name]);
 						}
-						ShowPlayerDialog(playerid, DIALOG_CBIZ_FASTFOOD, DIALOG_STYLE_TABLIST_HEADERS, "Gesch‰ft erstellen - Fastfood", str, "Weiter", "Abbrechen");
+						ShowPlayerDialog(playerid, DIALOG_CBIZ_FASTFOOD, DIALOG_STYLE_TABLIST_HEADERS, "Gesch√§ft erstellen - Fastfood", str, "Weiter", "Abbrechen");
 					}
 				}
 				return true;
 			}
-			if(!IsNumeric(inputtext) || isnull(inputtext)) return ShowPlayerDialog(playerid, DIALOG_CBIZ_PRICE, DIALOG_STYLE_INPUT, "Gesch‰ft erstellen - Preis", "Bitte gib nun den Preis ein:", "Erstellen", "Zur¸ck");
+			if(!IsNumeric(inputtext) || isnull(inputtext)) return ShowPlayerDialog(playerid, DIALOG_CBIZ_PRICE, DIALOG_STYLE_INPUT, "Gesch√§ft erstellen - Preis", "Bitte gib nun den Preis ein:", "Erstellen", "Zur√ºck");
 			new pr = strval(inputtext);
 			new Float:pos[4];
 			GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
